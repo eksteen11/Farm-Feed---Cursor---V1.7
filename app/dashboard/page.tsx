@@ -114,7 +114,7 @@ export default function DashboardPage() {
               <CardTitle className="text-lg mb-4">Quick Actions</CardTitle>
               <div className="space-y-3">
                 {currentUser.role === 'seller' && (
-                  <Link href="/create-listing">
+                  <Link href="/seller/create-listing">
                     <Button className="w-full justify-start" leftIcon={<Package className="w-4 h-4" />}>
                       Create New Listing
                     </Button>

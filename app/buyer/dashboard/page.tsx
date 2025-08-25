@@ -46,7 +46,7 @@ export default function BuyerDashboardPage() {
 
   // Get buyer-specific data
   const buyerOffers = mockOffers.filter(offer => offer.buyerId === currentUser.id)
-  const buyerTransportRequests = mockTransportRequests.filter(request => request.buyerId === currentUser.id)
+  const buyerTransportRequests = mockTransportRequests.filter(request => request.requesterId === currentUser.id)
 
   const stats = {
     totalOffers: buyerOffers.length,
@@ -202,7 +202,7 @@ export default function BuyerDashboardPage() {
                 </div>
 
                 <div className="flex flex-col space-y-2 ml-4">
-                  <Button variant="outline" size="sm" leftIcon={<MessageCircle className="w-4 h-4" />}>
+                  <Button variant="secondary" size="sm" leftIcon={<MessageCircle className="w-4 h-4" />}>
                     Chat
                   </Button>
                   {offer.status === 'pending' && (
@@ -238,7 +238,7 @@ export default function BuyerDashboardPage() {
                     <Truck className="w-5 h-5 text-gray-500" />
                     <span className="font-medium">Transport Request #{request.id}</span>
                     <span className={`px-2 py-1 text-xs rounded-full ${
-                      request.status === 'pending' ? 'bg-orange-100 text-orange-800' :
+                      request.status === 'open' ? 'bg-orange-100 text-orange-800' :
                       request.status === 'accepted' ? 'bg-green-100 text-green-800' :
                       request.status === 'completed' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
                     }`}>
@@ -264,10 +264,10 @@ export default function BuyerDashboardPage() {
                 </div>
 
                 <div className="flex flex-col space-y-2 ml-4">
-                  <Button variant="outline" size="sm" leftIcon={<Eye className="w-4 h-4" />}>
+                  <Button variant="secondary" size="sm" leftIcon={<Eye className="w-4 h-4" />}>
                     View Quotes
                   </Button>
-                  <Button variant="outline" size="sm" leftIcon={<MessageCircle className="w-4 h-4" />}>
+                  <Button variant="secondary" size="sm" leftIcon={<MessageCircle className="w-4 h-4" />}>
                     Chat
                   </Button>
                 </div>

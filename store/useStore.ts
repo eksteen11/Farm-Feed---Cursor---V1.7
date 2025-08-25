@@ -68,7 +68,7 @@ interface AppState {
   
   // Offers
   fetchOffers: (userId?: string) => void
-  createOffer: (offer: Omit<Offer, 'id' | 'createdAt' | 'updatedAt' | 'buyer' | 'buyerId' | 'listing'>) => void
+  createOffer: (offer: Omit<Offer, 'id' | 'createdAt' | 'updatedAt'>) => void
   updateOffer: (id: string, updates: Partial<Offer>) => void
   acceptOffer: (id: string) => void
   rejectOffer: (id: string) => void

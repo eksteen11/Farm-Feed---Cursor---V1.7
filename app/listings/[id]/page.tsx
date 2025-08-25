@@ -64,36 +64,27 @@ export default function ListingDetailPage() {
       return
     }
 
-    const offer = {
-      listingId: listing.id,
-      listing: listing,
-      buyerId: currentUser.id,
-      buyer: currentUser,
-      price: parseFloat(offerData.price),
-      quantity: parseFloat(offerData.quantity),
-      message: offerData.message,
-      status: 'pending' as const,
-      expiresAt: new Date((typeof window === 'undefined' ? 0 : Date.now()) + 30 * 24 * 60 * 60 * 1000), // 30 days from now
-      deliveryAddress: undefined,
-      deliveryDate: undefined,
-      transportRequired: true,
-      counterOffer: undefined,
-      negotiationHistory: [{
-        action: 'offer' as const,
-        price: parseFloat(offerData.price),
-        quantity: parseFloat(offerData.quantity),
-        message: offerData.message,
-        timestamp: new Date(),
-        userId: currentUser.id
-      }]
-    }
-
     try {
+      const offer = {
+        listingId: listing.id,
+        buyerId: currentUser.id,
+        sellerId: listing.sellerId,
+        price: Number(offerData.price),
+        quantity: Number(offerData.quantity),
+        deliveryType: 'ex-farm' as const,
+        message: offerData.message,
+        status: 'pending' as const,
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
+        isNegotiable: true,
+        terms: 'Standard terms apply'
+      }
+      
       createOffer(offer)
       toast.success('Offer submitted successfully!')
       setShowOfferForm(false)
       setOfferData({ price: '', quantity: '', message: '' })
     } catch (error) {
+      console.error('Error creating offer:', error)
       toast.error('Failed to submit offer. Please try again.')
     }
   }

@@ -1,4 +1,20 @@
-import { User, Listing, Product, Offer, Deal, TransportRequest, TransportQuote, Subscription, Notification, UserRole, BackloadListing, Invoice, Contract, MarketData, SystemMetrics } from '@/types'
+import { 
+  User, 
+  Product, 
+  Listing, 
+  Offer, 
+  Deal, 
+  TransportRequest, 
+  TransportQuote, 
+  Subscription, 
+  Notification, 
+  BackloadListing, 
+  Invoice, 
+  Contract, 
+  MarketData, 
+  SystemMetrics,
+  ChatMessage
+} from '@/types'
 import { generateId } from './helpers'
 
 // Enhanced User Data with Subscriptions and FICA
@@ -862,7 +878,7 @@ export const mockDashboardMetrics = {
   totalUsers: mockUsers.length,
   totalListings: mockListings.length,
   totalDeals: mockDeals.length,
-  totalRevenue: mockDeals.reduce((sum, deal) => sum + (deal.finalPrice * deal.finalQuantity), 0),
+  totalRevenue: mockDeals.reduce((sum, deal) => sum + (deal.finalPrice * deal.quantity), 0),
   activeListings: mockListings.filter(l => l.isActive).length,
   pendingOffers: mockOffers.filter(o => o.status === 'pending').length,
   openTransportRequests: mockTransportRequests.filter(t => t.status === 'open').length,

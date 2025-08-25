@@ -653,7 +653,7 @@ class DatabaseService {
         totalUsers: mockUsers.length,
         totalListings: mockListings.length,
         totalDeals: mockDeals.length,
-        totalRevenue: mockDeals.reduce((sum, deal) => sum + (deal.finalPrice * deal.finalQuantity), 0),
+        totalRevenue: mockDeals.reduce((sum, deal) => sum + (deal.finalPrice * deal.quantity), 0),
         activeListings: mockListings.filter(l => l.isActive).length,
         pendingOffers: mockOffers.filter(o => o.status === 'pending').length,
         openTransportRequests: mockTransportRequests.filter(t => t.status === 'open').length,
@@ -673,7 +673,7 @@ class DatabaseService {
         analytics['userListings'] = userListings.length
         analytics['userOffers'] = userOffers.length
         analytics['userDeals'] = userDeals.length
-        analytics['userRevenue'] = userDeals.reduce((sum, deal) => sum + (deal.finalPrice * deal.finalQuantity), 0)
+        analytics['userRevenue'] = userDeals.reduce((sum, deal) => sum + (deal.finalPrice * deal.quantity), 0)
       }
       
       return {

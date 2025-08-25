@@ -74,7 +74,7 @@ export default function CreateListingPage() {
       setFormData(prev => ({
         ...prev,
         [parent]: {
-          ...prev[parent as keyof typeof prev],
+          ...(prev as any)[parent],
           [child]: value
         }
       }))

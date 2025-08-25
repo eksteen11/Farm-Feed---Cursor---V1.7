@@ -218,7 +218,7 @@ export default function SellerDashboardPage() {
                       <Button variant="secondary" size="sm" leftIcon={<XCircle className="w-4 h-4" />}>
                         Reject
                       </Button>
-                      <Button variant="outline" size="sm" leftIcon={<MessageCircle className="w-4 h-4" />}>
+                      <Button variant="secondary" size="sm" leftIcon={<MessageCircle className="w-4 h-4" />}>
                         Counter
                       </Button>
                     </>
@@ -325,10 +325,10 @@ export default function SellerDashboardPage() {
                 </div>
 
                 <div className="flex flex-col space-y-2 ml-4">
-                  <Button variant="outline" size="sm" leftIcon={<Eye className="w-4 h-4" />}>
+                  <Button variant="secondary" size="sm" leftIcon={<Eye className="w-4 h-4" />}>
                     View Details
                   </Button>
-                  <Button variant="outline" size="sm" leftIcon={<MessageCircle className="w-4 h-4" />}>
+                  <Button variant="secondary" size="sm" leftIcon={<MessageCircle className="w-4 h-4" />}>
                     Chat
                   </Button>
                 </div>
