@@ -1,17 +1,22 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { useStore } from '@/store/useStore'
 import { Card, CardContent, CardTitle } from '@/components/ui/Card'
 import { 
   Truck, 
+  MapPin, 
+  Calendar, 
   Package, 
-  DollarSign, 
-  Clock, 
-  TrendingUp, 
-  MapPin,
-  Calendar
+  DollarSign,
+  TrendingUp,
+  Users,
+  Clock,
+  Star,
+  Eye
 } from 'lucide-react'
 import { mockTransportRequests, mockTransportQuotes } from '@/lib/mockData'
+import { formatDate } from '@/lib/utils'
 import ClientOnly from '@/components/ui/ClientOnly'
 
 interface TransportDashboardProps {
@@ -237,7 +242,7 @@ export default function TransportDashboard({ userId, userRole }: TransportDashbo
                           {request.status}
                         </div>
                         <div className="text-xs text-gray-500 mt-1">
-                          {new Date(request.createdAt).toLocaleDateString()}
+                          {formatDate(request.createdAt)}
                         </div>
                       </div>
                     </div>
@@ -276,7 +281,7 @@ export default function TransportDashboard({ userId, userRole }: TransportDashbo
                           {quote.status}
                         </div>
                         <div className="text-xs text-gray-500 mt-1">
-                          {new Date(quote.createdAt).toLocaleDateString()}
+                          {formatDate(quote.createdAt)}
                         </div>
                       </div>
                     </div>

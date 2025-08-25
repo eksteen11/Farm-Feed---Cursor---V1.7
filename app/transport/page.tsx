@@ -25,6 +25,7 @@ import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import TransportDashboard from '@/components/transport/TransportDashboard'
 import TransportAnalytics from '@/components/transport/TransportAnalytics'
+import { formatDate } from '@/lib/utils'
 
 export default function TransportPage() {
   const { currentUser, isAuthenticated } = useStore()
@@ -363,7 +364,7 @@ export default function TransportPage() {
                     )}
                   </div>
                   <div className="text-sm text-gray-500">
-                    {new Date(request.createdAt).toLocaleDateString()}
+                    {formatDate(request.createdAt)}
                   </div>
                 </div>
 
@@ -401,7 +402,7 @@ export default function TransportPage() {
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center space-x-2 text-sm text-gray-600">
                     <Calendar className="w-4 h-4" />
-                    <span>{new Date(request.preferredDate).toLocaleDateString()}</span>
+                    <span>{formatDate(request.preferredDate)}</span>
                   </div>
                   {request.budget && (
                     <div className="flex items-center space-x-2 text-sm text-gray-600">
@@ -679,7 +680,7 @@ export default function TransportPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600">
                   <div><span className="font-medium">Route:</span> {selectedRequest.pickupLocation} → {selectedRequest.deliveryLocation}</div>
                   <div><span className="font-medium">Quantity:</span> {selectedRequest.quantity} {selectedRequest.unit}</div>
-                  <div><span className="font-medium">Preferred Date:</span> {new Date(selectedRequest.preferredDate).toLocaleDateString()}</div>
+                  <div><span className="font-medium">Preferred Date:</span> {formatDate(selectedRequest.preferredDate)}</div>
                   {selectedRequest.budget && <div><span className="font-medium">Budget:</span> R{selectedRequest.budget.toLocaleString()}</div>}
                 </div>
               </div>

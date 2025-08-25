@@ -21,6 +21,7 @@ import {
 } from 'lucide-react'
 import { mockListings } from '@/lib/mockData'
 import toast from 'react-hot-toast'
+import { formatDate } from '@/lib/utils'
 
 export default function ListingDetailPage() {
   const params = useParams()
@@ -209,7 +210,7 @@ export default function ListingDetailPage() {
                       <div>
                         <div className="text-sm text-gray-500">Listed</div>
                         <div className="font-medium">
-                          {new Date(listing.createdAt).toLocaleDateString()}
+                          {formatDate(listing.createdAt)}
                         </div>
                       </div>
                     </div>

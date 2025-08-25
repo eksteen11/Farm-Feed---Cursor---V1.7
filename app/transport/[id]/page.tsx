@@ -1,19 +1,22 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useStore } from '@/store/useStore'
 import { Card, CardContent, CardTitle } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { 
-  ArrowLeft, 
+  Truck, 
   MapPin, 
-  Package, 
   Calendar, 
+  Package, 
   DollarSign,
+  Eye,
+  MessageCircle,
+  ArrowLeft,
+  Star,
   Clock,
   User,
-  Star,
   Phone,
   MessageSquare,
   CheckCircle,
@@ -24,6 +27,7 @@ import { mockTransportRequests, mockTransportQuotes } from '@/lib/mockData'
 import { TransportRequest, TransportQuote } from '@/types'
 import toast from 'react-hot-toast'
 import TransportTracking from '@/components/transport/TransportTracking'
+import { formatDate } from '@/lib/utils'
 
 export default function TransportRequestDetailPage({ params }: { params: { id: string } }) {
   const router = useRouter()
@@ -193,7 +197,7 @@ export default function TransportRequestDetailPage({ params }: { params: { id: s
             </div>
             <div className="text-right">
               <div className="text-sm text-gray-500 mb-1">Created</div>
-              <div className="text-sm font-medium">{new Date(request.createdAt).toLocaleDateString()}</div>
+              <div className="text-sm font-medium">{formatDate(request.createdAt)}</div>
             </div>
           </div>
 
@@ -230,7 +234,7 @@ export default function TransportRequestDetailPage({ params }: { params: { id: s
                 <Calendar className="w-4 h-4" />
                 <span className="font-medium">Preferred Date</span>
               </div>
-              <div className="text-lg font-medium">{new Date(request.preferredDate).toLocaleDateString()}</div>
+              <div className="text-lg font-medium">{formatDate(request.preferredDate)}</div>
             </div>
             {request.budget && (
               <div>

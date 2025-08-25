@@ -20,6 +20,7 @@ import {
   Eye
 } from 'lucide-react'
 import { FilterOptions } from '@/types'
+import { formatDate } from '@/lib/utils'
 
 export default function ListingsPage() {
   const router = useRouter()
@@ -273,7 +274,7 @@ export default function ListingsPage() {
                     
                     <div className="flex items-center text-sm text-gray-500">
                       <Calendar className="w-4 h-4 mr-2" />
-                      Listed {new Date(listing.createdAt).toLocaleDateString()}
+                      Listed {formatDate(listing.createdAt)}
                     </div>
                   </div>
                   

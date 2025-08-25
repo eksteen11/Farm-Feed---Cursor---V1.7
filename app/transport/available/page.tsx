@@ -23,6 +23,7 @@ import {
 import { mockTransportRequests, mockTransportQuotes } from '@/lib/mockData'
 import { TransportRequest, TransportQuote } from '@/types'
 import toast from 'react-hot-toast'
+import { formatDate } from '@/lib/utils'
 
 export default function AvailableTransportRequestsPage() {
   const router = useRouter()
@@ -189,7 +190,7 @@ export default function AvailableTransportRequestsPage() {
                       )}
                     </div>
                     <div className="text-sm text-gray-500">
-                      {new Date(request.createdAt).toLocaleDateString()}
+                      {formatDate(request.createdAt)}
                     </div>
                   </div>
 
@@ -227,7 +228,7 @@ export default function AvailableTransportRequestsPage() {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-2 text-sm text-gray-600">
                       <Calendar className="w-4 h-4" />
-                      <span>{new Date(request.preferredDate).toLocaleDateString()}</span>
+                      <span>{formatDate(request.preferredDate)}</span>
                     </div>
                     {request.budget && (
                       <div className="flex items-center space-x-2 text-sm text-gray-600">
