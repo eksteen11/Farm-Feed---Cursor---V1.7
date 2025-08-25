@@ -20,32 +20,91 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="gradient-hero text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 text-balance">
-            Connect with Trusted Farmers
-            <span className="block text-2xl md:text-3xl font-normal mt-2">
-              South Africa's Premier Grain & Feed Trading Platform
+      {/* Cinematic Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* Cinematic Background Image */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/70 z-10"></div>
+          <img
+            src="https://images.unsplash.com/photo-1500382017468-9049fed747aa?w=1920&h=1080&fit=crop&crop=center"
+            alt="South African Agricultural Landscape"
+            className="w-full h-full object-cover object-center scale-110 animate-slow-zoom"
+          />
+          {/* Dynamic Overlay Elements */}
+          <div className="absolute inset-0 bg-gradient-to-r from-green-900/30 via-transparent to-orange-900/30 z-20"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-transparent to-black/50 z-30"></div>
+          
+          {/* Floating Particles for Cinematic Effect */}
+          <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-green-400 rounded-full animate-float opacity-60"></div>
+          <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-yellow-400 rounded-full animate-float animation-delay-1000 opacity-80"></div>
+          <div className="absolute top-2/3 left-1/3 w-1.5 h-1.5 bg-orange-400 rounded-full animate-float animation-delay-2000 opacity-70"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-1 h-1 bg-green-300 rounded-full animate-float animation-delay-1500 opacity-60"></div>
+          <div className="absolute top-1/2 left-1/6 w-1.5 h-1.5 bg-yellow-300 rounded-full animate-float animation-delay-3000 opacity-50"></div>
+        </div>
+
+        {/* Hero Content */}
+        <div className="relative z-40 text-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          {/* Main Title with Cinematic Typography */}
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-8 text-white leading-tight tracking-tight">
+            <span className="block animate-fade-in-up animation-delay-100">
+              Connect with
+            </span>
+            <span className="block bg-gradient-to-r from-green-400 via-yellow-400 to-orange-400 bg-clip-text text-transparent animate-fade-in-up animation-delay-200 drop-shadow-2xl">
+              Trusted Farmers
             </span>
           </h1>
-          <p className="text-xl md:text-2xl mb-8 text-gray-100 max-w-3xl mx-auto">
-            Buy and sell agricultural products with confidence. Verified sellers, secure transactions, and reliable delivery.
+
+          {/* Subtitle with Enhanced Styling */}
+          <p className="text-xl md:text-3xl lg:text-4xl font-light mb-8 text-gray-100 max-w-4xl mx-auto leading-relaxed animate-fade-in-up animation-delay-300">
+            South Africa's Premier Grain & Feed Trading Platform
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/register">
-              <Button size="lg" className="bg-white text-primary-600 hover:bg-gray-100">
-                Start Trading Today
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-            </Link>
-            <Link href="/listings">
-              <Button variant="ghost" size="lg" className="text-white border-white hover:bg-white/10">
-                Browse Listings
-              </Button>
-            </Link>
+
+          {/* Enhanced Description */}
+          <p className="text-lg md:text-xl lg:text-2xl mb-12 text-gray-200 max-w-3xl mx-auto leading-relaxed animate-fade-in-up animation-delay-400">
+            Buy and sell agricultural products with confidence. Verified sellers, secure transactions, and reliable delivery across the Rainbow Nation.
+          </p>
+
+          {/* Cinematic Call-to-Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up animation-delay-500">
+            <a href="/register" className="group">
+              <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-green-600 to-green-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
+                <span className="relative z-10">Start Trading Today</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              </button>
+            </a>
+            
+            <a href="/listings" className="group">
+              <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
+                <span className="relative z-10">Browse Listings</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+              </button>
+            </a>
+          </div>
+
+          {/* Floating Elements for Cinematic Effect */}
+          <div className="absolute top-20 left-10 w-20 h-20 bg-green-400/20 rounded-full blur-xl animate-pulse animation-delay-600"></div>
+          <div className="absolute top-40 right-20 w-32 h-32 bg-orange-400/20 rounded-full blur-xl animate-pulse animation-delay-700"></div>
+          <div className="absolute bottom-40 left-20 w-16 h-16 bg-yellow-400/20 rounded-full blur-xl animate-pulse animation-delay-800"></div>
+          
+          {/* Additional Cinematic Elements */}
+          <div className="absolute top-1/3 left-1/6 w-24 h-24 bg-gradient-to-br from-green-400/10 to-transparent rounded-full blur-2xl animate-glow"></div>
+          <div className="absolute bottom-1/3 right-1/6 w-32 h-32 bg-gradient-to-br from-orange-400/10 to-transparent rounded-full blur-2xl animate-glow animation-delay-1000"></div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-40 animate-bounce">
+          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
+            <div className="w-1 h-3 bg-white/70 rounded-full mt-2 animate-pulse"></div>
           </div>
         </div>
+        
+        {/* Cinematic Corner Accents */}
+        <div className="absolute top-0 left-0 w-32 h-32 border-l-4 border-t-4 border-green-400/30 rounded-tl-3xl"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 border-r-4 border-t-4 border-orange-400/30 rounded-tr-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-32 h-32 border-l-4 border-b-4 border-yellow-400/30 rounded-bl-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-32 h-32 border-r-4 border-b-4 border-green-400/30 rounded-br-3xl"></div>
       </section>
 
       {/* Stats Section */}
