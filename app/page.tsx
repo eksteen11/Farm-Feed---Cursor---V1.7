@@ -23,12 +23,21 @@ export default function HomePage() {
       {/* Cinematic Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         {/* Cinematic Background Image */}
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 bg-gradient-to-br from-green-900 via-gray-800 to-orange-900">
+          {/* Temporary Test Background */}
+          <div className="absolute inset-0 bg-red-500 opacity-50 z-5"></div>
+          
           <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/70 z-10"></div>
           <img
-            src="https://images.unsplash.com/photo-1500382017468-9049fed747aa?w=1920&h=1080&fit=crop&crop=center"
+            src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=1920&h=1080&fit=crop&crop=center"
             alt="South African Agricultural Landscape"
             className="w-full h-full object-cover object-center scale-110 animate-slow-zoom"
+            onLoad={() => console.log('Background image loaded successfully!')}
+            onError={(e) => {
+              console.error('Background image failed to load, using fallback');
+              e.currentTarget.style.display = 'none';
+            }}
+            style={{ minHeight: '100vh', minWidth: '100vw' }}
           />
           {/* Dynamic Overlay Elements */}
           <div className="absolute inset-0 bg-gradient-to-r from-green-900/30 via-transparent to-orange-900/30 z-20"></div>
