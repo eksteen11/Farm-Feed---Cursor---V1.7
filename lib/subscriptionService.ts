@@ -74,7 +74,7 @@ export class SubscriptionService {
       user,
       plan,
       price: planConfig.price,
-      currency: planConfig.currency,
+      currency: 'ZAR' as const,
       status: 'pending',
       startDate,
       endDate,

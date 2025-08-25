@@ -116,12 +116,12 @@ export default function HomePage() {
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center text-sm text-gray-500">
                       <ImageComponent
-                        src={listing.seller.avatar}
-                        alt={listing.seller.name}
+                        src={listing.seller.avatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"}
+                        alt={listing.seller.name || "Seller"}
                         className="w-5 h-5 rounded-full mr-2"
                         fallbackSrc="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
                       />
-                      {listing.seller.name}
+                      {listing.seller.name || "Unknown Seller"}
                     </div>
                     <div className="text-sm text-gray-500">
                       {listing.location}

@@ -268,7 +268,7 @@ export default function ListingsPage() {
                     
                     <div className="flex items-center text-sm text-gray-500">
                       <User className="w-4 h-4 mr-2" />
-                      {listing.seller.name}
+                      {listing.seller.name || "Unknown Seller"}
                     </div>
                     
                     <div className="flex items-center text-sm text-gray-500">

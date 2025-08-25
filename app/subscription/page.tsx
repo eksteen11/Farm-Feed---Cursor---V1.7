@@ -183,11 +183,11 @@ const SubscriptionPage: React.FC = () => {
                       {feature === 'offers' && value !== -1 && `${value} offers per month`}
                       {feature === 'transportRequests' && value === -1 && 'Unlimited transport requests'}
                       {feature === 'transportRequests' && value !== -1 && `${value} transport requests per month`}
-                      {feature === 'chatAccess' && value && 'Chat access'}
-                      {feature === 'analytics' && value && 'Advanced analytics'}
-                      {feature === 'analytics' && !value && 'Basic analytics'}
-                      {feature === 'prioritySupport' && value && 'Priority support'}
-                      {feature === 'prioritySupport' && !value && 'Standard support'}
+                      {feature === 'chatAccess' && Boolean(value) && 'Chat access'}
+                      {feature === 'analytics' && Boolean(value) && 'Advanced analytics'}
+                      {feature === 'analytics' && !Boolean(value) && 'Basic analytics'}
+                      {feature === 'prioritySupport' && Boolean(value) && 'Priority support'}
+                      {feature === 'prioritySupport' && !Boolean(value) && 'Standard support'}
                     </span>
                   </div>
                 ))}

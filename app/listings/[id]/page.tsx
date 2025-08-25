@@ -175,7 +175,7 @@ export default function ListingDetailPage() {
                       <User className="w-5 h-5 text-primary-600" />
                       <div>
                         <div className="text-sm text-gray-500">Seller</div>
-                        <div className="font-medium">{listing.seller.name}</div>
+                        <div className="font-medium">{listing.seller.name || "Unknown Seller"}</div>
                         {listing.seller.company && (
                           <div className="text-sm text-gray-600">{listing.seller.company}</div>
                         )}
@@ -284,13 +284,14 @@ export default function ListingDetailPage() {
                 <CardTitle className="text-lg mb-4">Seller Information</CardTitle>
                 <div className="space-y-4">
                   <div className="flex items-center space-x-3">
-                    <img
-                      src={listing.seller.avatar}
-                      alt={listing.seller.name}
+                    <ImageComponent
+                      src={listing.seller.avatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"}
+                      alt={listing.seller.name || "Seller"}
                       className="w-12 h-12 rounded-full"
+                      fallbackSrc="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
                     />
                     <div>
-                      <div className="font-medium">{listing.seller.name}</div>
+                      <div className="font-medium">{listing.seller.name || "Unknown Seller"}</div>
                       {listing.seller.company && (
                         <div className="text-sm text-gray-600">{listing.seller.company}</div>
                       )}

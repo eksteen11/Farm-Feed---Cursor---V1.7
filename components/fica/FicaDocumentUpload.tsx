@@ -200,7 +200,9 @@ const FicaDocumentUpload: React.FC<FicaDocumentUploadProps> = ({ onComplete }) =
                   {!uploadedDoc && (
                     <div className="space-y-3">
                       <input
-                        ref={(el) => fileInputRefs.current[documentType] = el}
+                        ref={(el) => {
+                          fileInputRefs.current[documentType] = el
+                        }}
                         type="file"
                         accept=".pdf,.jpg,.jpeg,.png"
                         onChange={(e) => handleFileInputChange(documentType, e)}
