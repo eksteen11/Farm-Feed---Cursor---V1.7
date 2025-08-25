@@ -1,0 +1,906 @@
+import { User, Listing, Product, Offer, Deal, TransportRequest, TransportQuote, Subscription, Notification, UserRole, BackloadListing, Invoice, Contract, MarketData, SystemMetrics } from '@/types'
+import { generateId } from './helpers'
+
+// Enhanced User Data with Subscriptions and FICA
+export const mockUsers: User[] = [
+  {
+    id: generateId('user'),
+    email: 'buyer@demo.com',
+    name: 'John Buyer',
+    role: 'buyer',
+    company: 'Demo Feedlot',
+    location: 'Johannesburg, Gauteng',
+    phone: '+27 82 123 4567',
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+    isVerified: true,
+    subscriptionStatus: 'active',
+    subscriptionExpiry: new Date('2025-12-31'),
+    ficaStatus: 'verified',
+    ficaDocuments: {
+      idDocument: 'verified',
+      bankStatement: 'verified',
+      entityRegistration: 'verified',
+      taxClearance: 'verified'
+    },
+    ficaVerifiedAt: new Date('2024-01-15'),
+    rating: 4.8,
+    totalDeals: 45,
+    totalTransactions: 67,
+    reputationScore: 92,
+    businessType: 'company',
+    taxNumber: '123456789',
+    vatNumber: 'VAT123456789',
+    bankDetails: {
+      bankName: 'Standard Bank',
+      accountNumber: '1234567890',
+      accountType: 'Business Current',
+      branchCode: '051001'
+    },
+    createdAt: new Date('2024-01-01'),
+    updatedAt: new Date('2024-01-15')
+  },
+  {
+    id: generateId('user'),
+    email: 'seller@demo.com',
+    name: 'Sarah Johnson',
+    role: 'seller',
+    company: 'Demo Maize Farm',
+    location: 'Free State',
+    phone: '+27 82 234 5678',
+    avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face',
+    isVerified: true,
+    subscriptionStatus: 'active',
+    subscriptionExpiry: new Date('2025-12-31'),
+    ficaStatus: 'verified',
+    ficaDocuments: {
+      idDocument: 'verified',
+      bankStatement: 'verified',
+      entityRegistration: 'verified'
+    },
+    ficaVerifiedAt: new Date('2024-01-10'),
+    rating: 4.9,
+    totalDeals: 23,
+    totalTransactions: 34,
+    reputationScore: 95,
+    businessType: 'cooperative',
+    taxNumber: '987654321',
+    bankDetails: {
+      bankName: 'ABSA Bank',
+      accountNumber: '0987654321',
+      accountType: 'Business Current',
+      branchCode: '632005'
+    },
+    createdAt: new Date('2024-01-05'),
+    updatedAt: new Date('2024-01-10')
+  },
+  {
+    id: generateId('user'),
+    email: 'transporter@demo.com',
+    name: 'Mike Transport',
+    role: 'transporter',
+    company: 'Demo Transport Services',
+    location: 'Cape Town, Western Cape',
+    phone: '+27 82 345 6789',
+    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+    isVerified: true,
+    subscriptionStatus: 'active',
+    subscriptionExpiry: new Date('2025-12-31'),
+    ficaStatus: 'verified',
+    ficaDocuments: {
+      idDocument: 'verified',
+      bankStatement: 'verified',
+      entityRegistration: 'verified'
+    },
+    ficaVerifiedAt: new Date('2024-01-12'),
+    rating: 4.7,
+    totalDeals: 67,
+    totalTransactions: 89,
+    reputationScore: 88,
+    businessType: 'company',
+    taxNumber: '456789123',
+    bankDetails: {
+      bankName: 'Nedbank',
+      accountNumber: '4567891230',
+      accountType: 'Business Current',
+      branchCode: '198765'
+    },
+    createdAt: new Date('2024-01-03'),
+    updatedAt: new Date('2024-01-12')
+  },
+  {
+    id: generateId('user'),
+    email: 'admin@demo.com',
+    name: 'Admin User',
+    role: 'admin',
+    company: 'Demo Farm Feed',
+    location: 'Johannesburg, Gauteng',
+    phone: '+27 82 456 7890',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
+    isVerified: true,
+    subscriptionStatus: 'active',
+    subscriptionExpiry: new Date('2025-12-31'),
+    ficaStatus: 'verified',
+    ficaDocuments: {},
+    ficaVerifiedAt: new Date('2024-01-01'),
+    rating: 5.0,
+    totalDeals: 0,
+    totalTransactions: 0,
+    reputationScore: 100,
+    businessType: 'company',
+    createdAt: new Date('2024-01-01'),
+    updatedAt: new Date('2024-01-01')
+  }
+]
+
+// Enhanced Subscription Data
+export const mockSubscriptions: Subscription[] = [
+  {
+    id: generateId('sub'),
+    userId: mockUsers[0].id,
+    user: mockUsers[0],
+    plan: 'basic',
+    price: 10,
+    currency: 'ZAR',
+    status: 'active',
+    startDate: new Date('2024-01-01'),
+    endDate: new Date('2025-12-31'),
+    paymentMethod: 'paystack',
+    paymentStatus: 'paid',
+    features: {
+      listings: -1, // unlimited
+      offers: -1,
+      transportRequests: -1,
+      chatAccess: true,
+      analytics: false,
+      prioritySupport: false
+    },
+    autoRenew: true,
+    nextBillingDate: new Date('2025-01-01'),
+    createdAt: new Date('2024-01-01'),
+    updatedAt: new Date('2024-01-01')
+  },
+  {
+    id: generateId('sub'),
+    userId: mockUsers[1].id,
+    user: mockUsers[1],
+    plan: 'basic',
+    price: 10,
+    currency: 'ZAR',
+    status: 'active',
+    startDate: new Date('2024-01-05'),
+    endDate: new Date('2025-12-31'),
+    paymentMethod: 'paystack',
+    paymentStatus: 'paid',
+    features: {
+      listings: -1,
+      offers: -1,
+      transportRequests: -1,
+      chatAccess: true,
+      analytics: false,
+      prioritySupport: false
+    },
+    autoRenew: true,
+    nextBillingDate: new Date('2025-01-05'),
+    createdAt: new Date('2024-01-05'),
+    updatedAt: new Date('2024-01-05')
+  },
+  {
+    id: generateId('sub'),
+    userId: mockUsers[2].id,
+    user: mockUsers[2],
+    plan: 'basic',
+    price: 10,
+    currency: 'ZAR',
+    status: 'active',
+    startDate: new Date('2024-01-03'),
+    endDate: new Date('2025-12-31'),
+    paymentMethod: 'paystack',
+    paymentStatus: 'paid',
+    features: {
+      listings: -1,
+      offers: -1,
+      transportRequests: -1,
+      chatAccess: true,
+      analytics: false,
+      prioritySupport: false
+    },
+    autoRenew: true,
+    nextBillingDate: new Date('2025-01-03'),
+    createdAt: new Date('2024-01-03'),
+    updatedAt: new Date('2024-01-03')
+  }
+]
+
+// Enhanced Product Data
+export const mockProducts: Product[] = [
+  {
+    id: generateId('product'),
+    name: 'Yellow Maize',
+    category: 'grain',
+    subcategory: 'maize',
+    description: 'High-quality yellow maize suitable for animal feed and industrial use',
+    specifications: {
+      protein: '8-10%',
+      moisture: '<14%',
+      aflatoxin: '<20ppb',
+      color: 'Bright yellow'
+    },
+    unit: 'ton',
+    minQuantity: 1,
+    maxQuantity: 1000
+  },
+  {
+    id: generateId('product'),
+    name: 'White Maize',
+    category: 'grain',
+    subcategory: 'maize',
+    description: 'Premium white maize for human consumption and milling',
+    specifications: {
+      protein: '9-11%',
+      moisture: '<13%',
+      aflatoxin: '<10ppb',
+      color: 'Pure white'
+    },
+    unit: 'ton',
+    minQuantity: 1,
+    maxQuantity: 500
+  },
+  {
+    id: generateId('product'),
+    name: 'Soybean Meal',
+    category: 'feed',
+    subcategory: 'protein',
+    description: 'High-protein soybean meal for livestock feed',
+    specifications: {
+      protein: '44-48%',
+      moisture: '<12%',
+      fiber: '<7%',
+      fat: '<2%'
+    },
+    unit: 'ton',
+    minQuantity: 1,
+    maxQuantity: 200
+  }
+]
+
+// Enhanced Listing Data with Delivery Options
+export const mockListings: Listing[] = [
+  {
+    id: generateId('listing'),
+    sellerId: mockUsers[1].id,
+    seller: mockUsers[1],
+    product: mockProducts[0],
+    title: 'Premium Yellow Maize - Free State',
+    description: 'High-quality yellow maize from our Free State farm. Perfect for animal feed and industrial use. Available for immediate collection or delivery.',
+    price: 3200,
+    currency: 'ZAR',
+    quantity: 100,
+    availableQuantity: 100,
+    location: 'Free State',
+    images: [
+      'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop',
+      'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop&crop=center',
+      'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop&crop=top'
+    ],
+    isActive: true,
+    expiresAt: new Date('2024-12-31'),
+    deliveryOptions: {
+      exFarm: true,
+      delivered: true,
+      ownTransport: {
+        available: true,
+        pricePerKm: 2.50,
+        availableDates: [
+          new Date('2024-01-20'),
+          new Date('2024-01-21'),
+          new Date('2024-01-22')
+        ],
+        routes: [
+          'Free State → Johannesburg',
+          'Free State → Cape Town',
+          'Free State → Durban'
+        ]
+      }
+    },
+    qualityGrade: 'A',
+    specifications: {
+      protein: '9.2%',
+      moisture: '13.5%',
+      aflatoxin: '15ppb',
+      color: 'Bright yellow'
+    },
+    certificates: [
+      'https://via.placeholder.com/400x300?text=Quality+Certificate',
+      'https://via.placeholder.com/400x300?text=Lab+Report'
+    ],
+    labResults: ['https://via.placeholder.com/400x300?text=Lab+Results'],
+    createdAt: new Date('2024-01-10'),
+    updatedAt: new Date('2024-01-10')
+  },
+  {
+    id: generateId('listing'),
+    sellerId: mockUsers[1].id,
+    seller: mockUsers[1],
+    product: mockProducts[1],
+    title: 'White Maize - Premium Grade',
+    description: 'Premium white maize suitable for human consumption and milling. Strict quality control and testing.',
+    price: 3800,
+    currency: 'ZAR',
+    quantity: 50,
+    availableQuantity: 50,
+    location: 'Free State',
+    images: [
+      'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop&crop=left',
+      'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop&crop=right'
+    ],
+    isActive: true,
+    expiresAt: new Date('2024-12-31'),
+    deliveryOptions: {
+      exFarm: true,
+      delivered: false,
+      ownTransport: {
+        available: false,
+        pricePerKm: 0,
+        availableDates: [],
+        routes: []
+      }
+    },
+    qualityGrade: 'A',
+    specifications: {
+      protein: '10.1%',
+      moisture: '12.8%',
+      aflatoxin: '8ppb',
+      color: 'Pure white'
+    },
+    certificates: [
+      'https://via.placeholder.com/400x300?text=Quality+Certificate'
+    ],
+    labResults: ['https://via.placeholder.com/400x300?text=Lab+Results'],
+    createdAt: new Date('2024-01-12'),
+    updatedAt: new Date('2024-01-12')
+  }
+]
+
+// Enhanced Offer Data with Negotiation History
+export const mockOffers: Offer[] = [
+  {
+    id: generateId('offer'),
+    listingId: mockListings[0].id,
+    listing: mockListings[0],
+    buyerId: mockUsers[0].id,
+    buyer: mockUsers[0],
+    price: 3150,
+    quantity: 50,
+    message: 'Interested in 50 tons for our feedlot. Can collect this week if price is right.',
+    status: 'pending',
+    expiresAt: new Date('2024-01-25'),
+    deliveryAddress: 'Johannesburg, Gauteng',
+    deliveryDate: new Date('2024-01-22'),
+    transportRequired: true,
+    counterOffer: undefined,
+    negotiationHistory: [
+      {
+        action: 'offer',
+        price: 3150,
+        quantity: 50,
+        message: 'Interested in 50 tons for our feedlot. Can collect this week if price is right.',
+        timestamp: new Date('2024-01-15'),
+        userId: mockUsers[0].id
+      }
+    ],
+    createdAt: new Date('2024-01-15'),
+    updatedAt: new Date('2024-01-15')
+  },
+  {
+    id: generateId('offer'),
+    listingId: mockListings[0].id,
+    listing: mockListings[0],
+    buyerId: generateId('user'),
+    buyer: {
+      ...mockUsers[0],
+      id: generateId('user'),
+      name: 'Export Company XYZ',
+      company: 'Export XYZ Ltd'
+    },
+    price: 3100,
+    quantity: 100,
+    message: 'Bulk order for export. Need full quantity at competitive price.',
+    status: 'pending',
+    expiresAt: new Date('2024-01-28'),
+    deliveryAddress: 'Durban, KwaZulu-Natal',
+    deliveryDate: new Date('2024-01-25'),
+    transportRequired: true,
+    counterOffer: undefined,
+    negotiationHistory: [
+      {
+        action: 'offer',
+        price: 3100,
+        quantity: 100,
+        message: 'Bulk order for export. Need full quantity at competitive price.',
+        timestamp: new Date('2024-01-16'),
+        userId: generateId('user')
+      }
+    ],
+    createdAt: new Date('2024-01-16'),
+    updatedAt: new Date('2024-01-16')
+  }
+]
+
+// Enhanced Deal Data with Financial Tracking
+export const mockDeals: Deal[] = [
+  {
+    id: generateId('deal'),
+    offerId: mockOffers[0].id,
+    offer: mockOffers[0],
+    buyerId: mockUsers[0].id,
+    buyer: mockUsers[0],
+    sellerId: mockUsers[1].id,
+    seller: mockUsers[1],
+    finalPrice: 3150,
+    finalQuantity: 50,
+    status: 'confirmed',
+    paymentStatus: 'pending',
+    deliveryStatus: 'pending',
+    deliveryDate: new Date('2024-01-22'),
+    platformFee: 50, // R1/ton
+    totalAmount: 157800, // (3150 * 50) + 50
+    paymentMethod: 'bank_transfer',
+    paymentReference: undefined,
+    invoiceGenerated: false,
+    contractSigned: false,
+    transportRequestId: undefined,
+    transportCost: undefined,
+    transportProvider: undefined,
+    createdAt: new Date('2024-01-17'),
+    updatedAt: new Date('2024-01-17')
+  }
+]
+
+// Enhanced Transport Request Data with Auto-quotes
+export const mockTransportRequests: TransportRequest[] = [
+  {
+    id: generateId('transport'),
+    dealId: mockDeals[0].id,
+    deal: mockDeals[0],
+    listingId: mockListings[0].id,
+    listing: mockListings[0],
+    requesterId: mockUsers[0].id,
+    requester: mockUsers[0],
+    pickupLocation: 'Free State',
+    deliveryLocation: 'Johannesburg, Gauteng',
+    quantity: 50,
+    unit: 'ton',
+    preferredDate: new Date('2024-01-22'),
+    budget: 3000,
+    status: 'open',
+    productType: 'Yellow Maize',
+    specialRequirements: 'Covered transport, no rain damage',
+    contactPhone: '+27 82 123 4567',
+    urgent: false,
+    autoQuote: {
+      lowEstimate: 2800,
+      mediumEstimate: 3200,
+      highEstimate: 3600,
+      calculation: {
+        distance: 400,
+        fuelCost: 1200,
+        laborCost: 800,
+        overhead: 1200
+      }
+    },
+    platformFee: 300,
+    createdAt: new Date('2024-01-17'),
+    updatedAt: new Date('2024-01-17')
+  },
+  {
+    id: generateId('transport'),
+    requesterId: mockUsers[1].id,
+    requester: mockUsers[1],
+    pickupLocation: 'Free State',
+    deliveryLocation: 'Cape Town, Western Cape',
+    quantity: 25,
+    unit: 'ton',
+    preferredDate: new Date('2024-01-25'),
+    budget: 2500,
+    status: 'open',
+    productType: 'White Maize',
+    specialRequirements: 'Refrigerated transport if possible',
+    contactPhone: '+27 82 234 5678',
+    urgent: false,
+    autoQuote: {
+      lowEstimate: 3200,
+      mediumEstimate: 3800,
+      highEstimate: 4400,
+      calculation: {
+        distance: 1200,
+        fuelCost: 3600,
+        laborCost: 1200,
+        overhead: 2000
+      }
+    },
+    platformFee: 300,
+    createdAt: new Date('2024-01-18'),
+    updatedAt: new Date('2024-01-18')
+  }
+]
+
+// Enhanced Transport Quote Data with Breakdown
+export const mockTransportQuotes: TransportQuote[] = [
+  {
+    id: generateId('quote'),
+    transportRequestId: mockTransportRequests[0].id,
+    transportRequest: mockTransportRequests[0],
+    transporterId: mockUsers[2].id,
+    transporter: mockUsers[2],
+    price: 3200,
+    estimatedDays: 2,
+    message: 'Available for immediate pickup. Covered transport with GPS tracking.',
+    status: 'pending',
+    vehicleType: 'Covered Truck',
+    insurance: 'Full Coverage',
+    availableDate: new Date('2024-01-20'),
+    breakdown: {
+      basePrice: 2000,
+      fuelSurcharge: 800,
+      tollFees: 200,
+      insurance: 200,
+      total: 3200
+    },
+    platformFee: 150,
+    createdAt: new Date('2024-01-18'),
+    updatedAt: new Date('2024-01-18')
+  },
+  {
+    id: generateId('quote'),
+    transportRequestId: mockTransportRequests[0].id,
+    transportRequest: mockTransportRequests[0],
+    transporterId: generateId('user'),
+    transporter: {
+      ...mockUsers[2],
+      id: generateId('user'),
+      name: 'Fast Transport Co',
+      company: 'Fast Transport Services'
+    },
+    price: 3500,
+    estimatedDays: 1,
+    message: 'Express delivery service. Available tomorrow.',
+    status: 'pending',
+    vehicleType: 'Express Truck',
+    insurance: 'Premium Coverage',
+    availableDate: new Date('2024-01-19'),
+    breakdown: {
+      basePrice: 2500,
+      fuelSurcharge: 700,
+      tollFees: 200,
+      insurance: 100,
+      total: 3500
+    },
+    platformFee: 150,
+    createdAt: new Date('2024-01-18'),
+    updatedAt: new Date('2024-01-18')
+  }
+]
+
+// New: Backload Listings
+export const mockBackloadListings: BackloadListing[] = [
+  {
+    id: generateId('backload'),
+    transporterId: mockUsers[2].id,
+    transporter: mockUsers[2],
+    route: 'Johannesburg → Cape Town',
+    pickupLocation: 'Johannesburg, Gauteng',
+    deliveryLocation: 'Cape Town, Western Cape',
+    availableDate: new Date('2024-01-20'),
+    capacity: 20,
+    unit: 'ton',
+    pricePerKm: 2.80,
+    totalPrice: 3360, // 1200km * 2.80
+    status: 'active',
+    vehicleDetails: {
+      type: 'Covered Truck',
+      capacity: 20,
+      refrigeration: false,
+      specialEquipment: ['GPS Tracking', 'Load Straps']
+    },
+    restrictions: ['No hazardous materials', 'Max height 2.5m'],
+    createdAt: new Date('2024-01-18'),
+    updatedAt: new Date('2024-01-18')
+  }
+]
+
+// New: Invoice Data
+export const mockInvoices: Invoice[] = [
+  {
+    id: generateId('invoice'),
+    dealId: mockDeals[0].id,
+    deal: mockDeals[0],
+    buyerId: mockUsers[0].id,
+    buyer: mockUsers[0],
+    sellerId: mockUsers[1].id,
+    seller: mockUsers[1],
+    amount: 157500, // 3150 * 50
+    platformFee: 50, // R1/ton
+    totalAmount: 157800,
+    status: 'sent',
+    dueDate: new Date('2024-01-24'),
+    paidAt: undefined,
+    paymentReference: undefined,
+    items: [
+      {
+        description: 'Yellow Maize - Grade A',
+        quantity: 50,
+        unitPrice: 3150,
+        total: 157500
+      }
+    ],
+    createdAt: new Date('2024-01-17'),
+    updatedAt: new Date('2024-01-17')
+  }
+]
+
+// New: Contract Data
+export const mockContracts: Contract[] = [
+  {
+    id: generateId('contract'),
+    dealId: mockDeals[0].id,
+    deal: mockDeals[0],
+    type: 'sales_agreement',
+    status: 'pending',
+    parties: [
+      {
+        userId: mockUsers[0].id,
+        user: mockUsers[0],
+        role: 'buyer',
+        signedAt: undefined,
+        signature: undefined
+      },
+      {
+        userId: mockUsers[1].id,
+        user: mockUsers[1],
+        role: 'seller',
+        signedAt: undefined,
+        signature: undefined
+      }
+    ],
+    terms: 'Standard sales agreement for agricultural products. Payment within 7 days. Delivery ex-farm.',
+    effectiveDate: new Date('2024-01-17'),
+    expiryDate: new Date('2024-02-17'),
+    createdAt: new Date('2024-01-17'),
+    updatedAt: new Date('2024-01-17')
+  }
+]
+
+// Enhanced Notification Data
+export const mockNotifications: Notification[] = [
+  {
+    id: generateId('notification'),
+    userId: mockUsers[0].id,
+    title: 'New Offer Received',
+    message: 'You have received a new offer for your Maize listing',
+    type: 'offer',
+    isRead: false,
+    relatedId: mockOffers[0].id,
+    relatedType: 'offer',
+    priority: 'medium',
+    actionRequired: true,
+    actionUrl: `/listings/${mockListings[0].id}`,
+    expiresAt: new Date('2024-01-25'),
+    createdAt: new Date('2024-01-15'),
+  },
+  {
+    id: generateId('notification'),
+    userId: mockUsers[1].id,
+    title: 'Transport Quote Available',
+    message: '3 transport quotes received for your request',
+    type: 'transport',
+    isRead: false,
+    relatedId: mockTransportRequests[0].id,
+    relatedType: 'transport',
+    priority: 'high',
+    actionRequired: true,
+    actionUrl: `/transport/${mockTransportRequests[0].id}`,
+    expiresAt: new Date('2024-01-25'),
+    createdAt: new Date('2024-01-18'),
+  }
+]
+
+// New: Market Data
+export const mockMarketData: MarketData[] = [
+  {
+    id: generateId('market'),
+    productType: 'Yellow Maize',
+    location: 'Free State',
+    date: new Date('2024-01-15'),
+    averagePrice: 3250,
+    totalVolume: 500,
+    totalTransactions: 8,
+    priceChange: 150,
+    priceChangePercent: 4.8,
+    marketTrend: 'rising',
+    createdAt: new Date('2024-01-15')
+  },
+  {
+    id: generateId('market'),
+    productType: 'White Maize',
+    location: 'Free State',
+    date: new Date('2024-01-15'),
+    averagePrice: 3750,
+    totalVolume: 200,
+    totalTransactions: 3,
+    priceChange: -100,
+    priceChangePercent: -2.6,
+    marketTrend: 'falling',
+    createdAt: new Date('2024-01-15')
+  }
+]
+
+// New: System Metrics
+export const mockSystemMetrics: SystemMetrics[] = [
+  {
+    id: generateId('metric'),
+    timestamp: new Date('2024-01-15'),
+    activeUsers: 1247,
+    totalTransactions: 89,
+    platformRevenue: 45230,
+    systemUptime: 99.8,
+    errorRate: 0.2,
+    responseTime: 245,
+    createdAt: new Date('2024-01-15')
+  }
+]
+
+// Helper Functions
+export const getUserByEmail = (email: string): User | undefined => {
+  return mockUsers.find(user => user.email === email)
+}
+
+export const authenticateUser = (email: string, password: string): User | null => {
+  const user = getUserByEmail(email)
+  // In real app, verify password hash
+  return user || null
+}
+
+export const createUser = (userData: Partial<User>): User => {
+  const newUser: User = {
+    id: generateId('user'),
+    email: userData.email!,
+    name: userData.name!,
+    role: userData.role!,
+    company: userData.company,
+    location: userData.location!,
+    phone: userData.phone,
+    avatar: userData.avatar,
+    isVerified: false,
+    subscriptionStatus: 'pending',
+    subscriptionExpiry: undefined,
+    ficaStatus: 'pending',
+    ficaDocuments: {},
+    ficaVerifiedAt: undefined,
+    rating: 0,
+    totalDeals: 0,
+    totalTransactions: 0,
+    reputationScore: 0,
+    businessType: userData.businessType || 'individual',
+    taxNumber: userData.taxNumber,
+    vatNumber: userData.vatNumber,
+    bankDetails: userData.bankDetails,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  }
+  
+  mockUsers.push(newUser)
+  return newUser
+}
+
+export const updateUser = (id: string, updates: Partial<User>): User | null => {
+  const userIndex = mockUsers.findIndex(user => user.id === id)
+  if (userIndex === -1) return null
+  
+  mockUsers[userIndex] = { ...mockUsers[userIndex], ...updates, updatedAt: new Date() }
+  return mockUsers[userIndex]
+}
+
+export const deleteUser = (id: string): boolean => {
+  const userIndex = mockUsers.findIndex(user => user.id === id)
+  if (userIndex === -1) return false
+  
+  mockUsers.splice(userIndex, 1)
+  return true
+}
+
+export const getUserById = (id: string): User | undefined => {
+  return mockUsers.find(user => user.id === id)
+}
+
+export const getListingById = (id: string): Listing | undefined => {
+  return mockListings.find(listing => listing.id === id)
+}
+
+export const getOffersByListingId = (listingId: string): Offer[] => {
+  return mockOffers.filter(offer => offer.listingId === listingId)
+}
+
+export const getOffersByUserId = (userId: string): Offer[] => {
+  return mockOffers.filter(offer => offer.buyerId === userId)
+}
+
+export const getListingsBySellerId = (sellerId: string): Listing[] => {
+  return mockListings.filter(listing => listing.sellerId === sellerId)
+}
+
+export const getDealsByUserId = (userId: string): Deal[] => {
+  return mockDeals.filter(deal => deal.buyerId === userId || deal.sellerId === userId)
+}
+
+export const getNotificationsByUserId = (userId: string): Notification[] => {
+  return mockNotifications.filter(notification => notification.userId === userId)
+}
+
+// Dashboard Metrics Data
+export const mockDashboardMetrics = {
+  totalUsers: mockUsers.length,
+  totalListings: mockListings.length,
+  totalDeals: mockDeals.length,
+  totalRevenue: mockDeals.reduce((sum, deal) => sum + (deal.finalPrice * deal.finalQuantity), 0),
+  activeListings: mockListings.filter(l => l.isActive).length,
+  pendingOffers: mockOffers.filter(o => o.status === 'pending').length,
+  openTransportRequests: mockTransportRequests.filter(t => t.status === 'open').length,
+  monthlyGrowth: 15.5,
+  topCategories: [
+    { category: 'grain', count: 3, revenue: 2500000 },
+    { category: 'feed', count: 2, revenue: 1800000 },
+    { category: 'seed', count: 1, revenue: 800000 }
+  ],
+  recentActivity: [
+    { type: 'new_listing', user: mockUsers[1], product: 'Yellow Maize', time: '2 hours ago' },
+    { type: 'offer_accepted', user: mockUsers[0], product: 'Yellow Maize', time: '4 hours ago' },
+    { type: 'transport_quote', user: mockUsers[2], product: 'Yellow Maize', time: '6 hours ago' }
+  ]
+}
+
+// Market Depth Data
+export const mockMarketDepth = {
+  maize: {
+    buyOrders: [
+      { price: 4000, quantity: 100, total: 400000 },
+      { price: 4100, quantity: 150, total: 615000 },
+      { price: 4200, quantity: 200, total: 840000 }
+    ],
+    sellOrders: [
+      { price: 4200, quantity: 500, total: 2100000 },
+      { price: 4300, quantity: 300, total: 1290000 },
+      { price: 4400, quantity: 100, total: 440000 }
+    ]
+  },
+  wheat: {
+    buyOrders: [
+      { price: 5600, quantity: 80, total: 448000 },
+      { price: 5700, quantity: 120, total: 684000 },
+      { price: 5800, quantity: 100, total: 580000 }
+    ],
+    sellOrders: [
+      { price: 5800, quantity: 300, total: 1740000 },
+      { price: 5900, quantity: 200, total: 1180000 },
+      { price: 6000, quantity: 150, total: 900000 }
+    ]
+  }
+}
+
+export const getTransportRequestsByUserId = (userId: string): TransportRequest[] => {
+  return mockTransportRequests.filter(request => request.requesterId === userId)
+}
+
+export const getTransportQuotesByTransporterId = (transporterId: string): TransportQuote[] => {
+  return mockTransportQuotes.filter(quote => quote.transporterId === transporterId)
+}
+
+export const getListingsByCategory = (category: string): Listing[] => {
+  return mockListings.filter(listing => listing.product.category === category)
+}
+
+export const getListingsByLocation = (location: string): Listing[] => {
+  return mockListings.filter(listing => 
+    listing.location.toLowerCase().includes(location.toLowerCase())
+  )
+}
+
