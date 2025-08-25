@@ -132,14 +132,35 @@ const Navigation: React.FC = () => {
                         <BarChart3 className="w-4 h-4 mr-2" />
                         Dashboard
                       </Link>
-                      <Link href="/subscription" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
-                        <CreditCard className="w-4 h-4 mr-2" />
-                        Subscription
-                      </Link>
-                      <Link href="/fica" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
-                        <ShieldCheck className="w-4 h-4 mr-2" />
-                        FICA Verification
-                      </Link>
+                      <div className="py-1">
+                        <Link href="/subscription" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          <CreditCard className="w-4 h-4 mr-3" />
+                          Subscription
+                        </Link>
+                        <Link href="/fica" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          <ShieldCheck className="w-4 h-4 mr-3" />
+                          FICA Verification
+                        </Link>
+                        {currentUser.role === 'seller' && (
+                          <Link href="/seller/dashboard" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <Package className="w-4 h-4 mr-3" />
+                            Seller Dashboard
+                          </Link>
+                        )}
+                        {currentUser.role === 'buyer' && (
+                          <Link href="/buyer/dashboard" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <ShoppingCart className="w-4 h-4 mr-3" />
+                            Buyer Dashboard
+                          </Link>
+                        )}
+                        {currentUser.role === 'transporter' && (
+                          <Link href="/transport" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            <Truck className="w-4 h-4 mr-3" />
+                            Transport Dashboard
+                          </Link>
+                        )}
+                        <div className="border-t border-gray-100 my-1"></div>
+                      </div>
                       <Link href="/profile" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
                         <User className="w-4 h-4 mr-2" />
                         Profile

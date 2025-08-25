@@ -361,98 +361,118 @@ export const mockListings: Listing[] = [
   }
 ]
 
-// Enhanced Offer Data with Negotiation History
+// Mock Offers
 export const mockOffers: Offer[] = [
   {
-    id: generateId('offer'),
-    listingId: mockListings[0].id,
-    listing: mockListings[0],
-    buyerId: mockUsers[0].id,
-    buyer: mockUsers[0],
-    price: 3150,
+    id: 'offer-1',
+    listingId: 'listing-1',
+    buyerId: 'user-1',
+    sellerId: 'user-2',
+    price: 2800,
     quantity: 50,
-    message: 'Interested in 50 tons for our feedlot. Can collect this week if price is right.',
+    deliveryType: 'delivered',
+    deliveryAddress: '123 Feedlot Road, Johannesburg, Gauteng',
+    message: 'Interested in your maize. Can you deliver to our feedlot?',
     status: 'pending',
-    expiresAt: new Date('2024-01-25'),
-    deliveryAddress: 'Johannesburg, Gauteng',
-    deliveryDate: new Date('2024-01-22'),
-    transportRequired: true,
-    counterOffer: undefined,
-    negotiationHistory: [
-      {
-        action: 'offer',
-        price: 3150,
-        quantity: 50,
-        message: 'Interested in 50 tons for our feedlot. Can collect this week if price is right.',
-        timestamp: new Date('2024-01-15'),
-        userId: mockUsers[0].id
-      }
-    ],
-    createdAt: new Date('2024-01-15'),
-    updatedAt: new Date('2024-01-15')
+    createdAt: new Date('2024-01-15T10:00:00Z'),
+    updatedAt: new Date('2024-01-15T10:00:00Z'),
+    expiresAt: new Date('2024-01-22T10:00:00Z'),
+    isNegotiable: true,
+    terms: 'Payment within 7 days of delivery'
   },
   {
-    id: generateId('offer'),
-    listingId: mockListings[0].id,
-    listing: mockListings[0],
-    buyerId: generateId('user'),
-    buyer: {
-      ...mockUsers[0],
-      id: generateId('user'),
-      name: 'Export Company XYZ',
-      company: 'Export XYZ Ltd'
-    },
-    price: 3100,
+    id: 'offer-2',
+    listingId: 'listing-2',
+    buyerId: 'user-3',
+    sellerId: 'user-1',
+    price: 3200,
+    quantity: 25,
+    deliveryType: 'ex-farm',
+    message: 'Good price for quality feed. Will collect from farm.',
+    status: 'accepted',
+    createdAt: new Date('2024-01-14T14:30:00Z'),
+    updatedAt: new Date('2024-01-16T09:15:00Z'),
+    expiresAt: new Date('2024-01-21T14:30:00Z'),
+    isNegotiable: false,
+    terms: 'Cash on collection'
+  },
+  {
+    id: 'offer-3',
+    listingId: 'listing-3',
+    buyerId: 'user-2',
+    sellerId: 'user-3',
+    price: 1800,
     quantity: 100,
-    message: 'Bulk order for export. Need full quantity at competitive price.',
-    status: 'pending',
-    expiresAt: new Date('2024-01-28'),
-    deliveryAddress: 'Durban, KwaZulu-Natal',
-    deliveryDate: new Date('2024-01-25'),
-    transportRequired: true,
-    counterOffer: undefined,
-    negotiationHistory: [
-      {
-        action: 'offer',
-        price: 3100,
-        quantity: 100,
-        message: 'Bulk order for export. Need full quantity at competitive price.',
-        timestamp: new Date('2024-01-16'),
-        userId: generateId('user')
-      }
-    ],
-    createdAt: new Date('2024-01-16'),
-    updatedAt: new Date('2024-01-16')
+    deliveryType: 'delivered',
+    deliveryAddress: '456 Farm Street, Cape Town, Western Cape',
+    message: 'Need seeds for spring planting. Can you deliver?',
+    status: 'counter-offered',
+    createdAt: new Date('2024-01-13T16:45:00Z'),
+    updatedAt: new Date('2024-01-15T11:20:00Z'),
+    expiresAt: new Date('2024-01-20T16:45:00Z'),
+    counterOffer: {
+      price: 1950,
+      message: 'Price increased due to delivery costs. Still competitive.',
+      createdAt: new Date('2024-01-15T11:20:00Z')
+    },
+    isNegotiable: true,
+    terms: 'Payment before delivery'
   }
 ]
 
-// Enhanced Deal Data with Financial Tracking
+// Mock Chat Messages
+export const mockChatMessages: ChatMessage[] = [
+  {
+    id: 'chat-1',
+    offerId: 'offer-1',
+    senderId: 'user-1',
+    receiverId: 'user-2',
+    message: 'Hi, I\'m interested in your maize listing. Can you deliver to Johannesburg?',
+    messageType: 'offer',
+    createdAt: new Date('2024-01-15T10:00:00Z'),
+    isRead: true
+  },
+  {
+    id: 'chat-2',
+    offerId: 'offer-1',
+    senderId: 'user-2',
+    receiverId: 'user-1',
+    message: 'Yes, I can deliver. What quantity are you looking for?',
+    messageType: 'text',
+    createdAt: new Date('2024-01-15T10:05:00Z'),
+    isRead: true
+  },
+  {
+    id: 'chat-3',
+    offerId: 'offer-1',
+    senderId: 'user-1',
+    receiverId: 'user-2',
+    message: 'I need 50 tons. What\'s your best price including delivery?',
+    messageType: 'text',
+    createdAt: new Date('2024-01-15T10:10:00Z'),
+    isRead: false
+  }
+]
+
+// Mock Deals
 export const mockDeals: Deal[] = [
   {
-    id: generateId('deal'),
-    offerId: mockOffers[0].id,
-    offer: mockOffers[0],
-    buyerId: mockUsers[0].id,
-    buyer: mockUsers[0],
-    sellerId: mockUsers[1].id,
-    seller: mockUsers[1],
-    finalPrice: 3150,
-    finalQuantity: 50,
+    id: 'deal-1',
+    offerId: 'offer-2',
+    listingId: 'listing-2',
+    buyerId: 'user-3',
+    sellerId: 'user-1',
+    finalPrice: 3200,
+    quantity: 25,
+    deliveryType: 'ex-farm',
     status: 'confirmed',
+    createdAt: new Date('2024-01-16T09:15:00Z'),
+    updatedAt: new Date('2024-01-16T09:15:00Z'),
+    deliveryDate: new Date('2024-01-20T10:00:00Z'),
     paymentStatus: 'pending',
-    deliveryStatus: 'pending',
-    deliveryDate: new Date('2024-01-22'),
-    platformFee: 50, // R1/ton
-    totalAmount: 157800, // (3150 * 50) + 50
-    paymentMethod: 'bank_transfer',
-    paymentReference: undefined,
-    invoiceGenerated: false,
-    contractSigned: false,
-    transportRequestId: undefined,
-    transportCost: undefined,
-    transportProvider: undefined,
-    createdAt: new Date('2024-01-17'),
-    updatedAt: new Date('2024-01-17')
+    platformFee: 25, // R1/ton * 25 tons
+    totalAmount: 3225,
+    terms: 'Cash on collection, quality inspection before payment'
   }
 ]
 
@@ -608,65 +628,66 @@ export const mockBackloadListings: BackloadListing[] = [
   }
 ]
 
-// New: Invoice Data
+// Mock Invoices
 export const mockInvoices: Invoice[] = [
   {
-    id: generateId('invoice'),
-    dealId: mockDeals[0].id,
-    deal: mockDeals[0],
-    buyerId: mockUsers[0].id,
-    buyer: mockUsers[0],
-    sellerId: mockUsers[1].id,
-    seller: mockUsers[1],
-    amount: 157500, // 3150 * 50
-    platformFee: 50, // R1/ton
-    totalAmount: 157800,
-    status: 'sent',
-    dueDate: new Date('2024-01-24'),
-    paidAt: undefined,
-    paymentReference: undefined,
+    id: 'invoice-1',
+    dealId: 'deal-1',
+    invoiceNumber: 'INV-2024-001',
+    buyerId: 'user-3',
+    sellerId: 'user-1',
     items: [
       {
-        description: 'Yellow Maize - Grade A',
-        quantity: 50,
-        unitPrice: 3150,
-        total: 157500
+        description: 'Premium Animal Feed',
+        quantity: 25,
+        unitPrice: 3200,
+        total: 80000
       }
     ],
-    createdAt: new Date('2024-01-17'),
-    updatedAt: new Date('2024-01-17')
+    subtotal: 80000,
+    platformFee: 25,
+    vat: 14000,
+    total: 94025,
+    status: 'sent',
+    dueDate: new Date('2024-01-23T00:00:00Z'),
+    createdAt: new Date('2024-01-16T09:30:00Z'),
+    updatedAt: new Date('2024-01-16T09:30:00Z'),
+    notes: 'Payment due within 7 days'
   }
 ]
 
-// New: Contract Data
+// Mock Contracts
 export const mockContracts: Contract[] = [
   {
-    id: generateId('contract'),
-    dealId: mockDeals[0].id,
-    deal: mockDeals[0],
-    type: 'sales_agreement',
-    status: 'pending',
-    parties: [
+    id: 'contract-1',
+    dealId: 'deal-1',
+    contractNumber: 'CON-2024-001',
+    buyerId: 'user-3',
+    sellerId: 'user-1',
+    type: 'sale',
+    terms: 'Standard agricultural product sale agreement',
+    conditions: [
+      'Quality inspection before payment',
+      'Cash on collection',
+      'No returns unless quality issues',
+      'Platform fee of R1/ton applies'
+    ],
+    signatures: [
       {
-        userId: mockUsers[0].id,
-        user: mockUsers[0],
-        role: 'buyer',
-        signedAt: undefined,
-        signature: undefined
+        userId: 'user-1',
+        signedAt: new Date('2024-01-16T09:45:00Z'),
+        ipAddress: '192.168.1.100'
       },
       {
-        userId: mockUsers[1].id,
-        user: mockUsers[1],
-        role: 'seller',
-        signedAt: undefined,
-        signature: undefined
+        userId: 'user-3',
+        signedAt: new Date('2024-01-16T10:00:00Z'),
+        ipAddress: '192.168.1.101'
       }
     ],
-    terms: 'Standard sales agreement for agricultural products. Payment within 7 days. Delivery ex-farm.',
-    effectiveDate: new Date('2024-01-17'),
-    expiryDate: new Date('2024-02-17'),
-    createdAt: new Date('2024-01-17'),
-    updatedAt: new Date('2024-01-17')
+    status: 'signed',
+    createdAt: new Date('2024-01-16T09:30:00Z'),
+    updatedAt: new Date('2024-01-16T10:00:00Z'),
+    effectiveDate: new Date('2024-01-16T10:00:00Z')
   }
 ]
 

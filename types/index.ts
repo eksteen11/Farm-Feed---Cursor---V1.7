@@ -119,34 +119,37 @@ export interface Listing {
 export interface Offer {
   id: string
   listingId: string
-  listing: Listing
   buyerId: string
-  buyer: User
+  sellerId: string
   price: number
   quantity: number
-  message?: string
-  status: 'pending' | 'accepted' | 'rejected' | 'expired' | 'cancelled' | 'countered'
-  expiresAt: Date
-  // Enhanced Fields
+  deliveryType: 'ex-farm' | 'delivered'
   deliveryAddress?: string
-  deliveryDate?: Date
-  transportRequired: boolean
-  counterOffer?: {
-    price: number
-    quantity: number
-    message: string
-    expiresAt: Date
-  }
-  negotiationHistory: {
-    action: 'offer' | 'counter' | 'accept' | 'reject'
-    price: number
-    quantity: number
-    message: string
-    timestamp: Date
-    userId: string
-  }[]
+  message?: string
+  status: 'pending' | 'accepted' | 'rejected' | 'counter-offered' | 'expired'
   createdAt: Date
   updatedAt: Date
+  expiresAt: Date
+  counterOffer?: {
+    price: number
+    message?: string
+    createdAt: Date
+  }
+  transportRequestId?: string
+  isNegotiable: boolean
+  terms?: string
+}
+
+export interface ChatMessage {
+  id: string
+  offerId: string
+  senderId: string
+  receiverId: string
+  message: string
+  messageType: 'text' | 'offer' | 'counter-offer' | 'acceptance' | 'rejection'
+  createdAt: Date
+  isRead: boolean
+  attachments?: string[]
 }
 
 export interface Negotiation {
@@ -173,30 +176,24 @@ export interface Message {
 export interface Deal {
   id: string
   offerId: string
-  offer: Offer
+  listingId: string
   buyerId: string
-  buyer: User
   sellerId: string
-  seller: User
+  transporterId?: string
   finalPrice: number
-  finalQuantity: number
-  status: 'pending' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled'
-  paymentStatus: 'pending' | 'paid' | 'refunded'
-  deliveryStatus: 'pending' | 'arranged' | 'in_transit' | 'delivered'
-  deliveryDate?: Date
-  // Enhanced Financial Fields
-  platformFee: number // R1/ton
-  totalAmount: number
-  paymentMethod: 'bank_transfer' | 'cash' | 'other'
-  paymentReference?: string
-  invoiceGenerated: boolean
-  contractSigned: boolean
-  // Transport Integration
-  transportRequestId?: string
-  transportCost?: number
-  transportProvider?: User
+  quantity: number
+  deliveryType: 'ex-farm' | 'delivered'
+  deliveryAddress?: string
+  status: 'pending' | 'confirmed' | 'in-transit' | 'delivered' | 'completed' | 'cancelled'
   createdAt: Date
   updatedAt: Date
+  deliveryDate?: Date
+  paymentStatus: 'pending' | 'paid' | 'partial' | 'overdue'
+  platformFee: number // R1/ton
+  transportFee?: number
+  totalAmount: number
+  terms: string
+  specialConditions?: string
 }
 
 // New: Enhanced Transport Request
@@ -297,47 +294,51 @@ export interface BackloadListing {
 export interface Invoice {
   id: string
   dealId: string
-  deal: Deal
+  invoiceNumber: string
   buyerId: string
-  buyer: User
   sellerId: string
-  seller: User
-  amount: number
-  platformFee: number
-  totalAmount: number
-  status: 'draft' | 'sent' | 'paid' | 'overdue' | 'cancelled'
-  dueDate: Date
-  paidAt?: Date
-  paymentReference?: string
+  transporterId?: string
   items: {
     description: string
     quantity: number
     unitPrice: number
     total: number
   }[]
+  subtotal: number
+  platformFee: number
+  transportFee?: number
+  vat: number
+  total: number
+  status: 'draft' | 'sent' | 'paid' | 'overdue' | 'cancelled'
+  dueDate: Date
   createdAt: Date
   updatedAt: Date
+  paymentMethod?: string
+  notes?: string
 }
 
 // New: Contract System
 export interface Contract {
   id: string
   dealId: string
-  deal: Deal
-  type: 'sales_agreement' | 'transport_contract'
-  status: 'draft' | 'pending' | 'signed' | 'active' | 'completed'
-  parties: {
-    userId: string
-    user: User
-    role: 'buyer' | 'seller' | 'transporter'
-    signedAt?: Date
-    signature?: string
-  }[]
+  contractNumber: string
+  buyerId: string
+  sellerId: string
+  transporterId?: string
+  type: 'sale' | 'transport' | 'combined'
   terms: string
-  effectiveDate: Date
-  expiryDate?: Date
+  conditions: string[]
+  signatures: {
+    userId: string
+    signedAt: Date
+    ipAddress?: string
+  }[]
+  status: 'draft' | 'pending' | 'signed' | 'active' | 'completed' | 'cancelled'
   createdAt: Date
   updatedAt: Date
+  effectiveDate: Date
+  expiryDate?: Date
+  attachments?: string[]
 }
 
 // Enhanced Notification System
