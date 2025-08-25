@@ -16,7 +16,8 @@ import {
   User,
   MapPin,
   Calendar,
-  Star
+  Star,
+  Settings
 } from 'lucide-react'
 import { mockOffers, mockChatMessages, mockDeals, mockInvoices } from '@/lib/mockData'
 import { formatDate } from '@/lib/utils'
@@ -386,6 +387,29 @@ export default function SellerDashboardPage() {
             ))}
           </nav>
         </div>
+
+        {/* Quick Actions */}
+        <Card>
+          <CardTitle className="p-6 pb-4">Quick Actions</CardTitle>
+          <CardContent className="p-6 pt-0">
+            <div className="space-y-3">
+              <Button 
+                variant="primary" 
+                leftIcon={<Package className="w-4 h-4" />}
+                onClick={() => router.push('/seller/create-listing')}
+                className="w-full"
+              >
+                Create New Listing
+              </Button>
+              <Button variant="secondary" leftIcon={<User className="w-4 h-4" />} className="w-full">
+                Update Profile
+              </Button>
+              <Button variant="secondary" leftIcon={<Settings className="w-4 h-4" />} className="w-full">
+                Account Settings
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Tab Content */}
         <div className="bg-white rounded-lg shadow-sm">

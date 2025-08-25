@@ -399,21 +399,19 @@ export const useStore = create<AppState>((set, get) => {
     }
   },
   
-  createListing: (listingData) => {
-    const { currentUser } = get()
-    if (!currentUser) return
-    
+  createListing: async (listingData: Omit<Listing, 'id' | 'createdAt' | 'updatedAt' | 'seller' | 'sellerId'>) => {
     const newListing: Listing = {
       ...listingData,
       id: generateId('listing'),
-      sellerId: currentUser.id,
-      seller: currentUser,
+      sellerId: get().currentUser!.id,
+      seller: get().currentUser!,
       createdAt: new Date(),
-      updatedAt: new Date(),
+      updatedAt: new Date()
     }
     
     mockListings.push(newListing)
     set({ listings: [...get().listings, newListing] })
+    return newListing
   },
   
   updateListing: (id, updates) => {
@@ -455,21 +453,16 @@ export const useStore = create<AppState>((set, get) => {
     }
   },
   
-  createOffer: (offerData) => {
+  createOffer: (offerData: Omit<Offer, 'id' | 'createdAt' | 'updatedAt'>) => {
     const { currentUser } = get()
     if (!currentUser) return
-    
-    const listing = getListingById(offerData.listingId)
-    if (!listing) return
     
     const newOffer: Offer = {
       ...offerData,
       id: generateId('offer'),
       buyerId: currentUser.id,
-      buyer: currentUser,
-      listing: listing,
       createdAt: new Date(),
-      updatedAt: new Date(),
+      updatedAt: new Date()
     }
     
     mockOffers.push(newOffer)
