@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { User, Listing, Offer, Deal, Notification, FilterOptions, TransportRequest, TransportQuote } from '@/types'
+import { User, Listing, Offer, Deal, Notification, FilterOptions, TransportRequest, TransportQuote, BackloadListing } from '@/types'
 import { 
   mockUsers, 
   mockListings, 
@@ -8,6 +8,7 @@ import {
   mockNotifications, 
   mockTransportRequests,
   mockTransportQuotes,
+  mockBackloadListings,
   mockDashboardMetrics,
   mockMarketDepth,
   authenticateUser,
@@ -39,6 +40,7 @@ interface AppState {
   notifications: Notification[]
   transportRequests: TransportRequest[]
   transportQuotes: TransportQuote[]
+  backloadListings: BackloadListing[]
   
   // UI state
   isLoading: boolean
@@ -135,6 +137,7 @@ export const useStore = create<AppState>((set, get) => {
     notifications: mockNotifications, // Initialize with mock data
     transportRequests: mockTransportRequests, // Initialize with mock data
     transportQuotes: mockTransportQuotes, // Initialize with mock data
+    backloadListings: mockBackloadListings, // Initialize with mock data
     isLoading: false,
     error: null,
     filters: {},

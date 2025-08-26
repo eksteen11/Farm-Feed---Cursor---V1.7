@@ -21,12 +21,12 @@ import { generateId } from './helpers'
 export const mockUsers: User[] = [
   {
     id: generateId('user'),
-    email: 'buyer@demo.com',
-    name: 'John Buyer',
+    email: 'farmer@demo.com',
+    name: 'Demo Farmer',
     role: 'buyer',
-    capabilities: ['buy', 'transport'], // Can buy and also handle transport
-    company: 'Demo Feedlot',
-    location: 'Johannesburg, Gauteng',
+    capabilities: ['sell', 'buy', 'transport'], // TRUE UNIFIED: Can do everything
+    company: 'Demo Mixed Farm',
+    location: 'Free State',
     phone: '+27 82 123 4567',
     avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
     isVerified: true,
@@ -61,7 +61,7 @@ export const mockUsers: User[] = [
     email: 'seller@demo.com',
     name: 'Sarah Johnson',
     role: 'seller',
-    capabilities: ['sell', 'buy'], // Can sell and also buy from others
+    capabilities: ['sell', 'buy', 'transport'], // TRUE UNIFIED: Can do everything
     company: 'Demo Maize Farm',
     location: 'Free State',
     phone: '+27 82 234 5678',
@@ -96,7 +96,7 @@ export const mockUsers: User[] = [
     email: 'transporter@demo.com',
     name: 'Mike Transport',
     role: 'transporter',
-    capabilities: ['transport', 'sell'], // Can transport and also sell backload services
+    capabilities: ['transport', 'sell', 'buy'], // TRUE UNIFIED: Can do everything
     company: 'Demo Transport Services',
     location: 'Cape Town, Western Cape',
     phone: '+27 82 345 6789',
@@ -633,7 +633,7 @@ export const mockTransportQuotes: TransportQuote[] = [
   }
 ]
 
-// New: Backload Listings
+// New: Backload Listings - Empty Truck Routes
 export const mockBackloadListings: BackloadListing[] = [
   {
     id: generateId('backload'),
@@ -657,6 +657,52 @@ export const mockBackloadListings: BackloadListing[] = [
     restrictions: ['No hazardous materials', 'Max height 2.5m'],
     createdAt: new Date('2024-01-18'),
     updatedAt: new Date('2024-01-18')
+  },
+  {
+    id: generateId('backload'),
+    transporterId: mockUsers[1].id, // Sarah Johnson (seller) also does transport
+    transporter: mockUsers[1],
+    route: 'Free State → Johannesburg',
+    pickupLocation: 'Free State',
+    deliveryLocation: 'Johannesburg, Gauteng',
+    availableDate: new Date('2024-01-21'),
+    capacity: 15,
+    unit: 'ton',
+    pricePerKm: 3.20,
+    totalPrice: 1280, // 400km * 3.20
+    status: 'active',
+    vehicleDetails: {
+      type: 'Flatbed Truck',
+      capacity: 15,
+      refrigeration: false,
+      specialEquipment: ['Load Straps', 'Tarpaulin']
+    },
+    restrictions: ['No liquids', 'Weather dependent'],
+    createdAt: new Date('2024-01-19'),
+    updatedAt: new Date('2024-01-19')
+  },
+  {
+    id: generateId('backload'),
+    transporterId: mockUsers[0].id, // Demo Farmer also does transport
+    transporter: mockUsers[0],
+    route: 'Johannesburg → Durban',
+    pickupLocation: 'Johannesburg, Gauteng',
+    deliveryLocation: 'Durban, KwaZulu-Natal',
+    availableDate: new Date('2024-01-22'),
+    capacity: 25,
+    unit: 'ton',
+    pricePerKm: 2.50,
+    totalPrice: 2500, // 1000km * 2.50
+    status: 'active',
+    vehicleDetails: {
+      type: 'Refrigerated Truck',
+      capacity: 25,
+      refrigeration: true,
+      specialEquipment: ['Temperature Control', 'GPS Tracking', 'Load Straps']
+    },
+    restrictions: ['Temperature sensitive goods only', 'No hazardous materials'],
+    createdAt: new Date('2024-01-20'),
+    updatedAt: new Date('2024-01-20')
   }
 ]
 
