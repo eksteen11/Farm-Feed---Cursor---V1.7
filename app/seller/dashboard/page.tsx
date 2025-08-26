@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useStore } from '@/store/useStore'
 import { Card, CardContent, CardTitle } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
+import OfferManagement from '@/components/offers/OfferManagement'
 import { 
   Package, 
   MessageCircle, 
@@ -19,7 +20,7 @@ import {
   Star,
   Settings
 } from 'lucide-react'
-import { mockOffers, mockChatMessages, mockDeals, mockInvoices } from '@/lib/mockData'
+import { mockChatMessages, mockInvoices, mockListings } from '@/lib/mockData'
 import { formatDate } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 
@@ -27,7 +28,8 @@ export default function SellerDashboardPage() {
   const { currentUser, isAuthenticated } = useStore()
   const router = useRouter()
   const [activeTab, setActiveTab] = useState('overview')
-
+  const { offers, deals, notifications, transportRequests } = useStore()
+  
   // Redirect if not authenticated or not a seller
   useEffect(() => {
     if (!isAuthenticated || !currentUser) {
@@ -44,11 +46,13 @@ export default function SellerDashboardPage() {
   if (!isAuthenticated || !currentUser || currentUser.role !== 'seller') {
     return null
   }
-
+  
   // Get seller-specific data
-  const sellerOffers = mockOffers.filter(offer => offer.sellerId === currentUser.id)
-  const sellerDeals = mockDeals.filter(deal => deal.sellerId === currentUser.id)
+  const sellerOffers = offers.filter(offer => offer.sellerId === currentUser.id)
+  const sellerDeals = deals.filter(deal => deal.sellerId === currentUser.id)
   const sellerInvoices = mockInvoices.filter(invoice => invoice.sellerId === currentUser.id)
+  
+
   
   // Get chat messages for seller
   const sellerChats = mockChatMessages.filter(msg => 
@@ -156,86 +160,11 @@ export default function SellerDashboardPage() {
   )
 
   const renderOffers = () => (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold">Incoming Offers</h2>
-        <Button variant="primary" leftIcon={<Eye className="w-4 h-4" />}>
-          View All Listings
-        </Button>
-      </div>
-
-      <div className="space-y-4">
-        {sellerOffers.map(offer => (
-          <Card key={offer.id}>
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center space-x-3 mb-3">
-                    <User className="w-5 h-5 text-gray-500" />
-                    <span className="font-medium">Buyer #{offer.buyerId}</span>
-                    <span className={`px-2 py-1 text-xs rounded-full ${
-                      offer.status === 'pending' ? 'bg-orange-100 text-orange-800' :
-                      offer.status === 'accepted' ? 'bg-green-100 text-green-800' :
-                      offer.status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'
-                    }`}>
-                      {offer.status}
-                    </span>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                    <div>
-                      <p className="text-sm text-gray-600">Price</p>
-                      <p className="font-semibold">R{offer.price.toLocaleString()}/ton</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600">Quantity</p>
-                      <p className="font-semibold">{offer.quantity} tons</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600">Delivery</p>
-                      <p className="font-semibold capitalize">{offer.deliveryType}</p>
-                    </div>
-                  </div>
-
-                  {offer.message && (
-                    <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-                      <p className="text-sm text-gray-700">{offer.message}</p>
-                    </div>
-                  )}
-
-                  <div className="flex items-center justify-between text-sm text-gray-500">
-                    <span>Received {formatDate(offer.createdAt)}</span>
-                    <span>Expires {formatDate(offer.expiresAt)}</span>
-                  </div>
-                </div>
-
-                <div className="flex flex-col space-y-2 ml-4">
-                  {offer.status === 'pending' && (
-                    <>
-                      <Button variant="primary" size="sm" leftIcon={<CheckCircle className="w-4 h-4" />}>
-                        Accept
-                      </Button>
-                      <Button variant="secondary" size="sm" leftIcon={<XCircle className="w-4 h-4" />}>
-                        Reject
-                      </Button>
-                      <Button variant="secondary" size="sm" leftIcon={<MessageCircle className="w-4 h-4" />}>
-                        Counter
-                      </Button>
-                    </>
-                  )}
-                  {offer.status === 'counter-offered' && offer.counterOffer && (
-                    <div className="text-sm">
-                      <p className="font-medium text-green-600">Counter: R{offer.counterOffer.price.toLocaleString()}</p>
-                      <p className="text-gray-600">{offer.counterOffer.message}</p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </div>
+    <OfferManagement
+      offers={sellerOffers}
+      listings={mockListings}
+      currentUser={currentUser}
+    />
   )
 
   const renderMessages = () => (

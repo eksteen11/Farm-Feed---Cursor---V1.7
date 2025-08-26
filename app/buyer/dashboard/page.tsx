@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useStore } from '@/store/useStore'
 import { Card, CardContent, CardTitle } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
+import BuyerOffers from '@/components/offers/BuyerOffers'
 import { 
   ShoppingCart, 
   MessageCircle, 
@@ -18,7 +19,7 @@ import {
   Calendar,
   Star
 } from 'lucide-react'
-import { mockOffers, mockTransportRequests } from '@/lib/mockData'
+import { mockListings } from '@/lib/mockData'
 import { formatDate } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 
@@ -27,6 +28,8 @@ export default function BuyerDashboardPage() {
   const router = useRouter()
   const [activeTab, setActiveTab] = useState('overview')
 
+  const { offers, transportRequests } = useStore()
+  
   // Redirect if not authenticated or not a buyer
   useEffect(() => {
     if (!isAuthenticated || !currentUser) {
@@ -43,10 +46,12 @@ export default function BuyerDashboardPage() {
   if (!isAuthenticated || !currentUser || currentUser.role !== 'buyer') {
     return null
   }
-
+  
   // Get buyer-specific data
-  const buyerOffers = mockOffers.filter(offer => offer.buyerId === currentUser.id)
-  const buyerTransportRequests = mockTransportRequests.filter(request => request.requesterId === currentUser.id)
+  const buyerOffers = offers.filter(offer => offer.buyerId === currentUser.id)
+  const buyerTransportRequests = transportRequests.filter(request => request.requesterId === currentUser.id)
+  
+
 
   const stats = {
     totalOffers: buyerOffers.length,
@@ -148,75 +153,11 @@ export default function BuyerDashboardPage() {
   )
 
   const renderOffers = () => (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h2 className="text-xl font-semibold">My Offers</h2>
-        <Button variant="primary" leftIcon={<Eye className="w-4 h-4" />}>
-          Browse Listings
-        </Button>
-      </div>
-
-      <div className="space-y-4">
-        {buyerOffers.map(offer => (
-          <Card key={offer.id}>
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center space-x-3 mb-3">
-                    <User className="w-5 h-5 text-gray-500" />
-                    <span className="font-medium">Listing #{offer.listingId}</span>
-                    <span className={`px-2 py-1 text-xs rounded-full ${
-                      offer.status === 'pending' ? 'bg-orange-100 text-orange-800' :
-                      offer.status === 'accepted' ? 'bg-green-100 text-green-800' :
-                      offer.status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'
-                    }`}>
-                      {offer.status}
-                    </span>
-                  </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                    <div>
-                      <p className="text-sm text-gray-600">Your Offer</p>
-                      <p className="font-semibold">R{offer.price.toLocaleString()}/ton</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600">Quantity</p>
-                      <p className="font-semibold">{offer.quantity} tons</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600">Delivery</p>
-                      <p className="font-semibold capitalize">{offer.deliveryType}</p>
-                    </div>
-                  </div>
-
-                  {offer.message && (
-                    <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-                      <p className="text-sm text-gray-700">{offer.message}</p>
-                    </div>
-                  )}
-
-                  <div className="flex items-center justify-between text-sm text-gray-500">
-                    <span>Sent {formatDate(offer.createdAt)}</span>
-                    <span>Expires {formatDate(offer.expiresAt)}</span>
-                  </div>
-                </div>
-
-                <div className="flex flex-col space-y-2 ml-4">
-                  <Button variant="secondary" size="sm" leftIcon={<MessageCircle className="w-4 h-4" />}>
-                    Chat
-                  </Button>
-                  {offer.status === 'pending' && (
-                    <Button variant="secondary" size="sm" leftIcon={<XCircle className="w-4 h-4" />}>
-                      Cancel
-                    </Button>
-                  )}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-    </div>
+    <BuyerOffers
+      offers={buyerOffers}
+      listings={mockListings}
+      currentUser={currentUser}
+    />
   )
 
   const renderTransport = () => (

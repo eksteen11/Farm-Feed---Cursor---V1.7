@@ -377,13 +377,13 @@ export const mockListings: Listing[] = [
   }
 ]
 
-// Mock Offers
+// Mock Offers - Updated with proper relationships to demo accounts
 export const mockOffers: Offer[] = [
   {
     id: 'offer-1',
-    listingId: 'listing-1',
-    buyerId: 'user-1',
-    sellerId: 'user-2',
+    listingId: mockListings[0].id, // Yellow Maize from seller@demo.com
+    buyerId: mockUsers[0].id, // buyer@demo.com
+    sellerId: mockUsers[1].id, // seller@demo.com
     price: 2800,
     quantity: 50,
     deliveryType: 'delivered',
@@ -398,9 +398,9 @@ export const mockOffers: Offer[] = [
   },
   {
     id: 'offer-2',
-    listingId: 'listing-2',
-    buyerId: 'user-3',
-    sellerId: 'user-1',
+    listingId: mockListings[1].id, // White Maize from seller@demo.com
+    buyerId: mockUsers[0].id, // buyer@demo.com
+    sellerId: mockUsers[1].id, // seller@demo.com
     price: 3200,
     quantity: 25,
     deliveryType: 'ex-farm',
@@ -414,9 +414,9 @@ export const mockOffers: Offer[] = [
   },
   {
     id: 'offer-3',
-    listingId: 'listing-3',
-    buyerId: 'user-2',
-    sellerId: 'user-3',
+    listingId: mockListings[0].id, // Yellow Maize from seller@demo.com
+    buyerId: mockUsers[2].id, // transporter@demo.com (also testing as buyer)
+    sellerId: mockUsers[1].id, // seller@demo.com
     price: 1800,
     quantity: 100,
     deliveryType: 'delivered',
@@ -436,13 +436,13 @@ export const mockOffers: Offer[] = [
   }
 ]
 
-// Mock Chat Messages
+// Mock Chat Messages - Updated with proper relationships to demo accounts
 export const mockChatMessages: ChatMessage[] = [
   {
     id: 'chat-1',
-    offerId: 'offer-1',
-    senderId: 'user-1',
-    receiverId: 'user-2',
+    offerId: mockOffers[0].id, // offer-1 (pending offer)
+    senderId: mockUsers[0].id, // buyer@demo.com
+    receiverId: mockUsers[1].id, // seller@demo.com
     message: 'Hi, I\'m interested in your maize listing. Can you deliver to Johannesburg?',
     messageType: 'offer',
     createdAt: new Date('2024-01-15T10:00:00Z'),
@@ -450,9 +450,9 @@ export const mockChatMessages: ChatMessage[] = [
   },
   {
     id: 'chat-2',
-    offerId: 'offer-1',
-    senderId: 'user-2',
-    receiverId: 'user-1',
+    offerId: mockOffers[0].id, // offer-1 (pending offer)
+    senderId: mockUsers[1].id, // seller@demo.com
+    receiverId: mockUsers[0].id, // buyer@demo.com
     message: 'Yes, I can deliver. What quantity are you looking for?',
     messageType: 'text',
     createdAt: new Date('2024-01-15T10:05:00Z'),
@@ -460,9 +460,9 @@ export const mockChatMessages: ChatMessage[] = [
   },
   {
     id: 'chat-3',
-    offerId: 'offer-1',
-    senderId: 'user-1',
-    receiverId: 'user-2',
+    offerId: mockOffers[0].id, // offer-1 (pending offer)
+    senderId: mockUsers[0].id, // buyer@demo.com
+    receiverId: mockUsers[1].id, // seller@demo.com
     message: 'I need 50 tons. What\'s your best price including delivery?',
     messageType: 'text',
     createdAt: new Date('2024-01-15T10:10:00Z'),
@@ -470,14 +470,14 @@ export const mockChatMessages: ChatMessage[] = [
   }
 ]
 
-// Mock Deals
+// Mock Deals - Updated with proper relationships to demo accounts
 export const mockDeals: Deal[] = [
   {
     id: 'deal-1',
-    offerId: 'offer-2',
-    listingId: 'listing-2',
-    buyerId: 'user-3',
-    sellerId: 'user-1',
+    offerId: mockOffers[1].id, // offer-2 (accepted offer)
+    listingId: mockListings[1].id, // White Maize listing
+    buyerId: mockUsers[0].id, // buyer@demo.com
+    sellerId: mockUsers[1].id, // seller@demo.com
     finalPrice: 3200,
     quantity: 25,
     deliveryType: 'ex-farm',
@@ -492,24 +492,24 @@ export const mockDeals: Deal[] = [
   }
 ]
 
-// Enhanced Transport Request Data with Auto-quotes
+// Enhanced Transport Request Data with Auto-quotes - Updated with proper relationships
 export const mockTransportRequests: TransportRequest[] = [
   {
     id: generateId('transport'),
-    dealId: mockDeals[0].id,
+    dealId: mockDeals[0].id, // Related to the confirmed deal
     deal: mockDeals[0],
-    listingId: mockListings[0].id,
-    listing: mockListings[0],
-    requesterId: mockUsers[0].id,
+    listingId: mockListings[1].id, // White Maize listing
+    listing: mockListings[1],
+    requesterId: mockUsers[0].id, // buyer@demo.com
     requester: mockUsers[0],
     pickupLocation: 'Free State',
     deliveryLocation: 'Johannesburg, Gauteng',
-    quantity: 50,
+    quantity: 25, // Match the deal quantity
     unit: 'ton',
     preferredDate: new Date('2024-01-22'),
     budget: 3000,
     status: 'open',
-    productType: 'Yellow Maize',
+    productType: 'White Maize',
     specialRequirements: 'Covered transport, no rain damage',
     contactPhone: '+27 82 123 4567',
     urgent: false,
@@ -530,7 +530,7 @@ export const mockTransportRequests: TransportRequest[] = [
   },
   {
     id: generateId('transport'),
-    requesterId: mockUsers[1].id,
+    requesterId: mockUsers[1].id, // seller@demo.com
     requester: mockUsers[1],
     pickupLocation: 'Free State',
     deliveryLocation: 'Cape Town, Western Cape',
@@ -560,13 +560,13 @@ export const mockTransportRequests: TransportRequest[] = [
   }
 ]
 
-// Enhanced Transport Quote Data with Breakdown
+// Enhanced Transport Quote Data with Breakdown - Updated with proper relationships
 export const mockTransportQuotes: TransportQuote[] = [
   {
     id: generateId('quote'),
-    transportRequestId: mockTransportRequests[0].id,
+    transportRequestId: mockTransportRequests[0].id, // From buyer@demo.com
     transportRequest: mockTransportRequests[0],
-    transporterId: mockUsers[2].id,
+    transporterId: mockUsers[2].id, // transporter@demo.com
     transporter: mockUsers[2],
     price: 3200,
     estimatedDays: 2,
@@ -588,7 +588,7 @@ export const mockTransportQuotes: TransportQuote[] = [
   },
   {
     id: generateId('quote'),
-    transportRequestId: mockTransportRequests[0].id,
+    transportRequestId: mockTransportRequests[0].id, // From buyer@demo.com
     transportRequest: mockTransportRequests[0],
     transporterId: generateId('user'),
     transporter: {
@@ -644,17 +644,17 @@ export const mockBackloadListings: BackloadListing[] = [
   }
 ]
 
-// Mock Invoices
+// Mock Invoices - Updated with proper relationships to demo accounts
 export const mockInvoices: Invoice[] = [
   {
     id: 'invoice-1',
-    dealId: 'deal-1',
+    dealId: mockDeals[0].id, // deal-1 (confirmed deal)
     invoiceNumber: 'INV-2024-001',
-    buyerId: 'user-3',
-    sellerId: 'user-1',
+    buyerId: mockUsers[0].id, // buyer@demo.com
+    sellerId: mockUsers[1].id, // seller@demo.com
     items: [
       {
-        description: 'Premium Animal Feed',
+        description: 'Premium White Maize',
         quantity: 25,
         unitPrice: 3200,
         total: 80000
@@ -672,14 +672,14 @@ export const mockInvoices: Invoice[] = [
   }
 ]
 
-// Mock Contracts
+// Mock Contracts - Updated with proper relationships to demo accounts
 export const mockContracts: Contract[] = [
   {
     id: 'contract-1',
-    dealId: 'deal-1',
+    dealId: mockDeals[0].id, // deal-1 (confirmed deal)
     contractNumber: 'CON-2024-001',
-    buyerId: 'user-3',
-    sellerId: 'user-1',
+    buyerId: mockUsers[0].id, // buyer@demo.com
+    sellerId: mockUsers[1].id, // seller@demo.com
     type: 'sale',
     terms: 'Standard agricultural product sale agreement',
     conditions: [
@@ -690,12 +690,12 @@ export const mockContracts: Contract[] = [
     ],
     signatures: [
       {
-        userId: 'user-1',
+        userId: mockUsers[1].id, // seller@demo.com
         signedAt: new Date('2024-01-16T09:45:00Z'),
         ipAddress: '192.168.1.100'
       },
       {
-        userId: 'user-3',
+        userId: mockUsers[0].id, // buyer@demo.com
         signedAt: new Date('2024-01-16T10:00:00Z'),
         ipAddress: '192.168.1.101'
       }
@@ -707,13 +707,13 @@ export const mockContracts: Contract[] = [
   }
 ]
 
-// Enhanced Notification Data
+// Enhanced Notification Data - Updated with proper relationships to demo accounts
 export const mockNotifications: Notification[] = [
   {
     id: generateId('notification'),
-    userId: mockUsers[0].id,
+    userId: mockUsers[1].id, // seller@demo.com
     title: 'New Offer Received',
-    message: 'You have received a new offer for your Maize listing',
+    message: 'You have received a new offer for your Yellow Maize listing',
     type: 'offer',
     isRead: false,
     relatedId: mockOffers[0].id,
@@ -726,14 +726,29 @@ export const mockNotifications: Notification[] = [
   },
   {
     id: generateId('notification'),
-    userId: mockUsers[1].id,
+    userId: mockUsers[0].id, // buyer@demo.com
     title: 'Transport Quote Available',
-    message: '3 transport quotes received for your request',
+    message: '2 transport quotes received for your request',
     type: 'transport',
     isRead: false,
     relatedId: mockTransportRequests[0].id,
     relatedType: 'transport',
     priority: 'high',
+    actionRequired: true,
+    actionUrl: `/transport/${mockTransportRequests[0].id}`,
+    expiresAt: new Date('2024-01-25'),
+    createdAt: new Date('2024-01-18'),
+  },
+  {
+    id: generateId('notification'),
+    userId: mockUsers[2].id, // transporter@demo.com
+    title: 'New Transport Request',
+    message: 'New transport request available for White Maize delivery',
+    type: 'transport',
+    isRead: false,
+    relatedId: mockTransportRequests[0].id,
+    relatedType: 'transport',
+    priority: 'medium',
     actionRequired: true,
     actionUrl: `/transport/${mockTransportRequests[0].id}`,
     expiresAt: new Date('2024-01-25'),
@@ -771,14 +786,14 @@ export const mockMarketData: MarketData[] = [
   }
 ]
 
-// New: System Metrics
+// New: System Metrics - Updated with realistic demo data
 export const mockSystemMetrics: SystemMetrics[] = [
   {
     id: generateId('metric'),
     timestamp: new Date('2024-01-15'),
-    activeUsers: 1247,
-    totalTransactions: 89,
-    platformRevenue: 45230,
+    activeUsers: 4, // Our 4 demo accounts
+    totalTransactions: 1, // 1 confirmed deal
+    platformRevenue: 25, // R1/ton * 25 tons from the confirmed deal
     systemUptime: 99.8,
     errorRate: 0.2,
     responseTime: 245,

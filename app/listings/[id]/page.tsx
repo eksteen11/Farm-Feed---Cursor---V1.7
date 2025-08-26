@@ -7,6 +7,7 @@ import { Card, CardContent, CardTitle } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import ImageComponent from '@/components/ui/Image'
+import MakeOfferModal from '@/components/offers/MakeOfferModal'
 import { 
   MapPin, 
   User, 
@@ -28,65 +29,20 @@ export default function ListingDetailPage() {
   const router = useRouter()
   const { currentUser, isAuthenticated, createOffer } = useStore()
   const [listing, setListing] = useState<any>(null)
-  const [showOfferForm, setShowOfferForm] = useState(false)
-  const [offerData, setOfferData] = useState({
-    price: '',
-    quantity: '',
-    message: ''
-  })
+  const [showOfferModal, setShowOfferModal] = useState(false)
 
   useEffect(() => {
     if (params.id) {
       const foundListing = mockListings.find(l => l.id === params.id)
       if (foundListing) {
         setListing(foundListing)
-        setOfferData(prev => ({ ...prev, price: foundListing.price.toString() }))
       }
     }
   }, [params.id])
 
-  const handleOfferSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    
-    if (!isAuthenticated) {
-      toast.error('Please log in to make an offer')
-      router.push('/login')
-      return
-    }
-
-    if (!currentUser) {
-      toast.error('User not found')
-      return
-    }
-
-    if (currentUser.role !== 'buyer') {
-      toast.error('Only buyers can make offers')
-      return
-    }
-
-    try {
-      const offer = {
-        listingId: listing.id,
-        buyerId: currentUser.id,
-        sellerId: listing.sellerId,
-        price: Number(offerData.price),
-        quantity: Number(offerData.quantity),
-        deliveryType: 'ex-farm' as const,
-        message: offerData.message,
-        status: 'pending' as const,
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
-        isNegotiable: true,
-        terms: 'Standard terms apply'
-      }
-      
-      createOffer(offer)
-      toast.success('Offer submitted successfully!')
-      setShowOfferForm(false)
-      setOfferData({ price: '', quantity: '', message: '' })
-    } catch (error) {
-      console.error('Error creating offer:', error)
-      toast.error('Failed to submit offer. Please try again.')
-    }
+  const handleOfferCreated = (offer: any) => {
+    toast.success('Offer submitted successfully!')
+    setShowOfferModal(false)
   }
 
   if (!listing) {
@@ -259,7 +215,7 @@ export default function ListingDetailPage() {
                     </div>
                     
                     <Button 
-                      onClick={() => setShowOfferForm(true)}
+                      onClick={() => setShowOfferModal(true)}
                       className="w-full"
                       leftIcon={<MessageCircle className="w-4 h-4" />}
                     >
@@ -322,84 +278,15 @@ export default function ListingDetailPage() {
           </div>
         </div>
 
-        {/* Offer Form Modal */}
-        {showOfferForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900">Make an Offer</h3>
-                  <button
-                    onClick={() => setShowOfferForm(false)}
-                    className="text-gray-400 hover:text-gray-600"
-                  >
-                    ✕
-                  </button>
-                </div>
-                
-                <form onSubmit={handleOfferSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Your Price (ZAR per {listing.product.unit})
-                    </label>
-                    <Input
-                      type="number"
-                      value={offerData.price}
-                      onChange={(e) => setOfferData(prev => ({ ...prev, price: e.target.value }))}
-                      placeholder="Enter your price"
-                      leftIcon={<DollarSign className="w-5 h-5" />}
-                      required
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Quantity ({listing.product.unit})
-                    </label>
-                    <Input
-                      type="number"
-                      value={offerData.quantity}
-                      onChange={(e) => setOfferData(prev => ({ ...prev, quantity: e.target.value }))}
-                      placeholder="Enter quantity"
-                      leftIcon={<Package className="w-5 h-5" />}
-                      max={listing.availableQuantity}
-                      required
-                    />
-                    <p className="text-xs text-gray-500 mt-1">
-                      Available: {listing.availableQuantity} {listing.product.unit}
-                    </p>
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Message (Optional)
-                    </label>
-                    <textarea
-                      value={offerData.message}
-                      onChange={(e) => setOfferData(prev => ({ ...prev, message: e.target.value }))}
-                      placeholder="Add a message to your offer..."
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:border-primary-500 focus:ring-2 focus:ring-primary-500/10 resize-none"
-                      rows={3}
-                    />
-                  </div>
-                  
-                  <div className="flex space-x-3 pt-4">
-                    <Button
-                      type="button"
-                      variant="secondary"
-                      onClick={() => setShowOfferForm(false)}
-                      className="flex-1"
-                    >
-                      Cancel
-                    </Button>
-                    <Button type="submit" className="flex-1">
-                      Submit Offer
-                    </Button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
+        {/* Make Offer Modal */}
+        {showOfferModal && currentUser && (
+          <MakeOfferModal
+            listing={listing}
+            buyer={currentUser}
+            isOpen={showOfferModal}
+            onClose={() => setShowOfferModal(false)}
+            onOfferCreated={handleOfferCreated}
+          />
         )}
       </div>
     </div>

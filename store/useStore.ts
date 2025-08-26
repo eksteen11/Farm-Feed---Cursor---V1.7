@@ -75,6 +75,7 @@ interface AppState {
   
   // Deals
   fetchDeals: (userId?: string) => void
+  createDeal: (deal: Omit<Deal, 'id' | 'createdAt' | 'updatedAt'>) => void
   updateDeal: (id: string, updates: Partial<Deal>) => void
   
   // Transport
@@ -205,15 +206,8 @@ export const useStore = create<AppState>((set, get) => {
           localStorage.setItem('farmfeed_auth', 'true')
         }
         
-        // Fetch user-specific data
-        get().fetchOffers(user.id)
-        get().fetchDeals(user.id)
-        get().fetchNotifications(user.id)
-        get().fetchTransportRequests(user.id)
-        
-        if (user.role === 'transporter') {
-          get().fetchTransportQuotes(user.id)
-        }
+        // Keep all data in store, let dashboards filter it
+        // This ensures both buyers and sellers can see relevant offers
         
         return true
       } else {
@@ -446,7 +440,10 @@ export const useStore = create<AppState>((set, get) => {
     if (!userId) return
     
     try {
-      const userOffers = getOffersByUserId(userId)
+      // Get offers where user is either buyer or seller
+      const userOffers = mockOffers.filter(offer => 
+        offer.buyerId === userId || offer.sellerId === userId
+      )
       set({ offers: userOffers })
     } catch (error) {
       set({ error: 'Failed to fetch offers' })
@@ -465,24 +462,23 @@ export const useStore = create<AppState>((set, get) => {
       updatedAt: new Date()
     }
     
-    mockOffers.push(newOffer)
     set({ offers: [...get().offers, newOffer] })
   },
   
   updateOffer: (id, updates) => {
-    const offerIndex = mockOffers.findIndex(o => o.id === id)
+    const currentOffers = get().offers
+    const offerIndex = currentOffers.findIndex(o => o.id === id)
     if (offerIndex !== -1) {
-      mockOffers[offerIndex] = {
-        ...mockOffers[offerIndex],
+      const updatedOffer = {
+        ...currentOffers[offerIndex],
         ...updates,
         updatedAt: new Date(),
       }
       
-      set({ 
-        offers: mockOffers.map(o => 
-          o.id === id ? mockOffers[offerIndex] : o
-        )
-      })
+      const newOffers = currentOffers.map(o => 
+        o.id === id ? updatedOffer : o
+      )
+      set({ offers: newOffers })
     }
   },
   
@@ -499,27 +495,41 @@ export const useStore = create<AppState>((set, get) => {
     if (!userId) return
     
     try {
-      const userDeals = getDealsByUserId(userId)
+      // Get deals where user is either buyer or seller
+      const userDeals = mockDeals.filter(deal => 
+        deal.buyerId === userId || deal.sellerId === userId
+      )
       set({ deals: userDeals })
     } catch (error) {
       set({ error: 'Failed to fetch deals' })
     }
   },
   
+  createDeal: (dealData: Omit<Deal, 'id' | 'createdAt' | 'updatedAt'>) => {
+    const newDeal: Deal = {
+      ...dealData,
+      id: generateId('deal'),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+    
+    set({ deals: [...get().deals, newDeal] })
+  },
+  
   updateDeal: (id, updates) => {
-    const dealIndex = mockDeals.findIndex(d => d.id === id)
+    const currentDeals = get().deals
+    const dealIndex = currentDeals.findIndex(d => d.id === id)
     if (dealIndex !== -1) {
-      mockDeals[dealIndex] = {
-        ...mockDeals[dealIndex],
+      const updatedDeal = {
+        ...currentDeals[dealIndex],
         ...updates,
         updatedAt: new Date(),
       }
       
-      set({ 
-        deals: mockDeals.map(d => 
-          d.id === id ? mockDeals[dealIndex] : d
-        )
-      })
+      const newDeals = currentDeals.map(d => 
+        d.id === id ? updatedDeal : d
+      )
+      set({ deals: newDeals })
     }
   },
   
@@ -528,7 +538,10 @@ export const useStore = create<AppState>((set, get) => {
     if (!userId) return
     
     try {
-      const userRequests = getTransportRequestsByUserId(userId)
+      // Get transport requests where user is the requester
+      const userRequests = mockTransportRequests.filter(request => 
+        request.requesterId === userId
+      )
       set({ transportRequests: userRequests })
     } catch (error) {
       set({ error: 'Failed to fetch transport requests' })
@@ -548,24 +561,23 @@ export const useStore = create<AppState>((set, get) => {
       updatedAt: new Date(),
     }
     
-    mockTransportRequests.push(newRequest)
     set({ transportRequests: [...get().transportRequests, newRequest] })
   },
   
   updateTransportRequest: (id, updates) => {
-    const requestIndex = mockTransportRequests.findIndex(r => r.id === id)
+    const currentRequests = get().transportRequests
+    const requestIndex = currentRequests.findIndex(r => r.id === id)
     if (requestIndex !== -1) {
-      mockTransportRequests[requestIndex] = {
-        ...mockTransportRequests[requestIndex],
+      const updatedRequest = {
+        ...currentRequests[requestIndex],
         ...updates,
         updatedAt: new Date(),
       }
       
-      set({ 
-        transportRequests: mockTransportRequests.map(r => 
-          r.id === id ? mockTransportRequests[requestIndex] : r
-        )
-      })
+      const newRequests = currentRequests.map(r => 
+        r.id === id ? updatedRequest : r
+      )
+      set({ transportRequests: newRequests })
     }
   },
   
@@ -573,7 +585,10 @@ export const useStore = create<AppState>((set, get) => {
     if (!transporterId) return
     
     try {
-      const transporterQuotes = getTransportQuotesByTransporterId(transporterId)
+      // Get transport quotes where user is the transporter
+      const transporterQuotes = mockTransportQuotes.filter(quote => 
+        quote.transporterId === transporterId
+      )
       set({ transportQuotes: transporterQuotes })
     } catch (error) {
       set({ error: 'Failed to fetch transport quotes' })
@@ -597,24 +612,23 @@ export const useStore = create<AppState>((set, get) => {
       updatedAt: new Date(),
     }
     
-    mockTransportQuotes.push(newQuote)
     set({ transportQuotes: [...get().transportQuotes, newQuote] })
   },
   
   updateTransportQuote: (id, updates) => {
-    const quoteIndex = mockTransportQuotes.findIndex(q => q.id === id)
+    const currentQuotes = get().transportQuotes
+    const quoteIndex = currentQuotes.findIndex(q => q.id === id)
     if (quoteIndex !== -1) {
-      mockTransportQuotes[quoteIndex] = {
-        ...mockTransportQuotes[quoteIndex],
+      const updatedQuote = {
+        ...currentQuotes[quoteIndex],
         ...updates,
         updatedAt: new Date(),
       }
       
-      set({ 
-        transportQuotes: mockTransportQuotes.map(q => 
-          q.id === id ? mockTransportQuotes[quoteIndex] : q
-        )
-      })
+      const newQuotes = currentQuotes.map(q => 
+        q.id === id ? updatedQuote : q
+      )
+      set({ transportQuotes: newQuotes })
     }
   },
   
@@ -629,27 +643,30 @@ export const useStore = create<AppState>((set, get) => {
   },
   
   markNotificationAsRead: (id) => {
-    const notificationIndex = mockNotifications.findIndex(n => n.id === id)
+    const currentNotifications = get().notifications
+    const notificationIndex = currentNotifications.findIndex(n => n.id === id)
     if (notificationIndex !== -1) {
-      mockNotifications[notificationIndex].isRead = true
-      set({ 
-        notifications: mockNotifications.map(n => 
-          n.id === id ? mockNotifications[notificationIndex] : n
-        )
-      })
+      const updatedNotification = {
+        ...currentNotifications[notificationIndex],
+        isRead: true
+      }
+      
+      const newNotifications = currentNotifications.map(n => 
+        n.id === id ? updatedNotification : n
+      )
+      set({ notifications: newNotifications })
     }
   },
   
   markAllNotificationsAsRead: (userId) => {
-    mockNotifications.forEach(notification => {
-      if (notification.userId === userId) {
-        notification.isRead = true
-      }
-    })
+    const currentNotifications = get().notifications
+    const updatedNotifications = currentNotifications.map(notification => 
+      notification.userId === userId 
+        ? { ...notification, isRead: true }
+        : notification
+    )
     
-    set({ 
-      notifications: mockNotifications.filter(n => n.userId === userId)
-    })
+    set({ notifications: updatedNotifications })
   },
   
   // Filter actions
