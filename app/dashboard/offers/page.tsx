@@ -6,9 +6,15 @@ import { ShoppingCart, Package, TrendingUp, Clock, CheckCircle, XCircle, Message
 import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
+import { useEffect, useState } from 'react'
 
 export default function OffersPage() {
   const { currentUser, offers, listings } = useStore()
+  const [isClient, setIsClient] = useState(false)
+  
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   
   if (!currentUser) {
     return (
@@ -47,6 +53,41 @@ export default function OffersPage() {
       case 'countered': return <MessageSquare className="h-4 w-4" />
       default: return <Clock className="h-4 w-4" />
     }
+  }
+
+  const formatDate = (date: Date) => {
+    if (!isClient) return 'Loading...'
+    return date.toLocaleDateString()
+  }
+
+  // Don't render dynamic content until client-side hydration is complete
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="bg-white shadow-sm border-b">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">Offers & Negotiations</h1>
+                <p className="text-gray-600 mt-2">
+                  Track your offers and manage received offers
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
+            <div className="space-y-4">
+              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-32 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -135,7 +176,7 @@ export default function OffersPage() {
                           </div>
                           <div className="flex items-center justify-between">
                             <span className="text-gray-600">Made:</span>
-                            <span className="text-sm">{offer.createdAt.toLocaleDateString()}</span>
+                            <span className="text-sm">{formatDate(offer.createdAt)}</span>
                           </div>
                           {offer.message && (
                             <div className="bg-gray-50 p-3 rounded-lg">
@@ -230,7 +271,7 @@ export default function OffersPage() {
                           </div>
                           <div className="flex items-center justify-between">
                             <span className="text-gray-600">Received:</span>
-                            <span className="text-sm">{offer.createdAt.toLocaleDateString()}</span>
+                            <span className="text-sm">{formatDate(offer.createdAt)}</span>
                           </div>
                           {offer.message && (
                             <div className="bg-gray-50 p-3 rounded-lg">

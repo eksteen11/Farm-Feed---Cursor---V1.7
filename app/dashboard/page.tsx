@@ -19,6 +19,7 @@ import {
 import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
+import { useEffect, useState } from 'react'
 
 // Dashboard sections configuration
 const DASHBOARD_SECTIONS = [
@@ -98,7 +99,12 @@ const DASHBOARD_SECTIONS = [
 
 export default function UnifiedDashboard() {
   const { currentUser, listings, offers, deals, transportRequests, transportQuotes } = useStore()
+  const [isClient, setIsClient] = useState(false)
   
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
   if (!currentUser) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -113,15 +119,46 @@ export default function UnifiedDashboard() {
   }
 
   const userCapabilities = getUserCapabilities(currentUser)
-  
-  // Calculate dashboard stats
   const userListings = listings.filter(l => l.sellerId === currentUser.id)
   const userOffers = offers.filter(o => o.buyerId === currentUser.id)
-  const receivedOffers = offers.filter(o => {
-    const listing = listings.find(l => l.id === o.listingId)
-    return listing?.sellerId === currentUser.id
-  })
   const userDeals = deals.filter(d => d.buyerId === currentUser.id || d.sellerId === currentUser.id)
+
+  const formatDate = (date: Date) => {
+    if (!isClient) return 'Loading...'
+    return date.toLocaleDateString()
+  }
+
+  // Don't render dynamic content until client-side hydration is complete
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="bg-white shadow-sm border-b">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">Welcome back, {currentUser.name}!</h1>
+                <p className="text-gray-600 mt-2">
+                  Manage your Farm Feed activities from one unified dashboard
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
+            <div className="space-y-4">
+              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-32 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+  
+  // Calculate dashboard stats
   const userTransportRequests = transportRequests.filter(t => t.requesterId === currentUser.id)
   const userTransportQuotes = transportQuotes.filter(t => t.transporterId === currentUser.id)
 
@@ -132,7 +169,7 @@ export default function UnifiedDashboard() {
     totalTransportRequests: userTransportRequests.length,
     totalTransportQuotes: userTransportQuotes.length,
     activeListings: userListings.filter(l => l.isActive).length,
-    pendingOffers: receivedOffers.filter(o => o.status === 'pending').length,
+    pendingOffers: userOffers.filter(o => o.status === 'pending').length,
     completedDeals: userDeals.filter(d => d.status === 'completed').length
   }
 
@@ -293,7 +330,7 @@ export default function UnifiedDashboard() {
                     <Package className="h-5 w-5 text-gray-400" />
                     <div className="flex-1">
                       <p className="font-medium">New listing: {listing.title}</p>
-                      <p className="text-sm text-gray-500">Created {listing.createdAt.toLocaleDateString()}</p>
+                      <p className="text-sm text-gray-500">Created {formatDate(listing.createdAt)}</p>
                     </div>
                     <span className="text-sm text-gray-500">R{listing.price}/ton</span>
                   </div>
@@ -305,7 +342,7 @@ export default function UnifiedDashboard() {
                       <p className="font-medium">Offer made: R{offer.price}/ton</p>
                       <p className="text-sm text-gray-500">Status: {offer.status}</p>
                     </div>
-                    <span className="text-sm text-gray-500">{offer.createdAt.toLocaleDateString()}</span>
+                    <span className="text-sm text-gray-500">{formatDate(offer.createdAt)}</span>
                   </div>
                 ))}
                 {userDeals.slice(0, 2).map((deal) => (
@@ -315,7 +352,7 @@ export default function UnifiedDashboard() {
                       <p className="font-medium">Deal completed: {deal.quantity} tons</p>
                       <p className="text-sm text-gray-500">Total: R{deal.finalPrice * deal.quantity}</p>
                     </div>
-                    <span className="text-sm text-gray-500">{deal.createdAt.toLocaleDateString()}</span>
+                    <span className="text-sm text-gray-500">{formatDate(deal.createdAt)}</span>
                   </div>
                 ))}
               </div>

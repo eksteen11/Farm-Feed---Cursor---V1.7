@@ -2,13 +2,19 @@
 
 import { useStore } from '@/store/useStore'
 import { canUserPerformAction } from '@/types'
-import { Package, Truck, Plus, Edit, Trash2, Eye } from 'lucide-react'
+import { Package, Truck, Plus, Eye, Edit, Trash2, MapPin, Calendar, DollarSign } from 'lucide-react'
 import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
+import { useEffect, useState } from 'react'
 
 export default function ListingsPage() {
   const { currentUser, listings, transportRequests } = useStore()
+  const [isClient, setIsClient] = useState(false)
+  
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
   
   if (!currentUser) {
     return (
@@ -24,7 +30,52 @@ export default function ListingsPage() {
   }
 
   const userListings = listings.filter(l => l.sellerId === currentUser.id)
-  const userTransportListings = transportRequests.filter(t => t.requesterId === currentUser.id)
+  const userTransportRequests = transportRequests.filter(t => t.requesterId === currentUser.id)
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'active': return 'bg-green-100 text-green-800'
+      case 'pending': return 'bg-yellow-100 text-yellow-800'
+      case 'sold': return 'bg-blue-100 text-blue-800'
+      case 'expired': return 'bg-gray-100 text-gray-800'
+      default: return 'bg-gray-100 text-gray-800'
+    }
+  }
+
+  const formatDate = (date: Date) => {
+    if (!isClient) return 'Loading...'
+    return date.toLocaleDateString()
+  }
+
+  // Don't render dynamic content until client-side hydration is complete
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="bg-white shadow-sm border-b">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">My Listings</h1>
+                <p className="text-gray-600 mt-2">
+                  Manage your product and transport listings
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
+            <div className="space-y-4">
+              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-32 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -119,7 +170,7 @@ export default function ListingsPage() {
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-gray-600">Created:</span>
-                          <span className="text-sm">{listing.createdAt.toLocaleDateString()}</span>
+                          <span className="text-sm">{formatDate(listing.createdAt)}</span>
                         </div>
                       </div>
                       
@@ -156,11 +207,11 @@ export default function ListingsPage() {
                 Transport Listings
               </h2>
               <span className="text-sm text-gray-500">
-                {userTransportListings.length} listing{userTransportListings.length !== 1 ? 's' : ''}
+                {userTransportRequests.length} listing{userTransportRequests.length !== 1 ? 's' : ''}
               </span>
             </div>
 
-            {userTransportListings.length === 0 ? (
+            {userTransportRequests.length === 0 ? (
               <Card>
                 <CardContent className="p-8 text-center">
                   <Truck className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -175,7 +226,7 @@ export default function ListingsPage() {
               </Card>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {userTransportListings.map((transport) => (
+                {userTransportRequests.map((transport) => (
                   <Card key={transport.id} className="hover:shadow-lg transition-shadow">
                     <CardHeader>
                       <div className="flex items-center justify-between">
@@ -207,7 +258,7 @@ export default function ListingsPage() {
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-gray-600">Date:</span>
-                          <span className="text-sm">{transport.preferredDate.toLocaleDateString()}</span>
+                          <span className="text-sm">{formatDate(transport.preferredDate)}</span>
                         </div>
                         {transport.budget && (
                           <div className="flex items-center justify-between">

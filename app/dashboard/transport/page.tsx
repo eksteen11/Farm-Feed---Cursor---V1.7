@@ -6,10 +6,16 @@ import { Truck, Package, Route, Plus, Eye, MessageSquare, Calendar, MapPin } fro
 import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
+import { useEffect, useState } from 'react'
 
 export default function TransportPage() {
   const { currentUser, transportRequests, transportQuotes, backloadListings } = useStore()
+  const [isClient, setIsClient] = useState(false)
   
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
+
   if (!currentUser) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -36,6 +42,41 @@ export default function TransportPage() {
       case 'completed': return 'bg-gray-100 text-gray-800'
       default: return 'bg-gray-100 text-gray-800'
     }
+  }
+
+  const formatDate = (date: Date) => {
+    if (!isClient) return 'Loading...'
+    return date.toLocaleDateString()
+  }
+
+  // Don't render dynamic content until client-side hydration is complete
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="bg-white shadow-sm border-b">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">Transport Management</h1>
+                <p className="text-gray-600 mt-2">
+                  Manage transport requests, quotes, and backload listings
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded w-1/4 mb-4"></div>
+            <div className="space-y-4">
+              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-32 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (
@@ -132,7 +173,7 @@ export default function TransportPage() {
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-gray-600">Date:</span>
-                        <span className="text-sm">{request.preferredDate.toLocaleDateString()}</span>
+                        <span className="text-sm">{formatDate(request.preferredDate)}</span>
                       </div>
                       {request.budget && (
                         <div className="flex items-center justify-between">
@@ -242,7 +283,7 @@ export default function TransportPage() {
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-gray-600">Available:</span>
-                        <span className="text-sm">{backload.availableDate.toLocaleDateString()}</span>
+                        <span className="text-sm">{formatDate(backload.availableDate)}</span>
                       </div>
                       <div className="bg-gray-50 p-3 rounded-lg">
                         <p className="text-xs text-gray-600 font-medium">Vehicle:</p>
