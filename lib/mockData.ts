@@ -24,6 +24,7 @@ export const mockUsers: User[] = [
     email: 'buyer@demo.com',
     name: 'John Buyer',
     role: 'buyer',
+    capabilities: ['buy', 'transport'], // Can buy and also handle transport
     company: 'Demo Feedlot',
     location: 'Johannesburg, Gauteng',
     phone: '+27 82 123 4567',
@@ -60,6 +61,7 @@ export const mockUsers: User[] = [
     email: 'seller@demo.com',
     name: 'Sarah Johnson',
     role: 'seller',
+    capabilities: ['sell', 'buy'], // Can sell and also buy from others
     company: 'Demo Maize Farm',
     location: 'Free State',
     phone: '+27 82 234 5678',
@@ -94,6 +96,7 @@ export const mockUsers: User[] = [
     email: 'transporter@demo.com',
     name: 'Mike Transport',
     role: 'transporter',
+    capabilities: ['transport', 'sell'], // Can transport and also sell backload services
     company: 'Demo Transport Services',
     location: 'Cape Town, Western Cape',
     phone: '+27 82 345 6789',
@@ -128,6 +131,7 @@ export const mockUsers: User[] = [
     email: 'admin@demo.com',
     name: 'Admin User',
     role: 'admin',
+    capabilities: ['admin', 'sell', 'buy', 'transport'], // Admin can do everything
     company: 'Demo Farm Feed',
     location: 'Johannesburg, Gauteng',
     phone: '+27 82 456 7890',
@@ -166,9 +170,13 @@ export const mockSubscriptions: Subscription[] = [
       listings: -1, // unlimited
       offers: -1,
       transportRequests: -1,
+      transportQuotes: -1, // unlimited
       chatAccess: true,
       analytics: false,
-      prioritySupport: false
+      prioritySupport: false,
+      documentGeneration: false,
+      advancedRouting: false,
+      backloadMatching: false
     },
     autoRenew: true,
     nextBillingDate: new Date('2025-01-01'),
@@ -191,9 +199,13 @@ export const mockSubscriptions: Subscription[] = [
       listings: -1,
       offers: -1,
       transportRequests: -1,
+      transportQuotes: -1,
       chatAccess: true,
       analytics: false,
-      prioritySupport: false
+      prioritySupport: false,
+      documentGeneration: false,
+      advancedRouting: false,
+      backloadMatching: false
     },
     autoRenew: true,
     nextBillingDate: new Date('2025-01-05'),
@@ -216,9 +228,13 @@ export const mockSubscriptions: Subscription[] = [
       listings: -1,
       offers: -1,
       transportRequests: -1,
+      transportQuotes: -1,
       chatAccess: true,
       analytics: false,
-      prioritySupport: false
+      prioritySupport: false,
+      documentGeneration: false,
+      advancedRouting: false,
+      backloadMatching: false
     },
     autoRenew: true,
     nextBillingDate: new Date('2025-01-03'),
@@ -818,6 +834,16 @@ export const createUser = (userData: Partial<User>): User => {
     email: userData.email!,
     name: userData.name!,
     role: userData.role!,
+    capabilities: userData.capabilities || (() => {
+      // Map role to capabilities for backward compatibility
+      switch (userData.role!) {
+        case 'buyer': return ['buy']
+        case 'seller': return ['sell']
+        case 'transporter': return ['transport']
+        case 'admin': return ['admin', 'sell', 'buy', 'transport']
+        default: return ['buy']
+      }
+    })(),
     company: userData.company,
     location: userData.location!,
     phone: userData.phone,

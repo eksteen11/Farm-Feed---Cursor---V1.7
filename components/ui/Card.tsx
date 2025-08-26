@@ -79,6 +79,15 @@ const CardSubtitle: React.FC<{ children: React.ReactNode; className?: string }> 
   </p>
 )
 
+const CardDescription: React.FC<{ children: React.ReactNode; className?: string }> = ({
+  children,
+  className
+}) => (
+  <p className={clsx('text-sm text-gray-500', className)}>
+    {children}
+  </p>
+)
+
 const CardContent: React.FC<{ children: React.ReactNode; className?: string }> = ({
   children,
   className
@@ -97,7 +106,7 @@ const CardFooter: React.FC<{ children: React.ReactNode; className?: string }> = 
   </div>
 )
 
-export { Card, CardHeader, CardTitle, CardSubtitle, CardContent, CardFooter }
+export { Card, CardHeader, CardTitle, CardSubtitle, CardDescription, CardContent, CardFooter }
 
 
 

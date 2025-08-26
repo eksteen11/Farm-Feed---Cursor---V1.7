@@ -17,7 +17,9 @@ import {
   Truck,
   BarChart3,
   CreditCard,
-  ShieldCheck
+  ShieldCheck,
+  CheckCircle,
+  FileText
 } from 'lucide-react'
 
 const Navigation: React.FC = () => {
@@ -141,24 +143,33 @@ const Navigation: React.FC = () => {
                           <ShieldCheck className="w-4 h-4 mr-3" />
                           FICA Verification
                         </Link>
-                        {currentUser.role === 'seller' && (
-                          <Link href="/seller/dashboard" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        {/* Unified Dashboard Sections */}
+                        {currentUser.capabilities?.includes('sell') && (
+                          <Link href="/dashboard/listings" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                             <Package className="w-4 h-4 mr-3" />
-                            Seller Dashboard
+                            My Listings
                           </Link>
                         )}
-                        {currentUser.role === 'buyer' && (
-                          <Link href="/buyer/dashboard" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        {currentUser.capabilities?.includes('buy') && (
+                          <Link href="/dashboard/offers" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                             <ShoppingCart className="w-4 h-4 mr-3" />
-                            Buyer Dashboard
+                            My Offers
                           </Link>
                         )}
-                        {currentUser.role === 'transporter' && (
-                          <Link href="/transport" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        {currentUser.capabilities?.includes('transport') && (
+                          <Link href="/dashboard/transport" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                             <Truck className="w-4 h-4 mr-3" />
-                            Transport Dashboard
+                            Transport
                           </Link>
                         )}
+                        <Link href="/dashboard/deals" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          <CheckCircle className="w-4 h-4 mr-3" />
+                          Active Deals
+                        </Link>
+                        <Link href="/dashboard/documents" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          <FileText className="w-4 h-4 mr-3" />
+                          Documents
+                        </Link>
                         <div className="border-t border-gray-100 my-1"></div>
                       </div>
                       <Link href="/profile" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">

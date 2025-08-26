@@ -1,10 +1,14 @@
 export type UserRole = 'buyer' | 'seller' | 'transporter' | 'admin'
 
+// New: User Capabilities for unified system
+export type UserCapability = 'sell' | 'buy' | 'transport' | 'admin'
+
 export interface User {
   id: string
   email: string
   name: string
-  role: UserRole
+  role: UserRole // Keep for backward compatibility
+  capabilities: UserCapability[] // New: unified capabilities
   company?: string
   location: string
   phone?: string
@@ -57,7 +61,7 @@ export interface Subscription {
   id: string
   userId: string
   user: User
-  plan: 'basic' | 'premium' | 'enterprise'
+  plan: 'free' | 'basic' | 'premium' | 'enterprise' // Added 'free' plan
   price: number
   currency: 'ZAR'
   status: 'active' | 'cancelled' | 'expired' | 'pending'
@@ -65,14 +69,18 @@ export interface Subscription {
   endDate: Date
   paymentMethod: 'paystack' | 'bank_transfer'
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded'
-  // Enhanced Subscription Features
+  // Enhanced Subscription Features for unified system
   features: {
     listings: number // -1 for unlimited
-    offers: number
-    transportRequests: number
+    offers: number // -1 for unlimited
+    transportRequests: number // -1 for unlimited
+    transportQuotes: number // -1 for unlimited
     chatAccess: boolean
     analytics: boolean
     prioritySupport: boolean
+    documentGeneration: boolean
+    advancedRouting: boolean
+    backloadMatching: boolean
   }
   autoRenew: boolean
   nextBillingDate?: Date
@@ -410,4 +418,60 @@ export interface ApiResponse<T> {
   meta?: PaginationMeta
   message?: string
   success: boolean
+}
+
+// New: Unified Dashboard Data Types
+export interface DashboardStats {
+  totalListings: number
+  totalOffers: number
+  totalDeals: number
+  totalTransportRequests: number
+  totalTransportQuotes: number
+  totalRevenue: number
+  totalExpenses: number
+  activeContracts: number
+  pendingInvoices: number
+}
+
+export interface DashboardSection {
+  id: string
+  title: string
+  description: string
+  icon: string
+  route: string
+  capabilities: UserCapability[]
+  isVisible: (user: User) => boolean
+  badge?: {
+    count: number
+    type: 'info' | 'success' | 'warning' | 'error'
+  }
+}
+
+// New: Unified User Capability Helper
+export const getUserCapabilities = (user: User): UserCapability[] => {
+  if (!user) return []
+  
+  // If user has explicit capabilities, use them
+  if (user.capabilities && user.capabilities.length > 0) {
+    return user.capabilities
+  }
+  
+  // Fallback to role-based capabilities for backward compatibility
+  switch (user.role) {
+    case 'buyer':
+      return ['buy']
+    case 'seller':
+      return ['sell']
+    case 'transporter':
+      return ['transport']
+    case 'admin':
+      return ['admin', 'sell', 'buy', 'transport']
+    default:
+      return []
+  }
+}
+
+export const canUserPerformAction = (user: User, action: UserCapability): boolean => {
+  const capabilities = getUserCapabilities(user)
+  return capabilities.includes(action)
 }

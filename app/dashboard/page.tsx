@@ -1,220 +1,327 @@
 'use client'
 
-import React from 'react'
 import { useStore } from '@/store/useStore'
-import { Card, CardContent, CardTitle } from '@/components/ui/Card'
-import Button from '@/components/ui/Button'
+import { getUserCapabilities, canUserPerformAction } from '@/types'
 import { 
-  User, 
+  ShoppingCart, 
   Package, 
-  TrendingUp, 
-  Truck,
-  Bell,
-  Settings
+  Truck, 
+  FileText, 
+  MessageSquare, 
+  Settings,
+  Plus,
+  TrendingUp,
+  DollarSign,
+  Calendar,
+  CheckCircle,
+  Clock
 } from 'lucide-react'
 import Link from 'next/link'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
+import Button from '@/components/ui/Button'
 
-export default function DashboardPage() {
-  const { currentUser, isAuthenticated } = useStore()
+// Dashboard sections configuration
+const DASHBOARD_SECTIONS = [
+  {
+    id: 'overview',
+    title: 'Overview & Analytics',
+    description: 'Your business performance and key metrics',
+    icon: TrendingUp,
+    route: '/dashboard/overview',
+    capabilities: ['sell', 'buy', 'transport'],
+    isVisible: () => true
+  },
+  {
+    id: 'listings',
+    title: 'My Listings',
+    description: 'Manage your product and transport listings',
+    icon: Package,
+    route: '/dashboard/listings',
+    capabilities: ['sell', 'transport'],
+    isVisible: (user: any) => canUserPerformAction(user, 'sell') || canUserPerformAction(user, 'transport')
+  },
+  {
+    id: 'offers',
+    title: 'Offers & Negotiations',
+    description: 'Track your offers and received offers',
+    icon: ShoppingCart,
+    route: '/dashboard/offers',
+    capabilities: ['sell', 'buy'],
+    isVisible: (user: any) => canUserPerformAction(user, 'sell') || canUserPerformAction(user, 'buy')
+  },
+  {
+    id: 'transport',
+    title: 'Transport Management',
+    description: 'Manage transport requests and quotes',
+    icon: Truck,
+    route: '/dashboard/transport',
+    capabilities: ['transport', 'buy', 'sell'],
+    isVisible: (user: any) => canUserPerformAction(user, 'transport') || canUserPerformAction(user, 'buy') || canUserPerformAction(user, 'sell')
+  },
+  {
+    id: 'deals',
+    title: 'Active Deals',
+    description: 'Monitor your ongoing transactions',
+    icon: CheckCircle,
+    route: '/dashboard/deals',
+    capabilities: ['sell', 'buy', 'transport'],
+    isVisible: () => true
+  },
+  {
+    id: 'documents',
+    title: 'Documents',
+    description: 'Contracts, invoices, and agreements',
+    icon: FileText,
+    route: '/dashboard/documents',
+    capabilities: ['sell', 'buy', 'transport'],
+    isVisible: () => true
+  },
+  {
+    id: 'messages',
+    title: 'Messages & Chat',
+    description: 'Communicate with other users',
+    icon: MessageSquare,
+    route: '/dashboard/messages',
+    capabilities: ['sell', 'buy', 'transport'],
+    isVisible: () => true
+  },
+  {
+    id: 'settings',
+    title: 'Settings & Profile',
+    description: 'Manage your account and preferences',
+    icon: Settings,
+    route: '/dashboard/settings',
+    capabilities: ['sell', 'buy', 'transport'],
+    isVisible: () => true
+  }
+]
 
-  if (!isAuthenticated || !currentUser) {
+export default function UnifiedDashboard() {
+  const { currentUser, listings, offers, deals, transportRequests, transportQuotes } = useStore()
+  
+  if (!currentUser) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
-            Access Denied
-          </h1>
-          <p className="text-gray-600 mb-6">
-            Please log in to access your dashboard
-          </p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Please log in to access your dashboard</h1>
           <Link href="/login">
-            <Button>Sign In</Button>
+            <Button>Login</Button>
           </Link>
         </div>
       </div>
     )
   }
 
+  const userCapabilities = getUserCapabilities(currentUser)
+  
+  // Calculate dashboard stats
+  const userListings = listings.filter(l => l.sellerId === currentUser.id)
+  const userOffers = offers.filter(o => o.buyerId === currentUser.id)
+  const receivedOffers = offers.filter(o => {
+    const listing = listings.find(l => l.id === o.listingId)
+    return listing?.sellerId === currentUser.id
+  })
+  const userDeals = deals.filter(d => d.buyerId === currentUser.id || d.sellerId === currentUser.id)
+  const userTransportRequests = transportRequests.filter(t => t.requesterId === currentUser.id)
+  const userTransportQuotes = transportQuotes.filter(t => t.transporterId === currentUser.id)
+
+  const dashboardStats = {
+    totalListings: userListings.length,
+    totalOffers: userOffers.length,
+    totalDeals: userDeals.length,
+    totalTransportRequests: userTransportRequests.length,
+    totalTransportQuotes: userTransportQuotes.length,
+    activeListings: userListings.filter(l => l.isActive).length,
+    pendingOffers: receivedOffers.filter(o => o.status === 'pending').length,
+    completedDeals: userDeals.filter(d => d.status === 'completed').length
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Welcome Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Welcome back, {currentUser.name}!
-          </h1>
-          <p className="text-gray-600">
-            Manage your {currentUser.role} activities and track your progress
-          </p>
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">
+                Welcome back, {currentUser.name}! 👋
+              </h1>
+              <p className="text-gray-600 mt-2">
+                Manage your Farm Feed activities from one place
+              </p>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="text-right">
+                <p className="text-sm text-gray-500">Subscription</p>
+                <p className="font-semibold text-green-600 capitalize">
+                  {currentUser.subscriptionStatus}
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-sm text-gray-500">Capabilities</p>
+                <p className="font-semibold text-blue-600">
+                  {userCapabilities.join(', ')}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
 
-        {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      {/* Stats Overview */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Active Listings</p>
-                  <p className="text-2xl font-bold text-gray-900">12</p>
-                </div>
-                <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
-                  <Package className="w-6 h-6 text-primary-600" />
-                </div>
-              </div>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Active Listings</CardTitle>
+              <Package className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{dashboardStats.activeListings}</div>
+              <p className="text-xs text-muted-foreground">
+                {dashboardStats.totalListings} total listings
+              </p>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Total Offers</p>
-                  <p className="text-2xl font-bold text-gray-900">8</p>
-                </div>
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                  <TrendingUp className="w-6 h-6 text-green-600" />
-                </div>
-              </div>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Pending Offers</CardTitle>
+              <Clock className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{dashboardStats.pendingOffers}</div>
+              <p className="text-xs text-muted-foreground">
+                {dashboardStats.totalOffers} offers made
+              </p>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Deals Closed</p>
-                  <p className="text-2xl font-bold text-gray-900">5</p>
-                </div>
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Truck className="w-6 h-6 text-blue-600" />
-                </div>
-              </div>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Active Deals</CardTitle>
+              <CheckCircle className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{dashboardStats.completedDeals}</div>
+              <p className="text-xs text-muted-foreground">
+                {dashboardStats.totalDeals} total deals
+              </p>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600">Notifications</p>
-                  <p className="text-2xl font-bold text-gray-900">3</p>
-                </div>
-                <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                  <Bell className="w-6 h-6 text-yellow-600" />
-                </div>
-              </div>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">Transport</CardTitle>
+              <Truck className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{dashboardStats.totalTransportRequests}</div>
+              <p className="text-xs text-muted-foreground">
+                {dashboardStats.totalTransportQuotes} quotes given
+              </p>
             </CardContent>
           </Card>
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-          <Card>
-            <CardContent className="p-6">
-              <CardTitle className="text-lg mb-4">Quick Actions</CardTitle>
-              <div className="space-y-3">
-                {currentUser.role === 'seller' && (
-                  <Link href="/seller/create-listing">
-                    <Button className="w-full justify-start" leftIcon={<Package className="w-4 h-4" />}>
-                      Create New Listing
-                    </Button>
-                  </Link>
-                )}
-                {currentUser.role === 'buyer' && (
-                  <Link href="/listings">
-                    <Button className="w-full justify-start" leftIcon={<TrendingUp className="w-4 h-4" />}>
-                      Browse Products
-                    </Button>
-                  </Link>
-                )}
-                <Link href="/profile">
-                  <Button variant="secondary" className="w-full justify-start" leftIcon={<User className="w-4 h-4" />}>
-                    Update Profile
-                  </Button>
-                </Link>
-                <Link href="/settings">
-                  <Button variant="secondary" className="w-full justify-start" leftIcon={<Settings className="w-4 h-4" />}>
-                    Account Settings
-                  </Button>
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="mb-8">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
+          <div className="flex flex-wrap gap-4">
+            {canUserPerformAction(currentUser, 'sell') && (
+              <Link href="/seller/create-listing">
+                <Button className="flex items-center space-x-2">
+                  <Plus className="h-4 w-4" />
+                  <span>Create New Listing</span>
+                </Button>
+              </Link>
+            )}
+            {canUserPerformAction(currentUser, 'transport') && (
+              <Link href="/dashboard/transport/create">
+                <Button variant="secondary" className="flex items-center space-x-2">
+                  <Truck className="h-4 w-4" />
+                  <span>Create Transport Listing</span>
+                </Button>
+              </Link>
+            )}
+            <Link href="/dashboard/offers">
+              <Button variant="secondary" className="flex items-center space-x-2">
+                <ShoppingCart className="h-4 w-4" />
+                <span>View All Offers</span>
+              </Button>
+            </Link>
+          </div>
+        </div>
 
+        {/* Dashboard Sections */}
+        <div>
+          <h2 className="text-xl font-semibold text-gray-900 mb-6">Dashboard Sections</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {DASHBOARD_SECTIONS.map((section) => {
+              if (!section.isVisible(currentUser)) return null
+              
+              const Icon = section.icon
+              return (
+                <Link key={section.id} href={section.route}>
+                  <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+                    <CardHeader>
+                      <div className="flex items-center space-x-3">
+                        <div className="p-2 bg-blue-100 rounded-lg">
+                          <Icon className="h-6 w-6 text-blue-600" />
+                        </div>
+                        <div>
+                          <CardTitle className="text-lg">{section.title}</CardTitle>
+                          <CardDescription>{section.description}</CardDescription>
+                        </div>
+                      </div>
+                    </CardHeader>
+                  </Card>
+                </Link>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Recent Activity */}
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold text-gray-900 mb-4">Recent Activity</h2>
           <Card>
             <CardContent className="p-6">
-              <CardTitle className="text-lg mb-4">Account Status</CardTitle>
               <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Subscription</span>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    currentUser.subscriptionStatus === 'active' 
-                      ? 'bg-green-100 text-green-800' 
-                      : 'bg-red-100 text-red-800'
-                  }`}>
-                    {currentUser.subscriptionStatus === 'active' ? 'Active' : 'Inactive'}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Verification</span>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    currentUser.isVerified 
-                      ? 'bg-green-100 text-green-800' 
-                      : 'bg-yellow-100 text-yellow-800'
-                  }`}>
-                    {currentUser.isVerified ? 'Verified' : 'Pending'}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Role</span>
-                  <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                    {currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1)}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-gray-600">Location</span>
-                  <span className="text-gray-900">{currentUser.location}</span>
-                </div>
+                {userListings.slice(0, 3).map((listing) => (
+                  <div key={listing.id} className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                    <Package className="h-5 w-5 text-gray-400" />
+                    <div className="flex-1">
+                      <p className="font-medium">New listing: {listing.title}</p>
+                      <p className="text-sm text-gray-500">Created {listing.createdAt.toLocaleDateString()}</p>
+                    </div>
+                    <span className="text-sm text-gray-500">R{listing.price}/ton</span>
+                  </div>
+                ))}
+                {userOffers.slice(0, 2).map((offer) => (
+                  <div key={offer.id} className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                    <ShoppingCart className="h-5 w-5 text-gray-400" />
+                    <div className="flex-1">
+                      <p className="font-medium">Offer made: R{offer.price}/ton</p>
+                      <p className="text-sm text-gray-500">Status: {offer.status}</p>
+                    </div>
+                    <span className="text-sm text-gray-500">{offer.createdAt.toLocaleDateString()}</span>
+                  </div>
+                ))}
+                {userDeals.slice(0, 2).map((deal) => (
+                  <div key={deal.id} className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                    <CheckCircle className="h-5 w-5 text-green-400" />
+                    <div className="flex-1">
+                      <p className="font-medium">Deal completed: {deal.quantity} tons</p>
+                      <p className="text-sm text-gray-500">Total: R{deal.finalPrice * deal.quantity}</p>
+                    </div>
+                    <span className="text-sm text-gray-500">{deal.createdAt.toLocaleDateString()}</span>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
         </div>
-
-        {/* Recent Activity */}
-        <Card>
-          <CardContent className="p-6">
-            <CardTitle className="text-lg mb-4">Recent Activity</CardTitle>
-            <div className="space-y-4">
-              <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                <div className="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
-                  <Bell className="w-4 h-4 text-primary-600" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900">New offer received</p>
-                  <p className="text-xs text-gray-500">2 hours ago</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                  <TrendingUp className="w-4 h-4 text-green-600" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900">Deal completed</p>
-                  <p className="text-xs text-gray-500">1 day ago</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                  <Package className="w-4 h-4 text-blue-600" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900">Listing updated</p>
-                  <p className="text-xs text-gray-500">3 days ago</p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   )

@@ -4,6 +4,23 @@ import { generateId } from './helpers'
 
 // Subscription Plans Configuration
 export const SUBSCRIPTION_PLANS = {
+  free: {
+    name: 'Free',
+    price: 0,
+    currency: 'ZAR',
+    features: {
+      listings: 1, // limited to 1 listing
+      offers: 3, // limited to 3 offers per month
+      transportRequests: 1, // limited to 1 transport request
+      transportQuotes: 2, // limited to 2 transport quotes
+      chatAccess: false,
+      analytics: false,
+      prioritySupport: false,
+      documentGeneration: false,
+      advancedRouting: false,
+      backloadMatching: false
+    }
+  },
   basic: {
     name: 'Basic',
     price: 10,
@@ -12,9 +29,13 @@ export const SUBSCRIPTION_PLANS = {
       listings: -1, // unlimited
       offers: -1, // unlimited
       transportRequests: -1, // unlimited
+      transportQuotes: -1, // unlimited
       chatAccess: true,
       analytics: false,
-      prioritySupport: false
+      prioritySupport: false,
+      documentGeneration: false,
+      advancedRouting: false,
+      backloadMatching: false
     }
   },
   premium: {
@@ -25,9 +46,13 @@ export const SUBSCRIPTION_PLANS = {
       listings: -1, // unlimited
       offers: -1, // unlimited
       transportRequests: -1, // unlimited
+      transportQuotes: -1, // unlimited
       chatAccess: true,
       analytics: true,
-      prioritySupport: true
+      prioritySupport: true,
+      documentGeneration: true,
+      advancedRouting: false,
+      backloadMatching: false
     }
   },
   enterprise: {
@@ -38,9 +63,13 @@ export const SUBSCRIPTION_PLANS = {
       listings: -1, // unlimited
       offers: -1, // unlimited
       transportRequests: -1, // unlimited
+      transportQuotes: -1, // unlimited
       chatAccess: true,
       analytics: true,
-      prioritySupport: true
+      prioritySupport: true,
+      documentGeneration: true,
+      advancedRouting: true,
+      backloadMatching: true
     }
   }
 }
