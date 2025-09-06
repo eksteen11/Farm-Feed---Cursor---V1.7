@@ -1,8 +1,12 @@
+'use client'
+
 import React from 'react'
 import Link from 'next/link'
 import Button from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
 import ImageComponent from '@/components/ui/Image'
+import { useStore } from '@/store/useStore'
+import { canUserPerformAction } from '@/types'
 import { 
   TrendingUp, 
   Shield, 
@@ -11,11 +15,15 @@ import {
   ArrowRight,
   Star,
   CheckCircle,
-  Eye
+  Eye,
+  Package,
+  ShoppingCart,
+  Plus
 } from 'lucide-react'
 import { mockListings } from '@/lib/mockData'
 
 export default function HomePage() {
+  const { currentUser } = useStore()
   const featuredListings = mockListings.slice(0, 3)
 
   return (
@@ -48,40 +56,81 @@ export default function HomePage() {
           {/* Main Title with Cinematic Typography */}
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-8 text-white leading-tight tracking-tight">
             <span className="block animate-fade-in-up animation-delay-100">
-              Connect with
+              {currentUser ? `Welcome back, ${currentUser.name.split(' ')[0]}!` : 'Connect with'}
             </span>
             <span className="block bg-gradient-to-r from-green-400 via-yellow-400 to-orange-400 bg-clip-text text-transparent animate-fade-in-up animation-delay-200 drop-shadow-2xl">
-              Trusted Farmers
+              {currentUser ? 'Ready to Trade?' : 'Trusted Farmers'}
             </span>
           </h1>
 
           {/* Subtitle with Enhanced Styling */}
           <p className="text-xl md:text-3xl lg:text-4xl font-light mb-8 text-gray-100 max-w-4xl mx-auto leading-relaxed animate-fade-in-up animation-delay-300">
-            South Africa's Premier Grain & Feed Trading Platform
+            {currentUser 
+              ? 'Manage your listings, offers, and deals from your unified dashboard'
+              : 'South Africa\'s Premier Grain & Feed Trading Platform'
+            }
           </p>
 
           {/* Enhanced Description */}
           <p className="text-lg md:text-xl lg:text-2xl mb-12 text-gray-200 max-w-3xl mx-auto leading-relaxed animate-fade-in-up animation-delay-400">
-            Buy and sell agricultural products with confidence. Verified sellers, secure transactions, and reliable delivery across the Rainbow Nation.
+            {currentUser 
+              ? 'Access all your trading activities in one place. Create listings, manage offers, and grow your agricultural business.'
+              : 'Buy and sell agricultural products with confidence. Verified sellers, secure transactions, and reliable delivery across the Rainbow Nation.'
+            }
           </p>
 
           {/* Cinematic Call-to-Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up animation-delay-500">
-            <a href="/register" className="group">
-              <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-green-600 to-green-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
-                <span className="relative z-10">Start Trading Today</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-              </button>
-            </a>
-            
-            <a href="/listings" className="group">
-              <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
-                <span className="relative z-10">Browse Listings</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-              </button>
-            </a>
+            {currentUser ? (
+              <>
+                {/* Logged in user buttons */}
+                {canUserPerformAction(currentUser, 'sell') && (
+                  <Link href="/seller/create-listing" className="group">
+                    <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-green-600 to-green-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
+                      <span className="relative z-10 flex items-center">
+                        <Plus className="w-6 h-6 mr-2" />
+                        Create New Listing
+                      </span>
+                      <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                    </button>
+                  </Link>
+                )}
+                
+                <Link href="/dashboard" className="group">
+                  <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
+                    <span className="relative z-10 flex items-center">
+                      <Package className="w-6 h-6 mr-2" />
+                      Go to Dashboard
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  </button>
+                </Link>
+              </>
+            ) : (
+              <>
+                {/* Not logged in buttons */}
+                <Link href="/register" className="group">
+                  <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-green-600 to-green-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
+                    <span className="relative z-10">Start Trading Today</span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                  </button>
+                </Link>
+                
+                <Link href="/listings" className="group">
+                  <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
+                    <span className="relative z-10 flex items-center">
+                      <ShoppingCart className="w-6 h-6 mr-2" />
+                      Browse Listings
+                    </span>
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                  </button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Floating Elements for Cinematic Effect */}
@@ -94,12 +143,6 @@ export default function HomePage() {
           <div className="absolute bottom-1/3 right-1/6 w-32 h-32 bg-gradient-to-br from-orange-400/10 to-transparent rounded-full blur-2xl animate-glow animation-delay-1000"></div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-40 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-white/70 rounded-full mt-2 animate-pulse"></div>
-          </div>
-        </div>
         
         {/* Cinematic Corner Accents */}
         <div className="absolute top-0 left-0 w-32 h-32 border-l-4 border-t-4 border-green-400/30 rounded-tl-3xl"></div>

@@ -65,7 +65,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(({
         />
         
         {rightIcon && (
-          <div className={`${iconClasses} right-0 pr-4`}>
+          <div className={`${iconClasses} right-0 pr-4 pointer-events-auto`}>
             <div className="text-gray-400">
               {rightIcon}
             </div>
