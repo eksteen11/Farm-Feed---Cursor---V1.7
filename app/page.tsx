@@ -30,7 +30,6 @@ import {
   Zap,
   Target,
   Heart,
-  Calculator,
   Mail,
   BarChart3,
   Smartphone
