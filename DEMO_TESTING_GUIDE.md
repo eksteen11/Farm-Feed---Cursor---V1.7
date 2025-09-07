@@ -5,7 +5,8 @@
 | Role | Email | Password | Purpose |
 |------|--------|----------|---------|
 | **Buyer** | `buyer@demo.com` | `demo123` | Test offer creation and management |
-| **Seller** | `seller@demo.com` | `demo123` | Test listing management and offer responses |
+| **Seller** | `
+` | `demo123` | Test listing management and offer responses |
 | **Transporter** | `transporter@demo.com` | `demo123` | Test transport requests and quotes |
 | **Admin** | `admin@demo.com` | `demo123` | Test system overview and analytics |
 
@@ -35,11 +36,14 @@
      - Message: "Interested in your maize. Can you deliver to our feedlot?"
      - Terms: "Payment within 7 days of delivery"
    - Submit the offer
+   - **Expected**: Seller receives email notification immediately
 
-4. **View Your Offers**
+4. **View Your Offers & Messages**
    - Go to `/buyer/dashboard`
    - Click "Offers" tab
    - You'll see your new offer with "pending" status
+   - **View Messages**: Check listing detail page for message threads
+   - **Dashboard Messages**: View all messages pertaining to specific listings
 
 ---
 
@@ -70,9 +74,12 @@
      - Click "Reject"
      - Confirm the action
 
-4. **View Created Deals**
+4. **View Created Deals & Documents**
    - In the dashboard, you'll see the deal if accepted
    - Check the "Deals" tab for transaction details
+   - **Document Management**: View contracts, invoices, and transport agreements
+   - **Email Notifications**: All parties receive documents via email
+   - **Dashboard Attachments**: All documents attached to relevant dashboards
 
 ---
 
@@ -93,6 +100,15 @@
      - Estimated days: 2
      - Message: "Available for immediate pickup. Covered transport with GPS tracking."
    - Submit quote
+
+4. **Create Backload Listings**
+   - Go to transport dashboard
+   - Create empty truck space listings:
+     - Route: Johannesburg → Cape Town
+     - Available date: Tomorrow
+     - Capacity: 20 tons
+     - Price: R2.80/km
+   - List backload opportunities for other users to book
 
 ---
 

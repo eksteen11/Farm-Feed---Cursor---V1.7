@@ -56,36 +56,46 @@ Instead of separate roles (buyer, seller, transporter), **every user has multipl
 
 ---
 
-## 🔄 **UNIFIED WORKFLOW: ONE USER, ALL CAPABILITIES**
+## 🔄 **ENHANCED UNIFIED WORKFLOW: ONE USER, ALL CAPABILITIES**
 
-### **📱 UNIFIED DASHBOARD SECTIONS:**
+### **📱 ENHANCED UNIFIED DASHBOARD SECTIONS:**
 ```
  MAIN DASHBOARD
 ├── 📈 Overview & Analytics
 ├── Financial Summary
-└── 🔔 Recent Activity
+├── 🔔 Recent Activity
+└── 📊 Document Tracking
 
 🛍️ COMMERCE
 ├── 📋 My Listings (Products + Transport)
+│   ├── 🖼️ Image Galleries
+│   ├── 📜 Certificates & Analysis
+│   ├── 🏷️ Grade Specifications
+│   └── 📦 Packaging Options
 ├── 💼 My Offers (Buying + Selling)
 ├── Offers Received
-└── 🤝 Active Deals
+├── 🤝 Active Deals
+└── 💬 Listing-Specific Messages
 
 🚛 TRANSPORT
 ├── 🚚 My Transport Requests
 ├── 📋 My Transport Quotes
 ├──️ My Backload Listings (Empty Trucks)
-└── 📦 Active Transport Deals
+├── 📦 Active Transport Deals
+└── 🗺️ Route Optimization
 
 📄 DOCUMENTS
 ├── 📄 Contracts (Sent/Received)
 ├── 🧾 Invoices (Sent/Received)
-└── 📋 Transport Agreements
+├── 📋 Transport Agreements
+├── 📧 Email Notifications
+└── 📎 Document Attachments
 
 💬 COMMUNICATION
 ├── 💬 Chat Messages
-├── 📧 Notifications
-└── Contact History
+├── 📧 Email Notifications
+├── 🔔 Real-time Updates
+└── 📝 Message Threads
 ```
 
 ---
@@ -104,12 +114,17 @@ Instead of separate roles (buyer, seller, transporter), **every user has multipl
 └── 💡 Optimizes truck utilization
 ```
 
-### **🔄 TRANSPORT WORKFLOW:**
+### **🔄 ENHANCED TRANSPORT WORKFLOW:**
 1. **User needs transport** → Creates transport request
 2. **System auto-calculates** → Low/medium/high cost estimates
 3. **Transporters quote** → On requests or offer backloads
 4. **Backload matching** → System suggests empty truck routes
 5. **Route optimization** → Minimize empty return trips
+6. **Seller transport choice** → Pickup vs delivery decision
+7. **Delivered pricing** → Calculate based on buyer location
+8. **Document generation** → Contracts, invoices, transport agreements
+9. **Email notifications** → All parties receive documents
+10. **Dashboard attachments** → Documents accessible in all dashboards
 
 ---
 
@@ -144,21 +159,32 @@ Instead of separate roles (buyer, seller, transporter), **every user has multipl
 - [x] Updated mock data
 - [x] Navigation system
 
-### **✅ PHASE 2: TRANSPORT ECOSYSTEM (COMPLETE)**
+### **✅ PHASE 2: ENHANCED TRANSPORT ECOSYSTEM (COMPLETE)**
 - [x] Transport requests
 - [x] Transport quotes
 - [x] Backload listings (empty truck routes)
 - [x] Transport dashboard
 - [x] Route optimization
+- [x] Seller transport choice (pickup vs delivery)
+- [x] Delivered pricing calculation
+- [x] Document generation and emailing
+- [x] Dashboard document attachments
 
-### **🔄 PHASE 3: DEAL CONFIRMATION FLOW (IN PROGRESS)**
-- [ ] Payment processing simulation
-- [ ] Contract generation
-- [ ] Invoice creation
+### **✅ PHASE 3: ENHANCED DEAL CONFIRMATION FLOW (COMPLETE)**
+- [x] Payment processing simulation
+- [x] Contract generation
+- [x] Invoice creation
+- [x] Email notifications to all parties
+- [x] Dashboard document attachments
+- [x] Document tracking and delivery confirmation
 - [ ] Escrow system
 - [ ] Digital signatures
 
-### **❌ PHASE 4: CHAT SYSTEM (NOT STARTED)**
+### **🔄 PHASE 4: ENHANCED COMMUNICATION SYSTEM (IN PROGRESS)**
+- [x] Listing-specific message threads
+- [x] Dashboard message center
+- [x] Email notifications for offers
+- [x] Real-time status updates
 - [ ] Real-time messaging
 - [ ] File sharing
 - [ ] Negotiation history

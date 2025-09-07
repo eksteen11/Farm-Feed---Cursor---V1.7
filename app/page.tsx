@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import Button from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
@@ -18,18 +18,100 @@ import {
   Eye,
   Package,
   ShoppingCart,
-  Plus
+  Plus,
+  Search,
+  FileText,
+  MessageSquare,
+  MapPin,
+  Clock,
+  DollarSign,
+  Award,
+  Zap,
+  Target,
+  Heart
 } from 'lucide-react'
 import { mockListings } from '@/lib/mockData'
+
+type UserType = 'buyer' | 'seller' | 'transporter'
 
 export default function HomePage() {
   const { currentUser } = useStore()
   const featuredListings = mockListings.slice(0, 3)
+  const [selectedUserType, setSelectedUserType] = useState<UserType>('buyer')
+
+  // User type configurations with industry-specific USPs
+  const userTypeConfig = {
+    buyer: {
+      title: "Buy Quality Grain & Feed",
+      subtitle: "Source maize, wheat, soybeans, and feed from verified South African farmers",
+      color: "blue",
+      icon: ShoppingCart,
+      problem: "Finding reliable suppliers with quality grain and feed products",
+      solution: "Access verified farmers with quality certificates, transparent pricing, and guaranteed delivery",
+      benefits: [
+        "Quality certificates & lab analysis",
+        "Transparent pricing & negotiations", 
+        "Reliable delivery & logistics",
+        "Secure transactions & contracts"
+      ],
+      usp: "Get the best prices on maize, wheat, and feed with quality guarantees"
+    },
+    seller: {
+      title: "Sell Your Grain & Feed",
+      subtitle: "Reach feedlots, mills, and traders nationwide with your agricultural products",
+      color: "green", 
+      icon: Package,
+      problem: "Finding reliable buyers for your grain and feed products",
+      solution: "Reach verified feedlots, mills, and traders with professional product listings",
+      benefits: [
+        "Professional listing creation with images",
+        "Direct communication with buyers",
+        "Flexible delivery options",
+        "Reputation building & reviews"
+      ],
+      usp: "Maximize your grain and feed sales with direct access to verified buyers"
+    },
+    transporter: {
+      title: "Transport Agricultural Products",
+      subtitle: "Find consistent loads and optimize your routes across South Africa",
+      color: "orange",
+      icon: Truck,
+      problem: "Finding consistent grain and feed transport loads",
+      solution: "Access integrated transport marketplace with route optimization and backload matching",
+      benefits: [
+        "Route optimization & backload matching",
+        "Consistent grain & feed loads",
+        "Reputation system & reviews",
+        "Reliable payments & contracts"
+      ],
+      usp: "Reduce empty trips and maximize revenue with smart route optimization"
+    }
+  }
+
+  const currentConfig = userTypeConfig[selectedUserType]
+
+  // Feature ordering and emphasis for each user type (aligned with blueprint)
+  const featureConfig = {
+    buyer: {
+      priority: ['Quality Verification', 'Product Listings', 'Offer Management', 'Transport Integration', 'Document Management', 'Email Notifications', 'Dashboard Analytics', 'Mobile Access'],
+      emphasis: ['Quality Verification', 'Product Listings', 'Offer Management']
+    },
+    seller: {
+      priority: ['Product Listings', 'Offer Management', 'Transport Options', 'Document Management', 'Email Notifications', 'Dashboard Analytics', 'Quality Verification', 'Mobile Access'],
+      emphasis: ['Product Listings', 'Offer Management', 'Transport Options']
+    },
+    transporter: {
+      priority: ['Transport Requests', 'Backload Listings', 'Route Optimization', 'Quote Management', 'Document Management', 'Email Notifications', 'Dashboard Analytics', 'Mobile Access'],
+      emphasis: ['Transport Requests', 'Backload Listings', 'Route Optimization']
+    }
+  }
+
+  const currentFeatureConfig = featureConfig[selectedUserType]
 
   return (
     <div className="min-h-screen">
-      {/* Cinematic Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Enhanced Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pb-16">
         {/* Cinematic Background Image */}
         <div className="absolute inset-0 z-0 bg-gradient-to-br from-green-900 via-gray-800 to-orange-900">
           <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-black/70 z-10"></div>
@@ -42,6 +124,8 @@ export default function HomePage() {
           {/* Dynamic Overlay Elements */}
           <div className="absolute inset-0 bg-gradient-to-r from-green-900/30 via-transparent to-orange-900/30 z-20"></div>
           <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-transparent to-black/50 z-30"></div>
+          {/* Smooth gradient transition to white space */}
+          <div className="absolute bottom-0 left-0 w-full h-40 bg-gradient-to-t from-white via-white/90 via-white/60 via-white/30 to-transparent z-35"></div>
           
           {/* Floating Particles for Cinematic Effect */}
           <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-green-400 rounded-full animate-float opacity-60"></div>
@@ -51,53 +135,92 @@ export default function HomePage() {
           <div className="absolute top-1/2 left-1/6 w-1.5 h-1.5 bg-yellow-300 rounded-full animate-float animation-delay-3000 opacity-50"></div>
         </div>
 
-        {/* Hero Content */}
+        {/* Enhanced Hero Content */}
         <div className="relative z-40 text-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          {/* Main Title with Cinematic Typography */}
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-8 text-white leading-tight tracking-tight">
-            <span className="block animate-fade-in-up animation-delay-100">
-              {currentUser ? `Welcome back, ${currentUser.name.split(' ')[0]}!` : 'Connect with'}
-            </span>
-            <span className="block bg-gradient-to-r from-green-400 via-yellow-400 to-orange-400 bg-clip-text text-transparent animate-fade-in-up animation-delay-200 drop-shadow-2xl">
-              {currentUser ? 'Ready to Trade?' : 'Trusted Farmers'}
-            </span>
-          </h1>
+          {/* Industry & Problem Statement */}
+          <div className="mb-8 animate-fade-in-up animation-delay-100">
+            <div className="text-center mb-6">
+              <span className="inline-block bg-green-500/20 text-green-200 px-4 py-2 rounded-full text-sm font-medium border border-green-400/30">
+                🌾 Agricultural Trading Platform
+              </span>
+            </div>
+            <p className="text-lg md:text-xl text-red-200 font-medium text-center">
+              South African grain & feed traders struggle with fragmented markets, trust issues, and inefficient logistics
+            </p>
+          </div>
 
-          {/* Subtitle with Enhanced Styling */}
-          <p className="text-xl md:text-3xl lg:text-4xl font-light mb-8 text-gray-100 max-w-4xl mx-auto leading-relaxed animate-fade-in-up animation-delay-300">
-            {currentUser 
-              ? 'Manage your listings, offers, and deals from your unified dashboard'
-              : 'South Africa\'s Premier Grain & Feed Trading Platform'
-            }
-          </p>
+          {/* Solution Statement */}
+          <div className="mb-16 animate-fade-in-up animation-delay-200">
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-white leading-tight tracking-tight mb-6">
+              <span className="block">Farm Feed</span>
+              <span className="block bg-gradient-to-r from-green-400 via-yellow-400 to-orange-400 bg-clip-text text-transparent">
+                Grain & Feed Trading
+              </span>
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-100 max-w-4xl mx-auto mb-4">
+              The unified platform for maize, wheat, soybeans, and feed trading across South Africa
+            </p>
+            <p className="text-lg text-gray-200 max-w-3xl mx-auto">
+              Connect buyers, sellers, and transporters in one trusted marketplace
+            </p>
+          </div>
 
-          {/* Enhanced Description */}
-          <p className="text-lg md:text-xl lg:text-2xl mb-12 text-gray-200 max-w-3xl mx-auto leading-relaxed animate-fade-in-up animation-delay-400">
-            {currentUser 
-              ? 'Access all your trading activities in one place. Create listings, manage offers, and grow your agricultural business.'
-              : 'Buy and sell agricultural products with confidence. Verified sellers, secure transactions, and reliable delivery across the Rainbow Nation.'
-            }
-          </p>
+          {/* User Type Selector */}
+          <div className="mb-12 animate-fade-in-up animation-delay-300">
+            <p className="text-lg text-gray-200 mb-6">I am a:</p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-2xl mx-auto">
+              {Object.entries(userTypeConfig).map(([type, config]) => {
+                const Icon = config.icon
+                const isSelected = selectedUserType === type
+                return (
+                  <button
+                    key={type}
+                    onClick={() => setSelectedUserType(type as UserType)}
+                    className={`flex items-center space-x-3 px-6 py-4 rounded-2xl border-2 transition-all duration-300 transform hover:scale-105 ${
+                      isSelected
+                        ? `border-${config.color}-400 bg-${config.color}-500/20 text-white shadow-lg`
+                        : 'border-white/30 bg-white/10 text-gray-200 hover:bg-white/20 hover:border-white/50'
+                    }`}
+                  >
+                    <Icon className="w-6 h-6" />
+                    <span className="font-semibold capitalize">{type}</span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
 
-          {/* Cinematic Call-to-Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in-up animation-delay-500">
+          {/* User-Specific Content */}
+          <div className="animate-fade-in-up animation-delay-400">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              {currentConfig.title}
+            </h2>
+            <p className="text-xl text-gray-200 mb-8 max-w-3xl mx-auto">
+              {currentConfig.subtitle}
+            </p>
+            
+            {/* Problem, Solution & USP */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-12">
+              <div className="bg-red-500/20 border border-red-400/30 rounded-2xl p-6">
+                <h3 className="text-lg font-semibold text-red-200 mb-3">The Problem</h3>
+                <p className="text-gray-200 text-sm">{currentConfig.problem}</p>
+              </div>
+              <div className="bg-green-500/20 border border-green-400/30 rounded-2xl p-6">
+                <h3 className="text-lg font-semibold text-green-200 mb-3">Our Solution</h3>
+                <p className="text-gray-200 text-sm">{currentConfig.solution}</p>
+              </div>
+              <div className="bg-blue-500/20 border border-blue-400/30 rounded-2xl p-6">
+                <h3 className="text-lg font-semibold text-blue-200 mb-3">Your Advantage</h3>
+                <p className="text-gray-200 text-sm">{currentConfig.usp}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* User-Specific Call-to-Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-8 justify-center items-center animate-fade-in-up animation-delay-500 mt-8">
             {currentUser ? (
               <>
                 {/* Logged in user buttons */}
-                {canUserPerformAction(currentUser, 'sell') && (
-                  <Link href="/seller/create-listing" className="group">
-                    <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-green-600 to-green-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
-                      <span className="relative z-10 flex items-center">
-                        <Plus className="w-6 h-6 mr-2" />
-                        Create New Listing
-                      </span>
-                      <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                    </button>
-                  </Link>
-                )}
-                
                 <Link href="/dashboard" className="group">
                   <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
                     <span className="relative z-10 flex items-center">
@@ -110,25 +233,81 @@ export default function HomePage() {
               </>
             ) : (
               <>
-                {/* Not logged in buttons */}
-                <Link href="/register" className="group">
-                  <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-green-600 to-green-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
-                    <span className="relative z-10">Start Trading Today</span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
-                  </button>
-                </Link>
+                {/* User-specific CTA buttons */}
+                {selectedUserType === 'buyer' && (
+                  <>
+                    <Link href="/register" className="group">
+                      <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-blue-600 to-blue-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
+                        <span className="relative z-10 flex items-center">
+                          <Search className="w-6 h-6 mr-2" />
+                          Start Buying Today
+                        </span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                      </button>
+                    </Link>
+                    <Link href="/listings" className="group">
+                      <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
+                        <span className="relative z-10 flex items-center">
+                          <ShoppingCart className="w-6 h-6 mr-2" />
+                          Browse Products
+                        </span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                      </button>
+                    </Link>
+                  </>
+                )}
                 
-                <Link href="/listings" className="group">
-                  <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
-                    <span className="relative z-10 flex items-center">
-                      <ShoppingCart className="w-6 h-6 mr-2" />
-                      Browse Listings
-                    </span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                  </button>
-                </Link>
+                {selectedUserType === 'seller' && (
+                  <>
+                    <Link href="/register" className="group">
+                      <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-green-600 to-green-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
+                        <span className="relative z-10 flex items-center">
+                          <Plus className="w-6 h-6 mr-2" />
+                          Start Selling Today
+                        </span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                      </button>
+                    </Link>
+                    <Link href="/listings" className="group">
+                      <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
+                        <span className="relative z-10 flex items-center">
+                          <Eye className="w-6 h-6 mr-2" />
+                          See Market Prices
+                        </span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                      </button>
+                    </Link>
+                  </>
+                )}
+                
+                {selectedUserType === 'transporter' && (
+                  <>
+                    <Link href="/register" className="group">
+                      <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-orange-600 to-orange-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
+                        <span className="relative z-10 flex items-center">
+                          <Truck className="w-6 h-6 mr-2" />
+                          Start Transporting Today
+                        </span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                      </button>
+                    </Link>
+                    <Link href="/transport" className="group">
+                      <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
+                        <span className="relative z-10 flex items-center">
+                          <MapPin className="w-6 h-6 mr-2" />
+                          View Transport Requests
+                        </span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                      </button>
+                    </Link>
+                  </>
+                )}
               </>
             )}
           </div>
@@ -149,6 +328,143 @@ export default function HomePage() {
         <div className="absolute top-0 right-0 w-32 h-32 border-r-4 border-t-4 border-orange-400/30 rounded-tr-3xl"></div>
         <div className="absolute bottom-0 left-0 w-32 h-32 border-l-4 border-b-4 border-yellow-400/30 rounded-bl-3xl"></div>
         <div className="absolute bottom-0 right-0 w-32 h-32 border-r-4 border-b-4 border-green-400/30 rounded-br-3xl"></div>
+      </section>
+
+      {/* Step-by-Step Workflow Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              How It Works for {selectedUserType === 'buyer' ? 'Buyers' : selectedUserType === 'seller' ? 'Sellers' : 'Transporters'}
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Follow these simple steps to get started and achieve your goals
+            </p>
+          </div>
+
+          {/* Dynamic Workflow Steps */}
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
+            {selectedUserType === 'buyer' && (
+              <>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Users className="w-8 h-8 text-blue-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">1. Register & Verify</h3>
+                  <p className="text-gray-600 text-sm">Create your account and verify your identity to access quality suppliers</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Search className="w-8 h-8 text-blue-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">2. Browse Products</h3>
+                  <p className="text-gray-600 text-sm">Search and filter quality products with certificates and specifications</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <TrendingUp className="w-8 h-8 text-blue-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">3. Compare & Negotiate</h3>
+                  <p className="text-gray-600 text-sm">Compare prices, quality, and negotiate terms with sellers</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Truck className="w-8 h-8 text-blue-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">4. Arrange Delivery</h3>
+                  <p className="text-gray-600 text-sm">Choose delivery options and coordinate with transporters</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle className="w-8 h-8 text-blue-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">5. Complete Transaction</h3>
+                  <p className="text-gray-600 text-sm">Receive products, automatically generated contracts & invoices via email, and build relationships</p>
+                </div>
+              </>
+            )}
+
+            {selectedUserType === 'seller' && (
+              <>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Users className="w-8 h-8 text-green-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">1. Register & Verify</h3>
+                  <p className="text-gray-600 text-sm">Create your account and verify your identity to build trust</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Plus className="w-8 h-8 text-green-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">2. Create Listings</h3>
+                  <p className="text-gray-600 text-sm">Add product images, certificates, grades, and packaging details</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <MessageSquare className="w-8 h-8 text-green-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">3. Manage Offers</h3>
+                  <p className="text-gray-600 text-sm">Receive offers, negotiate terms, and communicate with buyers</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Truck className="w-8 h-8 text-green-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">4. Arrange Delivery</h3>
+                  <p className="text-gray-600 text-sm">Choose pickup or delivery options and coordinate logistics</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <DollarSign className="w-8 h-8 text-green-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">5. Complete Sale</h3>
+                  <p className="text-gray-600 text-sm">Generate contracts, invoices, and receive payment</p>
+                </div>
+              </>
+            )}
+
+            {selectedUserType === 'transporter' && (
+              <>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Users className="w-8 h-8 text-orange-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">1. Register & Verify</h3>
+                  <p className="text-gray-600 text-sm">Create your account and verify your transport credentials</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Search className="w-8 h-8 text-orange-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">2. Find Opportunities</h3>
+                  <p className="text-gray-600 text-sm">Browse transport requests and backload opportunities</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <FileText className="w-8 h-8 text-orange-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">3. Submit Quotes</h3>
+                  <p className="text-gray-600 text-sm">Provide competitive quotes with vehicle details and pricing</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <MapPin className="w-8 h-8 text-orange-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">4. Optimize Routes</h3>
+                  <p className="text-gray-600 text-sm">Plan efficient routes and find backload opportunities</p>
+                </div>
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Award className="w-8 h-8 text-orange-600" />
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">5. Build Reputation</h3>
+                  <p className="text-gray-600 text-sm">Complete deliveries, get rated, and build your reputation</p>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
       </section>
 
       {/* Stats Section */}
@@ -260,111 +576,208 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="py-16 bg-white">
+      {/* How Farm Feed Works - Only show when no user type is selected */}
+      {!selectedUserType && (
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                How Farm Feed Works
+              </h2>
+              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+                Simple steps to start trading agricultural products with confidence
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="text-center">
+                <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Users className="w-8 h-8 text-primary-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">1. Create Account</h3>
+                <p className="text-gray-600">
+                  Sign up and verify your identity to access our trusted trading platform
+                </p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <TrendingUp className="w-8 h-8 text-primary-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">2. Browse & Connect</h3>
+                <p className="text-gray-600">
+                  Find products or buyers, make offers, and negotiate terms directly
+                </p>
+              </div>
+              
+              <div className="text-center">
+                <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Truck className="w-8 h-8 text-primary-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">3. Complete Deal</h3>
+                <p className="text-gray-600">
+                  Confirm your deal, arrange transport, and complete the transaction securely
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Enhanced Features Showcase */}
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              How Farm Feed Works
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Platform Features That Help You Succeed
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Simple steps to start trading agricultural products with confidence
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Discover the powerful tools and features designed to make your agricultural trading experience seamless and profitable
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Users className="w-8 h-8 text-primary-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">1. Create Account</h3>
-              <p className="text-gray-600">
-                Sign up and verify your identity to access our trusted trading platform
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <TrendingUp className="w-8 h-8 text-primary-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">2. Browse & Connect</h3>
-              <p className="text-gray-600">
-                Find products or buyers, make offers, and negotiate terms directly
-              </p>
-            </div>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Truck className="w-8 h-8 text-primary-600" />
-              </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">3. Complete Deal</h3>
-              <p className="text-gray-600">
-                Confirm your deal, arrange transport, and complete the transaction securely
-              </p>
-            </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {currentFeatureConfig.priority.map((featureName: string, index: number) => {
+              const features: Record<string, any> = {
+                'Quality Verification': {
+                  icon: Shield,
+                  color: 'blue',
+                  description: 'Verified sellers with quality certificates and lab analysis for grain and feed products',
+                  benefits: ['Quality certificates', 'Lab analysis reports', 'Verified sellers']
+                },
+                'Product Listings': {
+                  icon: Package,
+                  color: 'green',
+                  description: 'Browse and create detailed listings for maize, wheat, soybeans, and feed products',
+                  benefits: ['Product images', 'Quality grades', 'Packaging options']
+                },
+                'Offer Management': {
+                  icon: MessageSquare,
+                  color: 'purple',
+                  description: 'Make offers, negotiate terms, and manage deals with direct communication',
+                  benefits: ['Make offers', 'Negotiate terms', 'Deal management']
+                },
+                'Transport Integration': {
+                  icon: Truck,
+                  color: 'orange',
+                  description: 'Integrated transport marketplace with route optimization and delivery coordination',
+                  benefits: ['Transport requests', 'Route optimization', 'Delivery tracking']
+                },
+                'Transport Requests': {
+                  icon: Truck,
+                  color: 'orange',
+                  description: 'Submit and manage transport requests for grain and feed deliveries',
+                  benefits: ['Request transport', 'Track deliveries', 'Coordinate logistics']
+                },
+                'Backload Listings': {
+                  icon: MapPin,
+                  color: 'yellow',
+                  description: 'List empty truck space and find backload opportunities to maximize revenue',
+                  benefits: ['Empty truck listings', 'Backload matching', 'Route optimization']
+                },
+                'Route Optimization': {
+                  icon: Target,
+                  color: 'indigo',
+                  description: 'Smart route planning to minimize empty trips and maximize efficiency',
+                  benefits: ['Route planning', 'Empty trip reduction', 'Efficiency optimization']
+                },
+                'Quote Management': {
+                  icon: FileText,
+                  color: 'red',
+                  description: 'Submit competitive transport quotes and manage pricing for different routes',
+                  benefits: ['Submit quotes', 'Pricing management', 'Competitive rates']
+                },
+                'Transport Options': {
+                  icon: Truck,
+                  color: 'orange',
+                  description: 'Choose between pickup, delivery, or seller-arranged transport options',
+                  benefits: ['Pickup options', 'Delivery services', 'Seller transport']
+                },
+                'Document Management': {
+                  icon: FileText,
+                  color: 'purple',
+                  description: 'Automatic contract generation, invoice creation, and document tracking',
+                  benefits: ['Auto-generated contracts', 'Invoice creation', 'Document tracking']
+                },
+                'Email Notifications': {
+                  icon: MessageSquare,
+                  color: 'green',
+                  description: 'Instant email notifications for offers, deals, and important updates',
+                  benefits: ['Offer notifications', 'Deal updates', 'Status alerts']
+                },
+                'Dashboard Analytics': {
+                  icon: TrendingUp,
+                  color: 'indigo',
+                  description: 'Track your trading performance with detailed analytics and insights',
+                  benefits: ['Performance metrics', 'Trading insights', 'Revenue tracking']
+                },
+                'Mobile Access': {
+                  icon: Zap,
+                  color: 'teal',
+                  description: 'Access your trading activities anywhere with our mobile-optimized platform',
+                  benefits: ['Mobile-first design', 'Touch-friendly interface', 'Anywhere access']
+                }
+              }
+
+              const feature = features[featureName]
+              if (!feature) return null // Skip if feature not found
+              const Icon = feature.icon
+              const isEmphasized = currentFeatureConfig.emphasis.includes(featureName)
+              
+              return (
+                <div 
+                  key={featureName}
+                  className={`bg-white p-8 rounded-2xl shadow-card hover:shadow-lg transition-shadow group ${
+                    isEmphasized ? 'ring-2 ring-blue-200 bg-blue-50/30' : ''
+                  }`}
+                >
+                  {isEmphasized && (
+                    <div className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+                      Recommended
+                    </div>
+                  )}
+                  <div className={`w-16 h-16 bg-${feature.color}-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                    <Icon className={`w-8 h-8 text-${feature.color}-600`} />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3">{featureName}</h3>
+                  <p className="text-gray-600 mb-4">
+                    {feature.description}
+                  </p>
+                  {feature.benefits.map((benefit: string, benefitIndex: number) => (
+                    <div key={benefitIndex} className={`text-sm text-${feature.color}-600 font-medium`}>
+                      ✓ {benefit}
+                    </div>
+                  ))}
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Why Choose Farm Feed?
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Built for the South African agricultural community with trust and security at its core
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-2xl shadow-card">
-              <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-                <Shield className="w-6 h-6 text-green-600" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Verified Sellers</h3>
-              <p className="text-gray-600">
-                All sellers undergo strict verification to ensure product quality and reliability
-              </p>
-            </div>
-            
-            <div className="bg-white p-6 rounded-2xl shadow-card">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                <CheckCircle className="w-6 h-6 text-blue-600" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Secure Transactions</h3>
-              <p className="text-gray-600">
-                Built-in escrow and secure payment systems protect both buyers and sellers
-              </p>
-            </div>
-            
-            <div className="bg-white p-6 rounded-2xl shadow-card">
-              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                <Truck className="w-6 h-6 text-purple-600" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Transport Solutions</h3>
-              <p className="text-gray-600">
-                Integrated transport marketplace for seamless delivery across South Africa
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 bg-primary-600 text-white">
+      {/* User-Specific CTA Section */}
+      <section className={`py-20 text-white ${
+        selectedUserType === 'buyer' ? 'bg-blue-600' : 
+        selectedUserType === 'seller' ? 'bg-green-600' : 
+        'bg-orange-600'
+      }`}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
-            Ready to Start Trading?
+            {selectedUserType === 'buyer' && "Ready to Find Quality Suppliers?"}
+            {selectedUserType === 'seller' && "Ready to Reach More Buyers?"}
+            {selectedUserType === 'transporter' && "Ready to Find More Loads?"}
           </h2>
-          <p className="text-xl mb-8 text-primary-100">
-            Join thousands of farmers and buyers who trust Farm Feed for their agricultural trading needs
+          <p className="text-xl mb-8 opacity-90">
+            {selectedUserType === 'buyer' && "Join thousands of buyers who trust Farm Feed for quality agricultural products"}
+            {selectedUserType === 'seller' && "Join thousands of sellers who trust Farm Feed to reach more customers"}
+            {selectedUserType === 'transporter' && "Join thousands of transporters who trust Farm Feed for consistent loads"}
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/register">
-              <Button size="lg" className="bg-white text-primary-600 hover:bg-gray-100">
-                Create Free Account
+              <Button size="lg" className="bg-white text-gray-900 hover:bg-gray-100">
+                {selectedUserType === 'buyer' && "Start Buying Today"}
+                {selectedUserType === 'seller' && "Start Selling Today"}
+                {selectedUserType === 'transporter' && "Start Transporting Today"}
                 <ArrowRight className="ml-2 w-5 h-5" />
               </Button>
             </Link>

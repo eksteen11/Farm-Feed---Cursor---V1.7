@@ -5,25 +5,29 @@ A modern, responsive web application built with Next.js and Tailwind CSS for con
 ## 🚀 Features
 
 ### Core Functionality
-- **User Authentication**: Secure login/registration system with role-based access
-- **Product Listings**: Browse and search agricultural products with advanced filtering
-- **Trading System**: Make offers, negotiate deals, and complete transactions
-- **User Dashboards**: Separate interfaces for buyers, sellers, and transporters
-- **Transport Marketplace**: Integrated transport request and quote system
-- **Real-time Notifications**: Stay updated on offers, deals, and platform activities
+- **Unified User System**: Every user can sell, buy, AND transport from a single account
+- **Enhanced Product Listings**: Browse with images, certificates, grades, and packaging options
+- **Advanced Trading System**: Make offers, negotiate deals, and complete transactions
+- **Comprehensive Dashboards**: Unified interfaces with document management
+- **Transport Marketplace**: Integrated transport requests, quotes, and backload listings
+- **Document Management**: Automatic contract/invoice generation and email notifications
+- **Real-time Communication**: Listing-specific messages and email notifications
 
-### User Roles
+### User Capabilities
 - **Public Users**: Browse listings without registration
-- **Buyers**: Subscribe to make offers, negotiate, and complete purchases
-- **Sellers**: Create listings, manage offers, and handle sales
-- **Transporters**: Provide transport quotes and manage deliveries
-- **Administrators**: Full platform management and analytics access
+- **Unified Users**: Can sell, buy, AND transport from single account
+- **Enhanced Sellers**: Create listings with images, certificates, grades, packaging options
+- **Advanced Buyers**: Make offers, negotiate, view messages, manage documents
+- **Smart Transporters**: Submit quotes, create backload listings, optimize routes
+- **Administrators**: Full platform management, document oversight, and analytics
 
 ### Technical Features
 - **Responsive Design**: Mobile-first approach with Tailwind CSS
 - **Type Safety**: Full TypeScript implementation
 - **State Management**: Zustand for efficient state handling
 - **Component Library**: Reusable UI components following design system
+- **Document Management**: PDF generation, email notifications, dashboard attachments
+- **Enhanced Data Models**: Images, certificates, grades, packaging, backload listings
 - **Mock Data**: Fully functional with realistic sample data
 - **SEO Optimized**: Public pages are search engine friendly
 
@@ -211,6 +215,7 @@ For support and questions:
 ---
 
 **Built with ❤️ in South Africa for the agricultural community**
+
 
 
 

@@ -63,6 +63,29 @@ interface Listing {
   availableQuantity: number
   location: string
   images: string[]
+  grade: 'A' | 'B' | 'C' | 'Premium' | 'Standard'
+  packaging: {
+    type: 'Bulk' | 'Bulk Bags' | 'Bags' | 'HDP Bales' | 'Block Bales' | 'Small Bales'
+    size?: string // e.g., '1 ton', '500kg', '25kg', etc.
+    customNotes?: string
+  }
+  certificates: string[] // File paths to certificates
+  analysisReports: string[] // File paths to lab analysis
+  qualitySpecifications: {
+    moistureContent?: number
+    proteinLevel?: number
+    other?: Record<string, any>
+  }
+  deliveryOptions: {
+    exFarm: boolean
+    delivered: boolean
+    ownTransport: {
+      available: boolean
+      pricePerKm?: number
+      availableDates?: Date[]
+      routes?: string[]
+    }
+  }
   isActive: boolean
   expiresAt?: Date
   createdAt: Date
@@ -96,7 +119,14 @@ interface Offer {
   price: number
   quantity: number
   message?: string
-  status: 'pending' | 'accepted' | 'rejected' | 'expired' | 'cancelled'
+  deliveryPreference: 'exFarm' | 'delivered' | 'sellerTransport'
+  paymentTerms?: string
+  status: 'pending' | 'accepted' | 'rejected' | 'expired' | 'cancelled' | 'countered'
+  counterOffer?: {
+    price: number
+    message?: string
+    createdAt: Date
+  }
   expiresAt: Date
   createdAt: Date
   updatedAt: Date
@@ -122,6 +152,49 @@ interface TransportRequest {
   specialRequirements?: string
   contactPhone?: string
   urgent?: boolean
+  platformFee: number
+  createdAt: Date
+  updatedAt: Date
+}
+
+interface BackloadListing {
+  id: string
+  transporterId: string
+  transporter: User
+  route: {
+    from: string
+    to: string
+  }
+  availableDate: Date
+  capacity: number
+  unit: string
+  pricePerKm: number
+  vehicleType: string
+  specialServices: string[]
+  status: 'available' | 'booked' | 'completed'
+  createdAt: Date
+  updatedAt: Date
+}
+
+interface Deal {
+  id: string
+  offerId: string
+  offer: Offer
+  buyerId: string
+  buyer: User
+  sellerId: string
+  seller: User
+  finalPrice: number
+  quantity: number
+  deliveryMethod: 'exFarm' | 'delivered' | 'sellerTransport'
+  transportRequestId?: string
+  transportRequest?: TransportRequest
+  status: 'pending' | 'confirmed' | 'in_progress' | 'completed' | 'cancelled'
+  documents: {
+    contract: string
+    invoice: string
+    transportAgreement?: string
+  }
   createdAt: Date
   updatedAt: Date
 }
