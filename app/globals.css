@@ -99,6 +99,82 @@
   .animation-delay-1000 {
     animation-delay: 1s;
   }
+
+  /* User Type Button Animations */
+  @keyframes gentle-pulse {
+    0%, 100% {
+      opacity: 0.8;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.02);
+    }
+  }
+
+  @keyframes attention-pulse {
+    0%, 100% {
+      opacity: 0.9;
+      transform: scale(1);
+      box-shadow: 0 0 10px rgba(255,255,255,0.2);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255,255,255,0.4), 0 0 30px rgba(255,255,255,0.2);
+    }
+  }
+
+  @keyframes pulse-glow-green {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.3);
+      transform: scale(1);
+    }
+    50% {
+      box-shadow: 0 0 30px rgba(34, 197, 94, 0.6), 0 0 40px rgba(34, 197, 94, 0.3);
+      transform: scale(1.05);
+    }
+  }
+
+  @keyframes pulse-glow-red {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+      transform: scale(1);
+    }
+    50% {
+      box-shadow: 0 0 30px rgba(239, 68, 68, 0.6), 0 0 40px rgba(239, 68, 68, 0.3);
+      transform: scale(1.05);
+    }
+  }
+
+  .animate-gentle-pulse {
+    animation: gentle-pulse 3s ease-in-out infinite;
+  }
+
+  .animate-attention-pulse {
+    animation: attention-pulse 2.5s ease-in-out infinite;
+  }
+
+  .animate-pulse-glow-green {
+    animation: pulse-glow-green 2.5s ease-in-out infinite;
+  }
+
+  .animate-pulse-glow-red {
+    animation: pulse-glow-red 2.5s ease-in-out infinite;
+  }
+
+  @keyframes bounce-subtle {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-2px);
+    }
+  }
+
+  .animate-bounce-subtle {
+    animation: bounce-subtle 2s ease-in-out infinite;
+  }
   
   .animation-delay-1500 {
     animation-delay: 1.5s;

@@ -173,8 +173,9 @@ export default function HomePage() {
           {/* User Type Selector */}
           <div className="mb-12 animate-fade-in-up animation-delay-300">
             <p className="text-lg text-gray-200 mb-6">I am a:</p>
+            <p className="text-sm text-gray-300 mb-4 text-center">💡 Click any option to switch between user types</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-2xl mx-auto">
-              {Object.entries(userTypeConfig).map(([type, config]) => {
+              {Object.entries(userTypeConfig).map(([type, config], index) => {
                 const Icon = config.icon
                 const isSelected = selectedUserType === type
                 return (
@@ -184,17 +185,26 @@ export default function HomePage() {
                     className={`flex items-center space-x-3 px-6 py-4 rounded-2xl border-2 transition-all duration-300 transform hover:scale-105 ${
                       isSelected
                         ? type === 'buyer' 
-                          ? 'border-green-400 bg-green-500/20 text-white shadow-lg'
+                          ? 'border-green-400 bg-green-500/20 text-white shadow-lg animate-pulse-glow-green'
                           : type === 'seller'
-                          ? 'border-red-400 bg-red-500/20 text-white shadow-lg'
-                          : 'border-green-400 bg-green-500/20 text-white shadow-lg'
-                        : 'border-white/30 bg-white/10 text-gray-200 hover:bg-white/20 hover:border-white/50'
+                          ? 'border-red-400 bg-red-500/20 text-white shadow-lg animate-pulse-glow-red'
+                          : 'border-green-400 bg-green-500/20 text-white shadow-lg animate-pulse-glow-green'
+                        : 'border-white/30 bg-white/10 text-gray-200 hover:bg-white/20 hover:border-white/50 animate-attention-pulse'
                     }`}
+                    style={{
+                      animationDelay: `${index * 0.2}s`
+                    }}
                   >
                     <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse" />}>
-                      <Icon className="w-6 h-6" />
+                      <Icon className={`w-6 h-6 ${isSelected ? 'animate-bounce-subtle' : ''}`} />
                     </ClientOnly>
                     <span className="font-semibold capitalize">{type}</span>
+                    {isSelected && (
+                      <div className="absolute -top-1 -right-1 w-3 h-3 bg-white rounded-full animate-ping"></div>
+                    )}
+                    {!isSelected && (
+                      <div className="absolute -top-1 -right-1 w-2 h-2 bg-white/60 rounded-full animate-pulse"></div>
+                    )}
                   </button>
                 )
               })}
@@ -241,18 +251,97 @@ export default function HomePage() {
             }>
               {currentUser ? (
                 <>
-                  {/* Logged in user buttons */}
-                  <Link href="/dashboard" className="group">
-                    <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
-                      <span className="relative z-10 flex items-center">
-                        <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
-                          <Package className="w-6 h-6 mr-2" />
-                        </ClientOnly>
-                        Go to Dashboard
-                      </span>
-                      <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                    </button>
-                  </Link>
+                  {/* Logged in user buttons - based on user type */}
+                  {selectedUserType === 'buyer' && (
+                    <>
+                      {/* Primary CTA - Find Products */}
+                      <Link href="/listings" className="group">
+                        <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-green-600 to-green-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
+                          <span className="relative z-10 flex items-center">
+                            <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
+                              <Search className="w-6 h-6 mr-2" />
+                            </ClientOnly>
+                            Find Products
+                          </span>
+                          <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                        </button>
+                      </Link>
+                      {/* Secondary CTA - Arrange Transport */}
+                      <Link href="/transport" className="group">
+                        <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
+                          <span className="relative z-10 flex items-center">
+                            <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
+                              <Truck className="w-6 h-6 mr-2" />
+                            </ClientOnly>
+                            Arrange Transport
+                          </span>
+                          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                        </button>
+                      </Link>
+                    </>
+                  )}
+                  {selectedUserType === 'seller' && (
+                    <>
+                      {/* Primary CTA - Create Listing */}
+                      <Link href="/seller/create-listing" className="group">
+                        <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-red-600 to-red-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
+                          <span className="relative z-10 flex items-center">
+                            <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
+                              <Plus className="w-6 h-6 mr-2" />
+                            </ClientOnly>
+                            Create Listing
+                          </span>
+                          <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-red-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                        </button>
+                      </Link>
+                      {/* Secondary CTA - Arrange Transport */}
+                      <Link href="/transport" className="group">
+                        <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
+                          <span className="relative z-10 flex items-center">
+                            <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
+                              <Truck className="w-6 h-6 mr-2" />
+                            </ClientOnly>
+                            Arrange Transport
+                          </span>
+                          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                        </button>
+                      </Link>
+                    </>
+                  )}
+                  {selectedUserType === 'transporter' && (
+                    <>
+                      {/* Primary CTA - View Transport Requests */}
+                      <Link href="/transport/available" className="group">
+                        <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-green-600 to-green-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
+                          <span className="relative z-10 flex items-center">
+                            <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
+                              <Truck className="w-6 h-6 mr-2" />
+                            </ClientOnly>
+                            View Transport Requests
+                          </span>
+                          <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                        </button>
+                      </Link>
+                      {/* Secondary CTA - Create Backload Listing */}
+                      <Link href="/transport/create-backload" className="group">
+                        <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
+                          <span className="relative z-10 flex items-center">
+                            <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
+                              <Plus className="w-6 h-6 mr-2" />
+                            </ClientOnly>
+                            Create Backload Listing
+                          </span>
+                          <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                        </button>
+                      </Link>
+                    </>
+                  )}
                 </>
               ) : (
               <>
