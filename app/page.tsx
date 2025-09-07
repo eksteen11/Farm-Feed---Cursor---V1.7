@@ -29,7 +29,11 @@ import {
   Award,
   Zap,
   Target,
-  Heart
+  Heart,
+  Calculator,
+  Mail,
+  BarChart3,
+  Smartphone
 } from 'lucide-react'
 import { mockListings } from '@/lib/mockData'
 
