@@ -50,7 +50,7 @@ export default function BuyerOffers({ offers, listings, currentUser }: BuyerOffe
       case 'pending': return 'bg-yellow-100 text-yellow-800'
       case 'accepted': return 'bg-green-100 text-green-800'
       case 'rejected': return 'bg-red-100 text-red-800'
-      case 'counter-offered': return 'bg-blue-100 text-blue-800'
+      case 'counter-offered': return 'bg-green-100 text-green-800'
       case 'expired': return 'bg-gray-100 text-gray-800'
       default: return 'bg-gray-100 text-gray-800'
     }
@@ -162,8 +162,8 @@ export default function BuyerOffers({ offers, listings, currentUser }: BuyerOffe
               {/* Header */}
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                    <Package className="w-5 h-5 text-blue-600" />
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                    <Package className="w-5 h-5 text-green-600" />
                   </div>
                   <div>
                     <h3 className="font-medium text-gray-900">{listing.title}</h3>

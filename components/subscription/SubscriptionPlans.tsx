@@ -66,7 +66,7 @@ const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
                 isCurrentPlan
                   ? 'border-green-500 bg-green-50'
                   : isSelected
-                  ? 'border-blue-500 bg-blue-50'
+                  ? 'border-green-500 bg-green-50'
                   : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-lg'
               }`}
             >
@@ -121,7 +121,7 @@ const SubscriptionPlans: React.FC<SubscriptionPlansProps> = ({
                     isCurrentPlan
                       ? 'bg-green-100 text-green-700 cursor-not-allowed'
                       : isSelected
-                      ? 'bg-blue-600 text-white hover:bg-blue-700'
+                      ? 'bg-green-600 text-white hover:bg-green-700'
                       : 'bg-gray-900 text-white hover:bg-gray-800'
                   }`}
                 >
