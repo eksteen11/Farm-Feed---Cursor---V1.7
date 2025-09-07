@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Button from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
 import ImageComponent from '@/components/ui/Image'
+import ClientOnly from '@/components/ui/ClientOnly'
 import { useStore } from '@/store/useStore'
 import { canUserPerformAction } from '@/types'
 import { 
@@ -182,7 +183,9 @@ export default function HomePage() {
                         : 'border-white/30 bg-white/10 text-gray-200 hover:bg-white/20 hover:border-white/50'
                     }`}
                   >
-                    <Icon className="w-6 h-6" />
+                    <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse" />}>
+                      <Icon className="w-6 h-6" />
+                    </ClientOnly>
                     <span className="font-semibold capitalize">{type}</span>
                   </button>
                 )
@@ -224,7 +227,9 @@ export default function HomePage() {
                 <Link href="/dashboard" className="group">
                   <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
                     <span className="relative z-10 flex items-center">
-                      <Package className="w-6 h-6 mr-2" />
+                      <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
+                        <Package className="w-6 h-6 mr-2" />
+                      </ClientOnly>
                       Go to Dashboard
                     </span>
                     <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
@@ -239,7 +244,9 @@ export default function HomePage() {
                     <Link href="/register" className="group">
                       <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-blue-600 to-blue-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
                         <span className="relative z-10 flex items-center">
-                          <Search className="w-6 h-6 mr-2" />
+                          <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
+                            <Search className="w-6 h-6 mr-2" />
+                          </ClientOnly>
                           Start Buying Today
                         </span>
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -250,7 +257,9 @@ export default function HomePage() {
                     <Link href="/listings" className="group">
                       <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
                         <span className="relative z-10 flex items-center">
-                          <ShoppingCart className="w-6 h-6 mr-2" />
+                          <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
+                            <ShoppingCart className="w-6 h-6 mr-2" />
+                          </ClientOnly>
                           Browse Products
                         </span>
                         <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
@@ -264,7 +273,9 @@ export default function HomePage() {
                     <Link href="/register" className="group">
                       <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-green-600 to-green-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
                         <span className="relative z-10 flex items-center">
-                          <Plus className="w-6 h-6 mr-2" />
+                          <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
+                            <Plus className="w-6 h-6 mr-2" />
+                          </ClientOnly>
                           Start Selling Today
                         </span>
                         <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -275,7 +286,9 @@ export default function HomePage() {
                     <Link href="/listings" className="group">
                       <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
                         <span className="relative z-10 flex items-center">
-                          <Eye className="w-6 h-6 mr-2" />
+                          <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
+                            <Eye className="w-6 h-6 mr-2" />
+                          </ClientOnly>
                           See Market Prices
                         </span>
                         <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
@@ -289,7 +302,9 @@ export default function HomePage() {
                     <Link href="/register" className="group">
                       <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-orange-600 to-orange-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
                         <span className="relative z-10 flex items-center">
-                          <Truck className="w-6 h-6 mr-2" />
+                          <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
+                            <Truck className="w-6 h-6 mr-2" />
+                          </ClientOnly>
                           Start Transporting Today
                         </span>
                         <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -300,7 +315,9 @@ export default function HomePage() {
                     <Link href="/transport" className="group">
                       <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
                         <span className="relative z-10 flex items-center">
-                          <MapPin className="w-6 h-6 mr-2" />
+                          <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
+                            <MapPin className="w-6 h-6 mr-2" />
+                          </ClientOnly>
                           View Transport Requests
                         </span>
                         <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
@@ -348,35 +365,45 @@ export default function HomePage() {
               <>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Users className="w-8 h-8 text-blue-600" />
+                    <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
+                      <Users className="w-8 h-8 text-blue-600" />
+                    </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">1. Register & Verify</h3>
                   <p className="text-gray-600 text-sm">Create your account and verify your identity to access quality suppliers</p>
                 </div>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Search className="w-8 h-8 text-blue-600" />
+                    <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
+                      <Search className="w-8 h-8 text-blue-600" />
+                    </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">2. Browse Products</h3>
                   <p className="text-gray-600 text-sm">Search and filter quality products with certificates and specifications</p>
                 </div>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <TrendingUp className="w-8 h-8 text-blue-600" />
+                    <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
+                      <TrendingUp className="w-8 h-8 text-blue-600" />
+                    </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">3. Compare & Negotiate</h3>
                   <p className="text-gray-600 text-sm">Compare prices, quality, and negotiate terms with sellers</p>
                 </div>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Truck className="w-8 h-8 text-blue-600" />
+                    <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
+                      <Truck className="w-8 h-8 text-blue-600" />
+                    </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">4. Arrange Delivery</h3>
                   <p className="text-gray-600 text-sm">Choose delivery options and coordinate with transporters</p>
                 </div>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <CheckCircle className="w-8 h-8 text-blue-600" />
+                    <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
+                      <CheckCircle className="w-8 h-8 text-blue-600" />
+                    </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">5. Complete Transaction</h3>
                   <p className="text-gray-600 text-sm">Receive products, automatically generated contracts & invoices via email, and build relationships</p>
@@ -388,35 +415,45 @@ export default function HomePage() {
               <>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Users className="w-8 h-8 text-green-600" />
+                    <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
+                      <Users className="w-8 h-8 text-green-600" />
+                    </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">1. Register & Verify</h3>
                   <p className="text-gray-600 text-sm">Create your account and verify your identity to build trust</p>
                 </div>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Plus className="w-8 h-8 text-green-600" />
+                    <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
+                      <Plus className="w-8 h-8 text-green-600" />
+                    </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">2. Create Listings</h3>
                   <p className="text-gray-600 text-sm">Add product images, certificates, grades, and packaging details</p>
                 </div>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <MessageSquare className="w-8 h-8 text-green-600" />
+                    <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
+                      <MessageSquare className="w-8 h-8 text-green-600" />
+                    </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">3. Manage Offers</h3>
                   <p className="text-gray-600 text-sm">Receive offers, negotiate terms, and communicate with buyers</p>
                 </div>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Truck className="w-8 h-8 text-green-600" />
+                    <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
+                      <Truck className="w-8 h-8 text-green-600" />
+                    </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">4. Arrange Delivery</h3>
                   <p className="text-gray-600 text-sm">Choose pickup or delivery options and coordinate logistics</p>
                 </div>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <DollarSign className="w-8 h-8 text-green-600" />
+                    <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
+                      <DollarSign className="w-8 h-8 text-green-600" />
+                    </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">5. Complete Sale</h3>
                   <p className="text-gray-600 text-sm">Generate contracts, invoices, and receive payment</p>
@@ -428,35 +465,45 @@ export default function HomePage() {
               <>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Users className="w-8 h-8 text-orange-600" />
+                    <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
+                      <Users className="w-8 h-8 text-orange-600" />
+                    </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">1. Register & Verify</h3>
                   <p className="text-gray-600 text-sm">Create your account and verify your transport credentials</p>
                 </div>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Search className="w-8 h-8 text-orange-600" />
+                    <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
+                      <Search className="w-8 h-8 text-orange-600" />
+                    </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">2. Find Opportunities</h3>
                   <p className="text-gray-600 text-sm">Browse transport requests and backload opportunities</p>
                 </div>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <FileText className="w-8 h-8 text-orange-600" />
+                    <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
+                      <FileText className="w-8 h-8 text-orange-600" />
+                    </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">3. Submit Quotes</h3>
                   <p className="text-gray-600 text-sm">Provide competitive quotes with vehicle details and pricing</p>
                 </div>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <MapPin className="w-8 h-8 text-orange-600" />
+                    <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
+                      <MapPin className="w-8 h-8 text-orange-600" />
+                    </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">4. Optimize Routes</h3>
                   <p className="text-gray-600 text-sm">Plan efficient routes and find backload opportunities</p>
                 </div>
                 <div className="text-center">
                   <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Award className="w-8 h-8 text-orange-600" />
+                    <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
+                      <Award className="w-8 h-8 text-orange-600" />
+                    </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">5. Build Reputation</h3>
                   <p className="text-gray-600 text-sm">Complete deliveries, get rated, and build your reputation</p>
@@ -592,7 +639,9 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
                 <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Users className="w-8 h-8 text-primary-600" />
+                  <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
+                    <Users className="w-8 h-8 text-primary-600" />
+                  </ClientOnly>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">1. Create Account</h3>
                 <p className="text-gray-600">
@@ -602,7 +651,9 @@ export default function HomePage() {
               
               <div className="text-center">
                 <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <TrendingUp className="w-8 h-8 text-primary-600" />
+                  <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
+                    <TrendingUp className="w-8 h-8 text-primary-600" />
+                  </ClientOnly>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">2. Browse & Connect</h3>
                 <p className="text-gray-600">
@@ -612,7 +663,9 @@ export default function HomePage() {
               
               <div className="text-center">
                 <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Truck className="w-8 h-8 text-primary-600" />
+                  <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
+                    <Truck className="w-8 h-8 text-primary-600" />
+                  </ClientOnly>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">3. Complete Deal</h3>
                 <p className="text-gray-600">
@@ -737,7 +790,9 @@ export default function HomePage() {
                     </div>
                   )}
                   <div className={`w-16 h-16 bg-${feature.color}-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
-                    <Icon className={`w-8 h-8 text-${feature.color}-600`} />
+                    <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
+                      <Icon className={`w-8 h-8 text-${feature.color}-600`} />
+                    </ClientOnly>
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-3">{featureName}</h3>
                   <p className="text-gray-600 mb-4">
