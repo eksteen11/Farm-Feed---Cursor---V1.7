@@ -179,7 +179,11 @@ export default function HomePage() {
                     onClick={() => setSelectedUserType(type as UserType)}
                     className={`flex items-center space-x-3 px-6 py-4 rounded-2xl border-2 transition-all duration-300 transform hover:scale-105 ${
                       isSelected
-                        ? `border-${config.color}-400 bg-${config.color}-500/20 text-white shadow-lg`
+                        ? type === 'buyer' 
+                          ? 'border-green-400 bg-green-500/20 text-white shadow-lg'
+                          : type === 'seller'
+                          ? 'border-red-400 bg-red-500/20 text-white shadow-lg'
+                          : 'border-orange-400 bg-orange-500/20 text-white shadow-lg'
                         : 'border-white/30 bg-white/10 text-gray-200 hover:bg-white/20 hover:border-white/50'
                     }`}
                   >
@@ -252,15 +256,15 @@ export default function HomePage() {
                 {selectedUserType === 'buyer' && (
                   <>
                     <Link href="/register" className="group">
-                      <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-blue-600 to-blue-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
+                      <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-green-600 to-green-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
                         <span className="relative z-10 flex items-center">
                           <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
                             <Search className="w-6 h-6 mr-2" />
                           </ClientOnly>
                           Start Buying Today
                         </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-blue-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                       </button>
                     </Link>
@@ -281,15 +285,15 @@ export default function HomePage() {
                 {selectedUserType === 'seller' && (
                   <>
                     <Link href="/register" className="group">
-                      <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-green-600 to-green-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
+                      <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-red-600 to-red-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
                         <span className="relative z-10 flex items-center">
                           <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
                             <Plus className="w-6 h-6 mr-2" />
                           </ClientOnly>
                           Start Selling Today
                         </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-red-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                       </button>
                     </Link>
@@ -375,45 +379,45 @@ export default function HomePage() {
             {selectedUserType === 'buyer' && (
               <>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
-                      <Users className="w-8 h-8 text-blue-600" />
+                      <Users className="w-8 h-8 text-green-600" />
                     </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">1. Register & Verify</h3>
                   <p className="text-gray-600 text-sm">Create your account and verify your identity to access quality suppliers</p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
-                      <Search className="w-8 h-8 text-blue-600" />
+                      <Search className="w-8 h-8 text-green-600" />
                     </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">2. Browse Products</h3>
                   <p className="text-gray-600 text-sm">Search and filter quality products with certificates and specifications</p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
-                      <TrendingUp className="w-8 h-8 text-blue-600" />
+                      <TrendingUp className="w-8 h-8 text-green-600" />
                     </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">3. Compare & Negotiate</h3>
                   <p className="text-gray-600 text-sm">Compare prices, quality, and negotiate terms with sellers</p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
-                      <Truck className="w-8 h-8 text-blue-600" />
+                      <Truck className="w-8 h-8 text-green-600" />
                     </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">4. Arrange Delivery</h3>
                   <p className="text-gray-600 text-sm">Choose delivery options and coordinate with transporters</p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
-                      <CheckCircle className="w-8 h-8 text-blue-600" />
+                      <CheckCircle className="w-8 h-8 text-green-600" />
                     </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">5. Complete Transaction</h3>
@@ -425,9 +429,9 @@ export default function HomePage() {
             {selectedUserType === 'seller' && (
               <>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
-                      <Users className="w-8 h-8 text-green-600" />
+                      <Users className="w-8 h-8 text-red-600" />
                     </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">1. Register & Verify</h3>
@@ -436,7 +440,7 @@ export default function HomePage() {
                 <div className="text-center">
                   <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
-                      <Plus className="w-8 h-8 text-green-600" />
+                      <Plus className="w-8 h-8 text-red-600" />
                     </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">2. Create Listings</h3>
@@ -701,7 +705,7 @@ export default function HomePage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {currentFeatureConfig.priority.map((featureName: string, index: number) => {
+            {(() => {
               const features: Record<string, any> = {
                 'Quality Verification': {
                   icon: Shield,
@@ -783,12 +787,13 @@ export default function HomePage() {
                 }
               }
 
-              const feature = features[featureName]
-              if (!feature) return null // Skip if feature not found
-              const Icon = feature.icon
-              const isEmphasized = currentFeatureConfig.emphasis.includes(featureName)
-              
-              return (
+              return currentFeatureConfig.priority.map((featureName: string, index: number) => {
+                const feature = features[featureName]
+                if (!feature) return null // Skip if feature not found
+                const Icon = feature.icon
+                const isEmphasized = currentFeatureConfig.emphasis.includes(featureName)
+                
+                return (
                 <div 
                   key={featureName}
                   className={`bg-white p-8 rounded-2xl shadow-card hover:shadow-lg transition-shadow group ${
@@ -816,7 +821,8 @@ export default function HomePage() {
                   ))}
                 </div>
               )
-            })}
+            })
+            })()}
           </div>
         </div>
       </section>

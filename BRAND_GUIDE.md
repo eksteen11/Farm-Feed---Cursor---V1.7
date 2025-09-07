@@ -111,17 +111,43 @@ The visual identity combines the earthy, natural elements of agriculture with cl
 
 ## Color Palette
 
-### Primary Colors
+### 🌱 Brand Colour Rationale
 
-#### Forest Green (#3D693D)
-- **Usage**: Primary brand color, buttons, links, active states
-- **Psychology**: Growth, nature, trust, stability
-- **Variations**:
-  - Light: #5A8A5A
-  - Dark: #2A4A2A
-  - Contrast: #FFFFFF
+#### Primary Colour – Forest Green (#3D693D)
 
-#### Earth Orange (#F4A261)
+Farm Feed's core identity is anchored in Forest Green, a deep, natural tone that represents trust, growth, and agricultural heritage. The choice of a darker shade is intentional:
+
+**Trust & Stability**: Darker greens communicate reliability and professionalism, reassuring users that Farm Feed is a secure and serious platform.
+
+**Contrast & Accessibility**: Provides excellent readability and visibility across all digital devices and in outdoor settings, ensuring strong contrast against light backgrounds.
+
+**Premium Feel**: Lighter greens can feel casual; the deeper tone elevates the brand to a global, premium standard.
+
+**Agricultural Identity**: Reflects fertile land, South African landscapes, and the strength of the agricultural community.
+
+**Usage**:
+- Primary CTAs, navigation elements, and key brand visuals
+- Can be paired with lighter tints (#5A8A5A) for hover states and background accents
+
+**Variations**:
+- Light: #5A8A5A
+- Dark: #2A4A2A
+- Contrast: #FFFFFF
+
+#### Secondary Colour – Harvest Red (#DB4A39)
+
+A vibrant, warm red that injects energy, urgency, and South African vibrancy into the brand. It works as a perfect counterbalance to the grounding green.
+
+**Usage**:
+- Secondary CTAs, highlights, alerts, and accent details
+- Creates a strong two-tone system when combined with Forest Green, reinforcing brand recognition
+
+**Variations**:
+- Light: #E56B5D
+- Dark: #B83A2A
+- Contrast: #FFFFFF
+
+#### Supporting Colour – Earth Orange (#F4A261)
 - **Usage**: Accent color, highlights, call-to-actions
 - **Psychology**: Energy, warmth, harvest, South African sun
 - **Variations**:
@@ -129,17 +155,27 @@ The visual identity combines the earthy, natural elements of agriculture with cl
   - Dark: #E08A4A
   - Contrast: #FFFFFF
 
-#### Warm Red (#DB4A39)
-- **Usage**: Secondary actions, alerts, important elements
-- **Psychology**: Urgency, importance, South African heritage
-- **Variations**:
-  - Light: #E56B5D
-  - Dark: #B63A2F
-  - Contrast: #FFFFFF
+#### Supporting Neutrals
+- **White (#FFFFFF)**: Primary background, text contrast, clean spaces
+- **Charcoal (#1F2937)**: Primary text, headings, strong contrast
+- **Gray Scale**: 200-600 for dividers, text hierarchy, and subtle backgrounds
+  - Gray 200: #E5E7EB (Light borders, dividers)
+  - Gray 300: #D1D5DB (Input borders, subtle text)
+  - Gray 400: #9CA3AF (Placeholder text, disabled states)
+  - Gray 500: #6B7280 (Body text)
+  - Gray 600: #4B5563 (Stronger body text)
 
-### Neutral Colors
+### Colour System Summary
 
-#### Grayscale Palette
+**Forest Green**: The core of Farm Feed's visual identity — trust, growth, stability.
+
+**Harvest Red**: The accent of energy and urgency — movement, action, South African spirit.
+
+**Neutrals**: Maintain clarity, balance, and professionalism.
+
+👉 This section makes the colour choice feel strategic and world-class, not just aesthetic.
+
+---
 - **White**: #FFFFFF (Backgrounds, cards)
 - **Gray 50**: #F9FAFB (Light backgrounds)
 - **Gray 100**: #F3F4F6 (Subtle backgrounds)
