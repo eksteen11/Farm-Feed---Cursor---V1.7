@@ -54,8 +54,8 @@ export default function MyTransportRequestsPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'open': return 'bg-blue-100 text-blue-800'
-      case 'quoted': return 'bg-yellow-100 text-yellow-800'
+      case 'open': return 'bg-green-100 text-green-800'
+      case 'quoted': return 'bg-red-100 text-red-800'
       case 'accepted': return 'bg-green-100 text-green-800'
       case 'in_progress': return 'bg-purple-100 text-purple-800'
       case 'completed': return 'bg-gray-100 text-gray-800'
@@ -251,7 +251,7 @@ export default function MyTransportRequestsPage() {
                       <span className="font-medium">{requestQuotes.length}</span>
                     </div>
                     {pendingQuotes.length > 0 && (
-                      <div className="text-xs text-blue-600 mt-1">
+                      <div className="text-xs text-green-600 mt-1">
                         {pendingQuotes.length} pending review
                       </div>
                     )}

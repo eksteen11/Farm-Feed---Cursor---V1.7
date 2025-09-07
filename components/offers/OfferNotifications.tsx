@@ -129,10 +129,10 @@ export default function OfferNotifications({
 
   const getNotificationIcon = (type: string) => {
     switch (type) {
-      case 'offer_received': return <Package className="w-5 h-5 text-blue-600" />
+      case 'offer_received': return <Package className="w-5 h-5 text-green-600" />
       case 'offer_accepted': return <CheckCircle className="w-5 h-5 text-green-600" />
       case 'offer_rejected': return <XCircle className="w-5 h-5 text-red-600" />
-      case 'counter_offer': return <RotateCcw className="w-5 h-5 text-orange-600" />
+      case 'counter_offer': return <RotateCcw className="w-5 h-5 text-red-600" />
       case 'offer_expired': return <Clock className="w-5 h-5 text-gray-600" />
       default: return <Bell className="w-5 h-5 text-gray-600" />
     }
@@ -140,10 +140,10 @@ export default function OfferNotifications({
 
   const getNotificationColor = (type: string) => {
     switch (type) {
-      case 'offer_received': return 'bg-blue-50 border-blue-200'
+      case 'offer_received': return 'bg-green-50 border-green-200'
       case 'offer_accepted': return 'bg-green-50 border-green-200'
       case 'offer_rejected': return 'bg-red-50 border-red-200'
-      case 'counter_offer': return 'bg-orange-50 border-orange-200'
+      case 'counter_offer': return 'bg-red-50 border-red-200'
       case 'offer_expired': return 'bg-gray-50 border-gray-200'
       default: return 'bg-gray-50 border-gray-200'
     }

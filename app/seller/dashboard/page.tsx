@@ -89,9 +89,9 @@ export default function SellerDashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Pending Offers</p>
-                <p className="text-2xl font-bold text-orange-600">{stats.pendingOffers}</p>
+                <p className="text-2xl font-bold text-red-600">{stats.pendingOffers}</p>
               </div>
-              <Clock className="w-8 h-8 text-orange-500" />
+              <Clock className="w-8 h-8 text-red-500" />
             </div>
           </CardContent>
         </Card>
@@ -113,9 +113,9 @@ export default function SellerDashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Revenue</p>
-                <p className="text-2xl font-bold text-blue-600">R{stats.totalRevenue.toLocaleString()}</p>
+                <p className="text-2xl font-bold text-green-600">R{stats.totalRevenue.toLocaleString()}</p>
               </div>
-              <DollarSign className="w-8 h-8 text-blue-500" />
+              <DollarSign className="w-8 h-8 text-green-500" />
             </div>
           </CardContent>
         </Card>
@@ -130,7 +130,7 @@ export default function SellerDashboardPage() {
               <div key={offer.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                 <div className="flex items-center space-x-3">
                   <div className={`w-3 h-3 rounded-full ${
-                    offer.status === 'pending' ? 'bg-orange-500' :
+                    offer.status === 'pending' ? 'bg-red-500' :
                     offer.status === 'accepted' ? 'bg-green-500' :
                     offer.status === 'rejected' ? 'bg-red-500' : 'bg-gray-500'
                   }`} />
@@ -144,7 +144,7 @@ export default function SellerDashboardPage() {
                 <div className="text-right">
                   <p className="text-sm text-gray-500">{formatDate(offer.createdAt)}</p>
                   <span className={`px-2 py-1 text-xs rounded-full ${
-                    offer.status === 'pending' ? 'bg-orange-100 text-orange-800' :
+                    offer.status === 'pending' ? 'bg-red-100 text-red-800' :
                     offer.status === 'accepted' ? 'bg-green-100 text-green-800' :
                     offer.status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'
                   }`}>
@@ -177,7 +177,7 @@ export default function SellerDashboardPage() {
             <CardContent className="p-4">
               <div className="flex items-start space-x-3">
                 <div className={`w-2 h-2 rounded-full mt-2 ${
-                  message.isRead ? 'bg-gray-400' : 'bg-blue-500'
+                  message.isRead ? 'bg-gray-400' : 'bg-red-500'
                 }`} />
                 <div className="flex-1">
                   <div className="flex items-center justify-between mb-2">
@@ -187,15 +187,15 @@ export default function SellerDashboardPage() {
                   <p className="text-gray-700">{message.message}</p>
                   <div className="flex items-center space-x-2 mt-2">
                     <span className={`px-2 py-1 text-xs rounded-full ${
-                      message.messageType === 'offer' ? 'bg-blue-100 text-blue-800' :
-                      message.messageType === 'counter-offer' ? 'bg-orange-100 text-orange-800' :
+                      message.messageType === 'offer' ? 'bg-red-100 text-red-800' :
+                      message.messageType === 'counter-offer' ? 'bg-red-100 text-red-800' :
                       message.messageType === 'acceptance' ? 'bg-green-100 text-green-800' :
                       message.messageType === 'rejection' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'
                     }`}>
                       {message.messageType}
                     </span>
                     {!message.isRead && (
-                      <span className="text-xs text-blue-600 font-medium">New</span>
+                      <span className="text-xs text-red-600 font-medium">New</span>
                     )}
                   </div>
                 </div>
@@ -222,7 +222,7 @@ export default function SellerDashboardPage() {
                     <span className="font-medium">Deal #{deal.id}</span>
                     <span className={`px-2 py-1 text-xs rounded-full ${
                       deal.status === 'confirmed' ? 'bg-green-100 text-green-800' :
-                      deal.status === 'in-transit' ? 'bg-blue-100 text-blue-800' :
+                      deal.status === 'in-transit' ? 'bg-green-100 text-green-800' :
                       deal.status === 'delivered' ? 'bg-purple-100 text-purple-800' : 'bg-gray-100 text-gray-800'
                     }`}>
                       {deal.status}
@@ -303,12 +303,12 @@ export default function SellerDashboardPage() {
                 <tab.icon className="w-4 h-4 inline mr-2" />
                 {tab.label}
                 {tab.id === 'offers' && stats.pendingOffers > 0 && (
-                  <span className="ml-2 bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">
+                  <span className="ml-2 bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">
                     {stats.pendingOffers}
                   </span>
                 )}
                 {tab.id === 'messages' && stats.unreadMessages > 0 && (
-                  <span className="ml-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                  <span className="ml-2 bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">
                     {stats.unreadMessages}
                   </span>
                 )}

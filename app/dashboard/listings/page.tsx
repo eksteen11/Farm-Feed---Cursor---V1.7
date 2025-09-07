@@ -36,7 +36,7 @@ export default function ListingsPage() {
     switch (status) {
       case 'active': return 'bg-green-100 text-green-800'
       case 'pending': return 'bg-yellow-100 text-yellow-800'
-      case 'sold': return 'bg-blue-100 text-blue-800'
+      case 'sold': return 'bg-green-100 text-green-800'
       case 'expired': return 'bg-gray-100 text-gray-800'
       default: return 'bg-gray-100 text-gray-800'
     }
@@ -117,7 +117,7 @@ export default function ListingsPage() {
           <div className="mb-8">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-semibold text-gray-900 flex items-center">
-                <Package className="h-6 w-6 mr-2 text-blue-600" />
+                <Package className="h-6 w-6 mr-2 text-green-600" />
                 Product Listings
               </h2>
               <span className="text-sm text-gray-500">
@@ -233,7 +233,7 @@ export default function ListingsPage() {
                         <CardTitle className="text-lg">Transport Request</CardTitle>
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                           transport.status === 'open' 
-                            ? 'bg-blue-100 text-blue-800' 
+                            ? 'bg-green-100 text-green-800' 
                             : transport.status === 'quoted'
                             ? 'bg-yellow-100 text-yellow-800'
                             : 'bg-green-100 text-green-800'

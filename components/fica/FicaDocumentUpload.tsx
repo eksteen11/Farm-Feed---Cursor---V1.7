@@ -230,16 +230,16 @@ const FicaDocumentUpload: React.FC<FicaDocumentUploadProps> = ({ onComplete }) =
         })}
       </div>
 
-      <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+      <div className="mt-8 p-4 bg-green-50 border border-green-200 rounded-lg">
         <div className="flex">
           <div className="flex-shrink-0">
-            <AlertTriangle className="h-5 w-5 text-blue-400" />
+            <AlertTriangle className="h-5 w-5 text-green-400" />
           </div>
           <div className="ml-3">
-            <h3 className="text-sm font-medium text-blue-800">
+            <h3 className="text-sm font-medium text-green-800">
               Document Verification Process
             </h3>
-            <div className="mt-2 text-sm text-blue-700">
+            <div className="mt-2 text-sm text-green-700">
               <p>• Documents are reviewed by our compliance team within 24-48 hours</p>
               <p>• You'll receive email notifications about verification status</p>
               <p>• Verified users gain access to premium features and higher transaction limits</p>

@@ -99,7 +99,7 @@ const FicaPage: React.FC = () => {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading verification status...</p>
         </div>
       </div>
@@ -241,7 +241,7 @@ const FicaPage: React.FC = () => {
                 </div>
                 <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
                   <div 
-                    className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                    className="bg-green-600 h-2 rounded-full transition-all duration-300"
                     style={{ width: `${verification.complianceScore}%` }}
                   ></div>
                 </div>
@@ -272,11 +272,11 @@ const FicaPage: React.FC = () => {
 
       {/* Information Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h3 className="text-lg font-medium text-blue-900 mb-4">
+        <div className="bg-green-50 border border-green-200 rounded-lg p-6">
+          <h3 className="text-lg font-medium text-green-900 mb-4">
             Why FICA Verification is Required
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-blue-800">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-green-800">
             <div>
               <h4 className="font-medium mb-2">Compliance & Security</h4>
               <ul className="space-y-1">

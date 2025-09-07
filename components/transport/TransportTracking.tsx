@@ -29,7 +29,7 @@ export default function TransportTracking({ request, acceptedQuote, onUpdateStat
 
   const statusSteps = [
     { key: 'accepted', label: 'Transport Arranged', icon: CheckCircle, color: 'text-green-600' },
-    { key: 'in_progress', label: 'In Transit', icon: Truck, color: 'text-blue-600' },
+    { key: 'in_progress', label: 'In Transit', icon: Truck, color: 'text-green-600' },
     { key: 'completed', label: 'Delivered', icon: CheckCircle, color: 'text-green-600' }
   ]
 
@@ -43,7 +43,7 @@ export default function TransportTracking({ request, acceptedQuote, onUpdateStat
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'accepted': return <CheckCircle className="w-5 h-5 text-green-600" />
-      case 'in_progress': return <Truck className="w-5 h-5 text-blue-600" />
+      case 'in_progress': return <Truck className="w-5 h-5 text-green-600" />
       case 'completed': return <CheckCircle className="w-5 h-5 text-green-600" />
       default: return <Clock className="w-5 h-5 text-gray-400" />
     }
@@ -52,7 +52,7 @@ export default function TransportTracking({ request, acceptedQuote, onUpdateStat
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'accepted': return 'bg-green-100 text-green-800'
-      case 'in_progress': return 'bg-blue-100 text-blue-800'
+      case 'in_progress': return 'bg-green-100 text-green-800'
       case 'completed': return 'bg-green-100 text-green-800'
       default: return 'bg-gray-100 text-gray-800'
     }
@@ -105,7 +105,7 @@ export default function TransportTracking({ request, acceptedQuote, onUpdateStat
                     </div>
                     <div className="mt-2 text-center">
                       <div className={`text-sm font-medium ${
-                        isCurrent ? 'text-blue-600' : isCompleted ? 'text-green-600' : 'text-gray-500'
+                        isCurrent ? 'text-green-600' : isCompleted ? 'text-green-600' : 'text-gray-500'
                       }`}>
                         {step.label}
                       </div>
@@ -212,7 +212,7 @@ export default function TransportTracking({ request, acceptedQuote, onUpdateStat
                 <div className="text-sm text-gray-600">Agreed Price</div>
               </div>
               <div className="text-center p-3 bg-gray-50 rounded-lg">
-                <div className="text-lg font-bold text-blue-600">{acceptedQuote.estimatedDays}</div>
+                <div className="text-lg font-bold text-green-600">{acceptedQuote.estimatedDays}</div>
                 <div className="text-sm text-gray-600">Estimated Days</div>
               </div>
               <div className="text-center p-3 bg-gray-50 rounded-lg">

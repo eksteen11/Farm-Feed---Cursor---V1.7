@@ -82,9 +82,9 @@ export default function BuyerDashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Pending Offers</p>
-                <p className="text-2xl font-bold text-orange-600">{stats.pendingOffers}</p>
+                <p className="text-2xl font-bold text-red-600">{stats.pendingOffers}</p>
               </div>
-              <Clock className="w-8 h-8 text-orange-500" />
+              <Clock className="w-8 h-8 text-red-500" />
             </div>
           </CardContent>
         </Card>
@@ -106,9 +106,9 @@ export default function BuyerDashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Transport Requests</p>
-                <p className="text-2xl font-bold text-blue-600">{stats.transportRequests}</p>
+                <p className="text-2xl font-bold text-green-600">{stats.transportRequests}</p>
               </div>
-              <Truck className="w-8 h-8 text-blue-500" />
+              <Truck className="w-8 h-8 text-green-500" />
             </div>
           </CardContent>
         </Card>
@@ -123,7 +123,7 @@ export default function BuyerDashboardPage() {
               <div key={offer.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                 <div className="flex items-center space-x-3">
                   <div className={`w-3 h-3 rounded-full ${
-                    offer.status === 'pending' ? 'bg-orange-500' :
+                    offer.status === 'pending' ? 'bg-red-500' :
                     offer.status === 'accepted' ? 'bg-green-500' :
                     offer.status === 'rejected' ? 'bg-red-500' : 'bg-gray-500'
                   }`} />
@@ -137,7 +137,7 @@ export default function BuyerDashboardPage() {
                 <div className="text-right">
                   <p className="text-sm text-gray-500">{formatDate(offer.createdAt)}</p>
                   <span className={`px-2 py-1 text-xs rounded-full ${
-                    offer.status === 'pending' ? 'bg-orange-100 text-orange-800' :
+                    offer.status === 'pending' ? 'bg-red-100 text-red-800' :
                     offer.status === 'accepted' ? 'bg-green-100 text-green-800' :
                     offer.status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'
                   }`}>
@@ -179,9 +179,9 @@ export default function BuyerDashboardPage() {
                     <Truck className="w-5 h-5 text-gray-500" />
                     <span className="font-medium">Transport Request #{request.id}</span>
                     <span className={`px-2 py-1 text-xs rounded-full ${
-                      request.status === 'open' ? 'bg-orange-100 text-orange-800' :
+                      request.status === 'open' ? 'bg-red-100 text-red-800' :
                       request.status === 'accepted' ? 'bg-green-100 text-green-800' :
-                      request.status === 'completed' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
+                      request.status === 'completed' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
                     }`}>
                       {request.status}
                     </span>
@@ -253,12 +253,12 @@ export default function BuyerDashboardPage() {
                 <tab.icon className="w-4 h-4 inline mr-2" />
                 {tab.label}
                 {tab.id === 'offers' && stats.pendingOffers > 0 && (
-                  <span className="ml-2 bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">
+                  <span className="ml-2 bg-red-100 text-red-800 text-xs px-2 py-1 rounded-full">
                     {stats.pendingOffers}
                   </span>
                 )}
                 {tab.id === 'transport' && stats.activeTransport > 0 && (
-                  <span className="ml-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                  <span className="ml-2 bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
                     {stats.activeTransport}
                   </span>
                 )}

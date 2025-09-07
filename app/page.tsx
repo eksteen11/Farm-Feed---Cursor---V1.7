@@ -357,7 +357,7 @@ export default function HomePage() {
         
         {/* Cinematic Corner Accents */}
         <div className="absolute top-0 left-0 w-32 h-32 border-l-4 border-t-4 border-green-400/30 rounded-tl-3xl"></div>
-        <div className="absolute top-0 right-0 w-32 h-32 border-r-4 border-t-4 border-orange-400/30 rounded-tr-3xl"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 border-r-4 border-t-4 border-red-400/30 rounded-tr-3xl"></div>
         <div className="absolute bottom-0 left-0 w-32 h-32 border-l-4 border-b-4 border-yellow-400/30 rounded-bl-3xl"></div>
         <div className="absolute bottom-0 right-0 w-32 h-32 border-r-4 border-b-4 border-green-400/30 rounded-br-3xl"></div>
       </section>

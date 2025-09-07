@@ -262,25 +262,25 @@ export default function BuyerOffers({ offers, listings, currentUser }: BuyerOffe
 
               {/* Counter Offer Display */}
               {offer.counterOffer && (
-                <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
                   <div className="flex items-center space-x-2 mb-2">
-                    <RotateCcw className="w-4 h-4 text-orange-600" />
-                    <p className="text-sm font-medium text-orange-900">Counter Offer from Seller</p>
+                    <RotateCcw className="w-4 h-4 text-red-600" />
+                    <p className="text-sm font-medium text-red-900">Counter Offer from Seller</p>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
                     <div>
-                      <p className="text-sm text-orange-700">
+                      <p className="text-sm text-red-700">
                         <strong>New Price:</strong> R{offer.counterOffer.price.toLocaleString()}/ton
                       </p>
                     </div>
                     <div>
-                      <p className="text-sm text-orange-700">
+                      <p className="text-sm text-red-700">
                         <strong>Original Price:</strong> R{offer.price.toLocaleString()}/ton
                       </p>
                     </div>
                   </div>
                   <div className="bg-white rounded p-3">
-                    <p className="text-sm text-orange-800">{offer.counterOffer.message}</p>
+                    <p className="text-sm text-red-800">{offer.counterOffer.message}</p>
                   </div>
                 </div>
               )}
@@ -368,11 +368,11 @@ export default function BuyerOffers({ offers, listings, currentUser }: BuyerOffe
               <h3 className="text-lg font-medium text-gray-900 mb-4">Respond to Counter Offer</h3>
               
               <div className="space-y-4">
-                <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                  <p className="text-sm text-orange-800 mb-2">
+                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                  <p className="text-sm text-red-800 mb-2">
                     <strong>Seller's Counter Offer:</strong> R{selectedOffer.counterOffer?.price.toLocaleString()}/ton
                   </p>
-                  <p className="text-sm text-orange-700">{selectedOffer.counterOffer?.message}</p>
+                  <p className="text-sm text-red-700">{selectedOffer.counterOffer?.message}</p>
                 </div>
                 
                 <div>

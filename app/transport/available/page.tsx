@@ -60,8 +60,8 @@ export default function AvailableTransportRequestsPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'open': return 'bg-blue-100 text-blue-800'
-      case 'quoted': return 'bg-yellow-100 text-yellow-800'
+      case 'open': return 'bg-green-100 text-green-800'
+      case 'quoted': return 'bg-red-100 text-red-800'
       case 'accepted': return 'bg-green-100 text-green-800'
       case 'in_progress': return 'bg-purple-100 text-purple-800'
       case 'completed': return 'bg-gray-100 text-gray-800'
@@ -264,9 +264,9 @@ export default function AvailableTransportRequestsPage() {
 
                   {/* Quote Status */}
                   {hasQuoted && myQuote && (
-                    <div className="mb-4 p-3 bg-blue-50 rounded-lg border border-blue-200">
-                      <div className="text-xs text-blue-800 font-medium mb-1">Your Quote:</div>
-                      <div className="text-xs text-blue-700">
+                    <div className="mb-4 p-3 bg-green-50 rounded-lg border border-green-200">
+                      <div className="text-xs text-green-800 font-medium mb-1">Your Quote:</div>
+                      <div className="text-xs text-green-700">
                         R{myQuote.price.toLocaleString()} • {myQuote.estimatedDays} days • {myQuote.status}
                       </div>
                     </div>

@@ -35,8 +35,8 @@ export default function TransportPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'open': return 'bg-blue-100 text-blue-800'
-      case 'quoted': return 'bg-yellow-100 text-yellow-800'
+      case 'open': return 'bg-green-100 text-green-800'
+      case 'quoted': return 'bg-red-100 text-red-800'
       case 'accepted': return 'bg-green-100 text-green-800'
       case 'in_progress': return 'bg-purple-100 text-purple-800'
       case 'completed': return 'bg-gray-100 text-gray-800'
@@ -118,7 +118,7 @@ export default function TransportPage() {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-semibold text-gray-900 flex items-center">
-              <Package className="h-6 w-6 mr-2 text-blue-600" />
+              <Package className="h-6 w-6 mr-2 text-green-600" />
               My Transport Requests
             </h2>
             <span className="text-sm text-gray-500">
@@ -182,9 +182,9 @@ export default function TransportPage() {
                         </div>
                       )}
                       {request.autoQuote && (
-                        <div className="bg-blue-50 p-3 rounded-lg">
-                          <p className="text-xs text-blue-600 font-medium">Auto-Estimate:</p>
-                          <p className="text-xs text-blue-600">
+                        <div className="bg-green-50 p-3 rounded-lg">
+                          <p className="text-xs text-green-600 font-medium">Auto-Estimate:</p>
+                          <p className="text-xs text-green-600">
                             Low: R{request.autoQuote.lowEstimate} | 
                             Medium: R{request.autoQuote.mediumEstimate} | 
                             High: R{request.autoQuote.highEstimate}
