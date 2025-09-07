@@ -221,22 +221,32 @@ export default function HomePage() {
 
           {/* User-Specific Call-to-Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-8 justify-center items-center animate-fade-in-up animation-delay-500 mt-8">
-            {currentUser ? (
-              <>
-                {/* Logged in user buttons */}
-                <Link href="/dashboard" className="group">
-                  <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
-                    <span className="relative z-10 flex items-center">
-                      <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
-                        <Package className="w-6 h-6 mr-2" />
-                      </ClientOnly>
-                      Go to Dashboard
-                    </span>
-                    <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                  </button>
-                </Link>
-              </>
-            ) : (
+            <ClientOnly fallback={
+              <div className="flex flex-col sm:flex-row gap-8 justify-center items-center">
+                <div className="px-12 py-6 bg-gray-300 rounded-2xl animate-pulse">
+                  <div className="w-32 h-6 bg-gray-400 rounded"></div>
+                </div>
+                <div className="px-12 py-6 bg-gray-300 rounded-2xl animate-pulse">
+                  <div className="w-32 h-6 bg-gray-400 rounded"></div>
+                </div>
+              </div>
+            }>
+              {currentUser ? (
+                <>
+                  {/* Logged in user buttons */}
+                  <Link href="/dashboard" className="group">
+                    <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
+                      <span className="relative z-10 flex items-center">
+                        <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
+                          <Package className="w-6 h-6 mr-2" />
+                        </ClientOnly>
+                        Go to Dashboard
+                      </span>
+                      <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                    </button>
+                  </Link>
+                </>
+              ) : (
               <>
                 {/* User-specific CTA buttons */}
                 {selectedUserType === 'buyer' && (
@@ -327,6 +337,7 @@ export default function HomePage() {
                 )}
               </>
             )}
+            </ClientOnly>
           </div>
 
           {/* Floating Elements for Cinematic Effect */}
