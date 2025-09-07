@@ -6,6 +6,7 @@ import Button from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
 import ImageComponent from '@/components/ui/Image'
 import ClientOnly from '@/components/ui/ClientOnly'
+import Logo from '@/components/ui/Logo'
 import { useStore } from '@/store/useStore'
 import { canUserPerformAction } from '@/types'
 import { 
@@ -142,6 +143,11 @@ export default function HomePage() {
 
         {/* Enhanced Hero Content */}
         <div className="relative z-40 text-center px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          {/* Farm Feed Logo */}
+          <div className="mb-8 animate-fade-in-up">
+            <Logo variant="white" size="xl" className="mx-auto" />
+          </div>
+          
           {/* Industry & Problem Statement */}
           <div className="mb-8 animate-fade-in-up animation-delay-100">
             <div className="text-center mb-6">

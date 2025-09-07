@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useStore } from '@/store/useStore'
 import Button from '@/components/ui/Button'
 import ImageComponent from '@/components/ui/Image'
+import Logo from '@/components/ui/Logo'
 import { 
   Menu, 
   X, 
@@ -52,7 +53,7 @@ const Navigation: React.FC = () => {
                 <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
                   <span className="text-white font-bold text-sm">FF</span>
                 </div>
-                <span className="text-xl font-bold text-gray-900">Farm Feed</span>
+                <Logo variant="color" size="md" />
               </Link>
             </div>
             {/* Placeholder for navigation items */}
@@ -82,7 +83,7 @@ const Navigation: React.FC = () => {
               <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">FF</span>
               </div>
-              <span className="text-xl font-bold text-gray-900">Farm Feed</span>
+              <Logo variant="color" size="md" />
             </Link>
           </div>
 
