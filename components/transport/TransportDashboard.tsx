@@ -80,8 +80,8 @@ export default function TransportDashboard({ userId, userRole }: TransportDashbo
                 <p className="text-sm font-medium text-gray-600">Total Requests</p>
                 <p className="text-2xl font-bold text-gray-900">{totalRequests}</p>
               </div>
-              <div className="p-3 bg-blue-100 rounded-full">
-                <Truck className="w-6 h-6 text-blue-600" />
+              <div className="p-3 bg-green-100 rounded-full">
+                <Truck className="w-6 h-6 text-green-600" />
               </div>
             </div>
           </CardContent>
@@ -92,10 +92,10 @@ export default function TransportDashboard({ userId, userRole }: TransportDashbo
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">Open for Quotes</p>
-                <p className="text-2xl font-bold text-blue-600">{openRequests}</p>
+                <p className="text-2xl font-bold text-green-600">{openRequests}</p>
               </div>
-              <div className="p-3 bg-blue-100 rounded-full">
-                <Package className="w-6 h-6 text-blue-600" />
+              <div className="p-3 bg-green-100 rounded-full">
+                <Package className="w-6 h-6 text-green-600" />
               </div>
             </div>
           </CardContent>
@@ -138,11 +138,11 @@ export default function TransportDashboard({ userId, userRole }: TransportDashbo
             <CardContent className="p-6 pt-0">
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-blue-600">{userTotalRequests}</div>
+                  <div className="text-2xl font-bold text-green-600">{userTotalRequests}</div>
                   <div className="text-sm text-gray-600">Total</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-yellow-600">{userQuotedRequests}</div>
+                  <div className="text-2xl font-bold text-red-600">{userQuotedRequests}</div>
                   <div className="text-sm text-gray-600">Quoted</div>
                 </div>
                 <div className="text-center">
@@ -163,11 +163,11 @@ export default function TransportDashboard({ userId, userRole }: TransportDashbo
               <CardContent className="p-6 pt-0">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-600">{userTotalQuotes}</div>
+                    <div className="text-2xl font-bold text-green-600">{userTotalQuotes}</div>
                     <div className="text-sm text-gray-600">Total</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-2xl font-bold text-yellow-600">{userPendingQuotes}</div>
+                    <div className="text-2xl font-bold text-red-600">{userPendingQuotes}</div>
                     <div className="text-sm text-gray-600">Pending</div>
                   </div>
                   <div className="text-center">
@@ -234,8 +234,8 @@ export default function TransportDashboard({ userId, userRole }: TransportDashbo
                       </div>
                       <div className="text-right">
                         <div className={`text-xs px-2 py-1 rounded-full ${
-                          request.status === 'open' ? 'bg-blue-100 text-blue-800' :
-                          request.status === 'quoted' ? 'bg-yellow-100 text-yellow-800' :
+                          request.status === 'open' ? 'bg-green-100 text-green-800' :
+                          request.status === 'quoted' ? 'bg-red-100 text-red-800' :
                           request.status === 'accepted' ? 'bg-green-100 text-green-800' :
                           'bg-gray-100 text-gray-800'
                         }`}>

@@ -179,14 +179,14 @@ export default function LoginPage() {
             </div>
 
             {/* Demo Account Info */}
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h4 className="text-sm font-medium text-blue-900 mb-2">
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+              <h4 className="text-sm font-medium text-green-900 mb-2">
                 Demo Account
               </h4>
-              <p className="text-sm text-blue-700 mb-2">
+              <p className="text-sm text-green-700 mb-2">
                 Use these credentials to test the platform:
               </p>
-              <div className="text-xs text-blue-600 space-y-1">
+              <div className="text-xs text-green-600 space-y-1">
                 <div>Email: john@maizefarm.co.za</div>
                 <div>Password: password</div>
               </div>
