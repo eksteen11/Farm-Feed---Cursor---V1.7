@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import Logo from '@/components/ui/Logo'
 import { 
   Mail, 
   Phone, 
@@ -18,11 +19,8 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="lg:col-span-1">
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">FF</span>
-              </div>
-              <span className="text-xl font-bold">Farm Feed</span>
+            <div className="mb-4">
+              <Logo variant="white" size="lg" />
             </div>
             <p className="text-gray-300 mb-4">
               Connecting South African farmers and buyers for trusted grain and feed trading.
