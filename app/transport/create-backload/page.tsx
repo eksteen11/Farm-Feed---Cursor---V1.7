@@ -155,7 +155,7 @@ export default function CreateBackloadListingPage() {
         {/* Header */}
         <div className="mb-8">
           <Button
-            variant="outline"
+            variant="secondary"
             onClick={() => router.back()}
             className="mb-4"
           >
@@ -357,7 +357,7 @@ export default function CreateBackloadListingPage() {
               <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
                 <Button
                   type="button"
-                  variant="outline"
+                  variant="secondary"
                   onClick={() => router.back()}
                   disabled={isSubmitting}
                 >
