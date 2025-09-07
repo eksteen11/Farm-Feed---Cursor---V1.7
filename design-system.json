@@ -7,22 +7,21 @@
       "main": "#3D693D",
       "light": "#5A8A5A",
       "dark": "#2A4A2A",
-      "contrast": "#FFFFFF"
+      "tint": "#4A7A4A",
+      "contrast": "#FFFFFF",
+      "description": "Forest Green - Primary brand color for trust, stability, and agricultural heritage"
     },
     "secondary": {
       "main": "#DB4A39",
       "light": "#E56B5D",
-      "dark": "#B63A2F",
-      "contrast": "#FFFFFF"
-    },
-    "accent": {
-      "main": "#F4A261",
-      "light": "#F7B88A",
-      "dark": "#E08A4A",
-      "contrast": "#FFFFFF"
+      "dark": "#B83A2A",
+      "tint": "#D85A4A",
+      "contrast": "#FFFFFF",
+      "description": "Harvest Red - Secondary brand color for energy, urgency, and South African vibrancy"
     },
     "neutral": {
       "white": "#FFFFFF",
+      "charcoal": "#1F2937",
       "gray50": "#F9FAFB",
       "gray100": "#F3F4F6",
       "gray200": "#E5E7EB",
@@ -33,30 +32,34 @@
       "gray700": "#374151",
       "gray800": "#1F2937",
       "gray900": "#111827",
-      "black": "#000000"
+      "black": "#000000",
+      "description": "Sophisticated neutral palette for professional hierarchy and readability"
     },
     "success": {
-      "main": "#10B981",
-      "light": "#34D399",
-      "dark": "#059669"
+      "main": "#3D693D",
+      "light": "#5A8A5A",
+      "dark": "#2A4A2A",
+      "description": "Uses Forest Green for success states"
     },
     "warning": {
-      "main": "#F59E0B",
-      "light": "#FBBF24",
-      "dark": "#D97706"
+      "main": "#DB4A39",
+      "light": "#E56B5D",
+      "dark": "#B83A2A",
+      "description": "Uses Harvest Red for warning states"
     },
     "error": {
-      "main": "#EF4444",
-      "light": "#F87171",
-      "dark": "#DC2626"
+      "main": "#DB4A39",
+      "light": "#E56B5D",
+      "dark": "#B83A2A",
+      "description": "Uses Harvest Red for error states"
     }
   },
   "gradients": {
     "primary": "linear-gradient(135deg, #3D693D 0%, #5A8A5A 100%)",
     "secondary": "linear-gradient(135deg, #DB4A39 0%, #E56B5D 100%)",
-    "accent": "linear-gradient(135deg, #F4A261 0%, #F7B88A 100%)",
     "hero": "linear-gradient(135deg, #3D693D 0%, #DB4A39 100%)",
-    "card": "linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%)"
+    "card": "linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%)",
+    "neutral": "linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%)"
   },
   "shadows": {
     "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",

@@ -111,69 +111,113 @@ The visual identity combines the earthy, natural elements of agriculture with cl
 
 ## Color Palette
 
-### 🌱 Brand Colour Rationale
+### 🎨 Refined Brand Color System
+
+Farm Feed employs a sophisticated **two-color system** that creates maximum impact through strategic restraint. This approach follows world-class branding principles used by premium agricultural and technology companies globally.
 
 #### Primary Colour – Forest Green (#3D693D)
 
-Farm Feed's core identity is anchored in Forest Green, a deep, natural tone that represents trust, growth, and agricultural heritage. The choice of a darker shade is intentional:
+**Strategic Foundation**: Forest Green serves as the absolute foundation of Farm Feed's visual identity. This deep, natural tone is intentionally chosen for its psychological and practical advantages:
 
-**Trust & Stability**: Darker greens communicate reliability and professionalism, reassuring users that Farm Feed is a secure and serious platform.
+**Trust & Authority**: Darker greens communicate reliability, stability, and expertise—essential qualities for a financial trading platform handling agricultural commodities.
 
-**Contrast & Accessibility**: Provides excellent readability and visibility across all digital devices and in outdoor settings, ensuring strong contrast against light backgrounds.
+**Agricultural Heritage**: Reflects the fertile South African landscape, connecting users to the land and the agricultural community's strength and tradition.
 
-**Premium Feel**: Lighter greens can feel casual; the deeper tone elevates the brand to a global, premium standard.
+**Premium Positioning**: Elevates the brand above casual agricultural platforms, positioning Farm Feed as a serious, professional trading environment.
 
-**Agricultural Identity**: Reflects fertile land, South African landscapes, and the strength of the agricultural community.
+**Accessibility Excellence**: Provides superior contrast ratios across all digital interfaces, ensuring readability in various lighting conditions.
 
-**Usage**:
-- Primary CTAs, navigation elements, and key brand visuals
-- Can be paired with lighter tints (#5A8A5A) for hover states and background accents
+**Global Sophistication**: Aligns with international agricultural and financial brand standards, ensuring global market appeal.
 
-**Variations**:
-- Light: #5A8A5A
-- Dark: #2A4A2A
-- Contrast: #FFFFFF
+**Usage Hierarchy**:
+- **Primary Actions**: Main CTAs, navigation, key brand elements
+- **Success States**: Confirmations, positive feedback
+- **Brand Elements**: Logo, headers, primary navigation
+- **Interactive States**: Hover, focus, active states
+
+**Color Variations**:
+- **Base**: #3D693D (Primary brand color)
+- **Light**: #5A8A5A (Hover states, subtle backgrounds)
+- **Dark**: #2A4A2A (Pressed states, deep accents)
+- **Tint 10%**: #4A7A4A (Light backgrounds, subtle highlights)
 
 #### Secondary Colour – Harvest Red (#DB4A39)
 
-A vibrant, warm red that injects energy, urgency, and South African vibrancy into the brand. It works as a perfect counterbalance to the grounding green.
+**Strategic Counterpoint**: Harvest Red serves as the perfect complement to Forest Green, creating a dynamic yet harmonious brand system.
 
-**Usage**:
-- Secondary CTAs, highlights, alerts, and accent details
-- Creates a strong two-tone system when combined with Forest Green, reinforcing brand recognition
+**Energy & Urgency**: Injects necessary energy into the brand while maintaining professionalism—crucial for driving user action in a trading environment.
 
-**Variations**:
-- Light: #E56B5D
-- Dark: #B83A2A
-- Contrast: #FFFFFF
+**South African Identity**: Captures the vibrancy and warmth of South African culture while maintaining international appeal.
 
-#### Supporting Colour – Earth Orange (#F4A261)
-- **Usage**: Accent color, highlights, call-to-actions
-- **Psychology**: Energy, warmth, harvest, South African sun
-- **Variations**:
-  - Light: #F7B88A
-  - Dark: #E08A4A
-  - Contrast: #FFFFFF
+**Attention & Action**: Strategically used to guide user attention to critical actions and important information.
 
-#### Supporting Neutrals
-- **White (#FFFFFF)**: Primary background, text contrast, clean spaces
-- **Charcoal (#1F2937)**: Primary text, headings, strong contrast
-- **Gray Scale**: 200-600 for dividers, text hierarchy, and subtle backgrounds
-  - Gray 200: #E5E7EB (Light borders, dividers)
-  - Gray 300: #D1D5DB (Input borders, subtle text)
-  - Gray 400: #9CA3AF (Placeholder text, disabled states)
-  - Gray 500: #6B7280 (Body text)
-  - Gray 600: #4B5563 (Stronger body text)
+**Brand Differentiation**: Creates a distinctive two-tone system that's immediately recognizable and memorable.
 
-### Colour System Summary
+**Usage Hierarchy**:
+- **Secondary Actions**: Alternative CTAs, secondary navigation
+- **Alerts & Warnings**: Important notifications, urgent actions
+- **Accent Elements**: Highlights, badges, status indicators
+- **Interactive Feedback**: Error states, validation messages
 
-**Forest Green**: The core of Farm Feed's visual identity — trust, growth, stability.
+**Color Variations**:
+- **Base**: #DB4A39 (Secondary brand color)
+- **Light**: #E56B5D (Hover states, light backgrounds)
+- **Dark**: #B83A2A (Pressed states, deep accents)
+- **Tint 10%**: #D85A4A (Light backgrounds, subtle highlights)
 
-**Harvest Red**: The accent of energy and urgency — movement, action, South African spirit.
+#### Sophisticated Neutral Palette
 
-**Neutrals**: Maintain clarity, balance, and professionalism.
+**Pure White (#FFFFFF)**
+- **Primary Backgrounds**: Clean, professional base for all content
+- **Text Contrast**: Maximum readability for dark text
+- **Card Backgrounds**: Clean, modern card design
+- **Modal Overlays**: Professional dialog and modal backgrounds
 
-👉 This section makes the colour choice feel strategic and world-class, not just aesthetic.
+**Charcoal (#1F2937)**
+- **Primary Text**: Headlines, important content, strong hierarchy
+- **Navigation Text**: Professional navigation elements
+- **Strong Contrast**: Maximum readability on light backgrounds
+
+**Sophisticated Gray Scale**
+- **Gray 50 (#F9FAFB)**: Subtle background variations
+- **Gray 100 (#F3F4F6)**: Light section backgrounds, card borders
+- **Gray 200 (#E5E7EB)**: Dividers, subtle borders, input borders
+- **Gray 300 (#D1D5DB)**: Disabled states, placeholder text
+- **Gray 400 (#9CA3AF)**: Secondary text, captions
+- **Gray 500 (#6B7280)**: Body text, standard content
+- **Gray 600 (#4B5563)**: Stronger body text, emphasis
+- **Gray 700 (#374151)**: Headings, important text
+- **Gray 800 (#1F2937)**: Primary headings, strong hierarchy
+
+### 🎯 Strategic Color Application
+
+#### Brand Hierarchy
+1. **Forest Green**: Primary brand identity, trust, stability
+2. **Harvest Red**: Secondary actions, energy, urgency
+3. **White**: Clean backgrounds, maximum contrast
+4. **Charcoal**: Strong text hierarchy, professional content
+5. **Gray Scale**: Subtle hierarchy, professional refinement
+
+#### Usage Principles
+- **80/20 Rule**: Forest Green dominates (80%), Harvest Red accents (20%)
+- **Contrast First**: Always prioritize readability and accessibility
+- **Consistent Application**: Same colors, same meanings across all touchpoints
+- **Professional Restraint**: Sophisticated use of limited palette
+
+#### Color Psychology
+- **Forest Green**: Trust, growth, stability, agricultural heritage, premium quality
+- **Harvest Red**: Energy, urgency, South African vibrancy, action, attention
+- **White**: Clean, professional, trustworthy, modern
+- **Charcoal**: Authority, sophistication, readability, hierarchy
+
+### 🌟 World-Class Brand System Benefits
+
+**Memorability**: Two-color system is easier to remember and recognize
+**Consistency**: Simplified palette ensures consistent application across all media
+**Flexibility**: Sophisticated neutral palette provides endless design possibilities
+**Accessibility**: High contrast ratios ensure inclusive design
+**Scalability**: System works across all touchpoints and applications
+**Professionalism**: Restrained approach conveys sophistication and expertise
 
 ---
 - **White**: #FFFFFF (Backgrounds, cards)

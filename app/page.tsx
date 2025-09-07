@@ -45,7 +45,7 @@ export default function HomePage() {
     buyer: {
       title: "Buy Quality Grain & Feed",
       subtitle: "Source maize, wheat, soybeans, and feed from verified South African farmers",
-      color: "blue",
+      color: "green",
       icon: ShoppingCart,
       problem: "Finding reliable suppliers with quality grain and feed products",
       solution: "Access verified farmers with quality certificates, transparent pricing, and guaranteed delivery",
@@ -75,7 +75,7 @@ export default function HomePage() {
     transporter: {
       title: "Transport Agricultural Products",
       subtitle: "Find consistent loads and optimize your routes across South Africa",
-      color: "orange",
+      color: "green",
       icon: Truck,
       problem: "Finding consistent grain and feed transport loads",
       solution: "Access integrated transport marketplace with route optimization and backload matching",
@@ -183,7 +183,7 @@ export default function HomePage() {
                           ? 'border-green-400 bg-green-500/20 text-white shadow-lg'
                           : type === 'seller'
                           ? 'border-red-400 bg-red-500/20 text-white shadow-lg'
-                          : 'border-orange-400 bg-orange-500/20 text-white shadow-lg'
+                          : 'border-green-400 bg-green-500/20 text-white shadow-lg'
                         : 'border-white/30 bg-white/10 text-gray-200 hover:bg-white/20 hover:border-white/50'
                     }`}
                   >
@@ -314,15 +314,15 @@ export default function HomePage() {
                 {selectedUserType === 'transporter' && (
                   <>
                     <Link href="/register" className="group">
-                      <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-orange-600 to-orange-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
+                      <button className="relative overflow-hidden px-12 py-6 bg-gradient-to-r from-green-600 to-green-500 text-white text-xl font-bold rounded-2xl shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:shadow-cinematic-glow active:scale-95">
                         <span className="relative z-10 flex items-center">
                           <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
                             <Truck className="w-6 h-6 mr-2" />
                           </ClientOnly>
                           Start Transporting Today
                         </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-orange-500 to-orange-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <div className="absolute inset-0 bg-gradient-to-r from-orange-400 to-orange-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
                         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                       </button>
                     </Link>
@@ -479,18 +479,18 @@ export default function HomePage() {
             {selectedUserType === 'transporter' && (
               <>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
-                      <Users className="w-8 h-8 text-orange-600" />
+                      <Users className="w-8 h-8 text-green-600" />
                     </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">1. Register & Verify</h3>
                   <p className="text-gray-600 text-sm">Create your account and verify your transport credentials</p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
-                      <Search className="w-8 h-8 text-orange-600" />
+                      <Search className="w-8 h-8 text-green-600" />
                     </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">2. Find Opportunities</h3>
@@ -499,7 +499,7 @@ export default function HomePage() {
                 <div className="text-center">
                   <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
-                      <FileText className="w-8 h-8 text-orange-600" />
+                      <FileText className="w-8 h-8 text-green-600" />
                     </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">3. Submit Quotes</h3>
@@ -508,7 +508,7 @@ export default function HomePage() {
                 <div className="text-center">
                   <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
-                      <MapPin className="w-8 h-8 text-orange-600" />
+                      <MapPin className="w-8 h-8 text-green-600" />
                     </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">4. Optimize Routes</h3>
@@ -517,7 +517,7 @@ export default function HomePage() {
                 <div className="text-center">
                   <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
-                      <Award className="w-8 h-8 text-orange-600" />
+                      <Award className="w-8 h-8 text-green-600" />
                     </ClientOnly>
                   </div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">5. Build Reputation</h3>
@@ -655,7 +655,7 @@ export default function HomePage() {
               <div className="text-center">
                 <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
-                    <Users className="w-8 h-8 text-primary-600" />
+                    <Users className="w-8 h-8 text-green-600" />
                   </ClientOnly>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">1. Create Account</h3>
@@ -667,7 +667,7 @@ export default function HomePage() {
               <div className="text-center">
                 <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
-                    <TrendingUp className="w-8 h-8 text-primary-600" />
+                    <TrendingUp className="w-8 h-8 text-green-600" />
                   </ClientOnly>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">2. Browse & Connect</h3>
@@ -679,7 +679,7 @@ export default function HomePage() {
               <div className="text-center">
                 <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
-                    <Truck className="w-8 h-8 text-primary-600" />
+                    <Truck className="w-8 h-8 text-green-600" />
                   </ClientOnly>
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">3. Complete Deal</h3>
