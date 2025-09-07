@@ -49,18 +49,21 @@ const Navigation: React.FC = () => {
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <div className="flex items-center">
-              <Link href="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">FF</span>
-                </div>
+              <Link href="/" className="flex items-center">
                 <Logo variant="color" size="md" />
               </Link>
             </div>
-            {/* Placeholder for navigation items */}
+            {/* Navigation Links */}
             <div className="hidden md:flex items-center space-x-8">
-              <div className="w-20 h-4 bg-gray-200 rounded animate-pulse"></div>
-              <div className="w-20 h-4 bg-gray-200 rounded animate-pulse"></div>
-              <div className="w-20 h-4 bg-gray-200 rounded animate-pulse"></div>
+              <Link href="/listings" className="text-gray-700 hover:text-green-600 font-medium transition-colors">
+                Browse Listings
+              </Link>
+              <Link href="/transport" className="text-gray-700 hover:text-green-600 font-medium transition-colors">
+                Transport
+              </Link>
+              <Link href="/support" className="text-gray-700 hover:text-green-600 font-medium transition-colors">
+                Support
+              </Link>
             </div>
             {/* Placeholder for user actions */}
             <div className="hidden md:flex items-center space-x-4">
@@ -79,23 +82,20 @@ const Navigation: React.FC = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">FF</span>
-              </div>
+            <Link href="/" className="flex items-center">
               <Logo variant="color" size="md" />
             </Link>
           </div>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/listings" className="text-gray-600 hover:text-primary-500 transition-colors">
+            <Link href="/listings" className="text-gray-600 hover:text-green-600 transition-colors">
               Browse Listings
             </Link>
-            <Link href="/transport" className="text-gray-600 hover:text-primary-500 transition-colors">
+            <Link href="/transport" className="text-gray-600 hover:text-green-600 transition-colors">
               Transport
             </Link>
-            <Link href="/support" className="text-gray-600 hover:text-primary-500 transition-colors">
+            <Link href="/support" className="text-gray-600 hover:text-green-600 transition-colors">
               Support
             </Link>
           </div>
