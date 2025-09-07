@@ -29,7 +29,11 @@ import {
   Award,
   Zap,
   Target,
-  Heart
+  Heart,
+  Calculator,
+  Mail,
+  BarChart3,
+  Smartphone
 } from 'lucide-react'
 import { mockListings } from '@/lib/mockData'
 
@@ -108,6 +112,82 @@ export default function HomePage() {
   }
 
   const currentFeatureConfig = featureConfig[selectedUserType]
+
+  // Features configuration with refined brand colors
+  const features: Record<string, any> = {
+    'Quality Verification': {
+      icon: Shield,
+      color: 'green',
+      description: 'Verified sellers with quality certificates and lab analysis for grain and feed products',
+      benefits: ['Quality certificates', 'Lab analysis reports', 'Verified sellers']
+    },
+    'Product Listings': {
+      icon: Package,
+      color: 'green',
+      description: 'Browse and create detailed listings for maize, wheat, soybeans, and feed products',
+      benefits: ['Product images', 'Quality grades', 'Packaging options']
+    },
+    'Offer Management': {
+      icon: MessageSquare,
+      color: 'red',
+      description: 'Make offers, negotiate terms, and manage deals with direct communication',
+      benefits: ['Make offers', 'Negotiate terms', 'Deal management']
+    },
+    'Transport Integration': {
+      icon: Truck,
+      color: 'green',
+      description: 'Integrated transport marketplace with route optimization and delivery coordination',
+      benefits: ['Transport requests', 'Route optimization', 'Delivery tracking']
+    },
+    'Transport Requests': {
+      icon: Truck,
+      color: 'green',
+      description: 'Submit and manage transport requests for grain and feed deliveries',
+      benefits: ['Request transport', 'Track deliveries', 'Coordinate logistics']
+    },
+    'Backload Listings': {
+      icon: MapPin,
+      color: 'green',
+      description: 'List empty truck space and find backload opportunities to maximize revenue',
+      benefits: ['Empty truck listings', 'Backload matching', 'Route optimization']
+    },
+    'Route Optimization': {
+      icon: Target,
+      color: 'green',
+      description: 'Smart route planning to minimize empty trips and maximize efficiency',
+      benefits: ['Route planning', 'Cost optimization', 'Time efficiency']
+    },
+    'Quote Management': {
+      icon: Calculator,
+      color: 'red',
+      description: 'Create and manage transport quotes with transparent pricing and terms',
+      benefits: ['Quote creation', 'Pricing transparency', 'Terms management']
+    },
+    'Document Management': {
+      icon: FileText,
+      color: 'green',
+      description: 'Automated contract and invoice generation with secure document storage',
+      benefits: ['Auto contracts', 'Invoice generation', 'Secure storage']
+    },
+    'Email Notifications': {
+      icon: Mail,
+      color: 'red',
+      description: 'Real-time notifications for offers, deals, and important updates',
+      benefits: ['Real-time alerts', 'Deal notifications', 'Status updates']
+    },
+    'Dashboard Analytics': {
+      icon: BarChart3,
+      color: 'green',
+      description: 'Comprehensive analytics and insights for your trading performance',
+      benefits: ['Performance metrics', 'Trading insights', 'Market analysis']
+    },
+    'Mobile Access': {
+      icon: Smartphone,
+      color: 'green',
+      description: 'Full platform access on mobile devices for trading on the go',
+      benefits: ['Mobile trading', 'On-the-go access', 'Responsive design']
+    }
+  }
 
   return (
     <div className="min-h-screen">
@@ -797,17 +877,25 @@ export default function HomePage() {
                 <div 
                   key={featureName}
                   className={`bg-white p-8 rounded-2xl shadow-card hover:shadow-lg transition-shadow group ${
-                    isEmphasized ? 'ring-2 ring-blue-200 bg-blue-50/30' : ''
+                    isEmphasized ? 'ring-2 ring-green-200 bg-green-50/30' : ''
                   }`}
                 >
                   {isEmphasized && (
-                    <div className="absolute -top-2 -right-2 bg-blue-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+                    <div className="absolute -top-2 -right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium">
                       Recommended
                     </div>
                   )}
-                  <div className={`w-16 h-16 bg-${feature.color}-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform ${
+                    feature.color === 'green' ? 'bg-green-100' :
+                    feature.color === 'red' ? 'bg-red-100' :
+                    'bg-gray-100'
+                  }`}>
                     <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
-                      <Icon className={`w-8 h-8 text-${feature.color}-600`} />
+                      <Icon className={`w-8 h-8 ${
+                        feature.color === 'green' ? 'text-green-600' :
+                        feature.color === 'red' ? 'text-red-600' :
+                        'text-gray-600'
+                      }`} />
                     </ClientOnly>
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-3">{featureName}</h3>
@@ -815,7 +903,11 @@ export default function HomePage() {
                     {feature.description}
                   </p>
                   {feature.benefits.map((benefit: string, benefitIndex: number) => (
-                    <div key={benefitIndex} className={`text-sm text-${feature.color}-600 font-medium`}>
+                    <div key={benefitIndex} className={`text-sm font-medium ${
+                      feature.color === 'green' ? 'text-green-600' :
+                      feature.color === 'red' ? 'text-red-600' :
+                      'text-gray-600'
+                    }`}>
                       ✓ {benefit}
                     </div>
                   ))}
