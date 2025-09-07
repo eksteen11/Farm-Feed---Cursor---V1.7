@@ -29,7 +29,11 @@ import {
   Award,
   Zap,
   Target,
-  Heart
+  Heart,
+  Calculator,
+  Mail,
+  BarChart3,
+  Smartphone
 } from 'lucide-react'
 import { mockListings } from '@/lib/mockData'
 
@@ -109,6 +113,82 @@ export default function HomePage() {
 
   const currentFeatureConfig = featureConfig[selectedUserType]
 
+  // Features configuration with refined brand colors
+  const features: Record<string, any> = {
+    'Quality Verification': {
+      icon: Shield,
+      color: 'green',
+      description: 'Verified sellers with quality certificates and lab analysis for grain and feed products',
+      benefits: ['Quality certificates', 'Lab analysis reports', 'Verified sellers']
+    },
+    'Product Listings': {
+      icon: Package,
+      color: 'green',
+      description: 'Browse and create detailed listings for maize, wheat, soybeans, and feed products',
+      benefits: ['Product images', 'Quality grades', 'Packaging options']
+    },
+    'Offer Management': {
+      icon: MessageSquare,
+      color: 'red',
+      description: 'Make offers, negotiate terms, and manage deals with direct communication',
+      benefits: ['Make offers', 'Negotiate terms', 'Deal management']
+    },
+    'Transport Integration': {
+      icon: Truck,
+      color: 'green',
+      description: 'Integrated transport marketplace with route optimization and delivery coordination',
+      benefits: ['Transport requests', 'Route optimization', 'Delivery tracking']
+    },
+    'Transport Requests': {
+      icon: Truck,
+      color: 'green',
+      description: 'Submit and manage transport requests for grain and feed deliveries',
+      benefits: ['Request transport', 'Track deliveries', 'Coordinate logistics']
+    },
+    'Backload Listings': {
+      icon: MapPin,
+      color: 'green',
+      description: 'List empty truck space and find backload opportunities to maximize revenue',
+      benefits: ['Empty truck listings', 'Backload matching', 'Route optimization']
+    },
+    'Route Optimization': {
+      icon: Target,
+      color: 'green',
+      description: 'Smart route planning to minimize empty trips and maximize efficiency',
+      benefits: ['Route planning', 'Cost optimization', 'Time efficiency']
+    },
+    'Quote Management': {
+      icon: Calculator,
+      color: 'red',
+      description: 'Create and manage transport quotes with transparent pricing and terms',
+      benefits: ['Quote creation', 'Pricing transparency', 'Terms management']
+    },
+    'Document Management': {
+      icon: FileText,
+      color: 'green',
+      description: 'Automated contract and invoice generation with secure document storage',
+      benefits: ['Auto contracts', 'Invoice generation', 'Secure storage']
+    },
+    'Email Notifications': {
+      icon: Mail,
+      color: 'red',
+      description: 'Real-time notifications for offers, deals, and important updates',
+      benefits: ['Real-time alerts', 'Deal notifications', 'Status updates']
+    },
+    'Dashboard Analytics': {
+      icon: BarChart3,
+      color: 'green',
+      description: 'Comprehensive analytics and insights for your trading performance',
+      benefits: ['Performance metrics', 'Trading insights', 'Market analysis']
+    },
+    'Mobile Access': {
+      icon: Smartphone,
+      color: 'green',
+      description: 'Full platform access on mobile devices for trading on the go',
+      benefits: ['Mobile trading', 'On-the-go access', 'Responsive design']
+    }
+  }
+
   return (
     <div className="min-h-screen">
       {/* Enhanced Hero Section */}
@@ -131,7 +211,7 @@ export default function HomePage() {
           {/* Floating Particles for Cinematic Effect */}
           <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-green-400 rounded-full animate-float opacity-60"></div>
           <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-yellow-400 rounded-full animate-float animation-delay-1000 opacity-80"></div>
-          <div className="absolute top-2/3 left-1/3 w-1.5 h-1.5 bg-red-400 rounded-full animate-float animation-delay-2000 opacity-70"></div>
+          <div className="absolute top-2/3 left-1/3 w-1.5 h-1.5 bg-orange-400 rounded-full animate-float animation-delay-2000 opacity-70"></div>
           <div className="absolute bottom-1/4 right-1/4 w-1 h-1 bg-green-300 rounded-full animate-float animation-delay-1500 opacity-60"></div>
           <div className="absolute top-1/2 left-1/6 w-1.5 h-1.5 bg-yellow-300 rounded-full animate-float animation-delay-3000 opacity-50"></div>
         </div>
@@ -216,8 +296,8 @@ export default function HomePage() {
                 <h3 className="text-lg font-semibold text-green-200 mb-3">Our Solution</h3>
                 <p className="text-gray-200 text-sm">{currentConfig.solution}</p>
               </div>
-              <div className="bg-green-500/20 border border-green-400/30 rounded-2xl p-6">
-                <h3 className="text-lg font-semibold text-green-200 mb-3">Your Advantage</h3>
+              <div className="bg-blue-500/20 border border-blue-400/30 rounded-2xl p-6">
+                <h3 className="text-lg font-semibold text-blue-200 mb-3">Your Advantage</h3>
                 <p className="text-gray-200 text-sm">{currentConfig.usp}</p>
               </div>
             </div>
@@ -346,7 +426,7 @@ export default function HomePage() {
 
           {/* Floating Elements for Cinematic Effect */}
           <div className="absolute top-20 left-10 w-20 h-20 bg-green-400/20 rounded-full blur-xl animate-pulse animation-delay-600"></div>
-          <div className="absolute top-40 right-20 w-32 h-32 bg-red-400/20 rounded-full blur-xl animate-pulse animation-delay-700"></div>
+          <div className="absolute top-40 right-20 w-32 h-32 bg-orange-400/20 rounded-full blur-xl animate-pulse animation-delay-700"></div>
           <div className="absolute bottom-40 left-20 w-16 h-16 bg-yellow-400/20 rounded-full blur-xl animate-pulse animation-delay-800"></div>
           
           {/* Additional Cinematic Elements */}
@@ -497,7 +577,7 @@ export default function HomePage() {
                   <p className="text-gray-600 text-sm">Browse transport requests and backload opportunities</p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
                       <FileText className="w-8 h-8 text-green-600" />
                     </ClientOnly>
@@ -506,7 +586,7 @@ export default function HomePage() {
                   <p className="text-gray-600 text-sm">Provide competitive quotes with vehicle details and pricing</p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
                       <MapPin className="w-8 h-8 text-green-600" />
                     </ClientOnly>
@@ -515,7 +595,7 @@ export default function HomePage() {
                   <p className="text-gray-600 text-sm">Plan efficient routes and find backload opportunities</p>
                 </div>
                 <div className="text-center">
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
                       <Award className="w-8 h-8 text-green-600" />
                     </ClientOnly>
@@ -705,11 +785,54 @@ export default function HomePage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {(() => {
-              const features: Record<string, any> = {
-                'Quality Verification': {
-                  icon: Shield,
-                  color: 'blue',
+            {currentFeatureConfig.priority.map((featureName: string, index: number) => {
+              const feature = features[featureName]
+              if (!feature) return null
+              
+              const Icon = feature.icon
+              const isEmphasized = currentFeatureConfig.emphasis.includes(featureName)
+              
+              return (
+                <div 
+                  key={featureName}
+                  className={`bg-white p-8 rounded-2xl shadow-card hover:shadow-lg transition-shadow group ${
+                    isEmphasized ? 'ring-2 ring-green-200 bg-green-50/30' : ''
+                  }`}
+                >
+                  {isEmphasized && (
+                    <div className="absolute -top-2 -right-2 bg-green-500 text-white text-xs px-2 py-1 rounded-full font-medium">
+                      Recommended
+                    </div>
+                  )}
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform ${
+                    feature.color === 'green' ? 'bg-green-100' :
+                    feature.color === 'red' ? 'bg-red-100' :
+                    'bg-gray-100'
+                  }`}>
+                    <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
+                      <Icon className={`w-8 h-8 ${
+                        feature.color === 'green' ? 'text-green-600' :
+                        feature.color === 'red' ? 'text-red-600' :
+                        'text-gray-600'
+                      }`} />
+                    </ClientOnly>
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3">{featureName}</h3>
+                  <p className="text-gray-600 mb-4">
+                    {feature.description}
+                  </p>
+                  {feature.benefits.map((benefit: string, benefitIndex: number) => (
+                    <div key={benefitIndex} className={`text-sm font-medium ${
+                      feature.color === 'green' ? 'text-green-600' :
+                      feature.color === 'red' ? 'text-red-600' :
+                      'text-gray-600'
+                    }`}>
+                      ✓ {benefit}
+                    </div>
+                  ))}
+                </div>
+              )
+            })}
                   description: 'Verified sellers with quality certificates and lab analysis for grain and feed products',
                   benefits: ['Quality certificates', 'Lab analysis reports', 'Verified sellers']
                 },
@@ -805,9 +928,17 @@ export default function HomePage() {
                       Recommended
                     </div>
                   )}
-                  <div className={`w-16 h-16 bg-${feature.color}-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform ${
+                    feature.color === 'green' ? 'bg-green-100' :
+                    feature.color === 'red' ? 'bg-red-100' :
+                    'bg-gray-100'
+                  }`}>
                     <ClientOnly fallback={<div className="w-8 h-8 bg-gray-300 rounded animate-pulse" />}>
-                      <Icon className={`w-8 h-8 text-${feature.color}-600`} />
+                      <Icon className={`w-8 h-8 ${
+                        feature.color === 'green' ? 'text-green-600' :
+                        feature.color === 'red' ? 'text-red-600' :
+                        'text-gray-600'
+                      }`} />
                     </ClientOnly>
                   </div>
                   <h3 className="text-xl font-semibold text-gray-900 mb-3">{featureName}</h3>
@@ -815,7 +946,11 @@ export default function HomePage() {
                     {feature.description}
                   </p>
                   {feature.benefits.map((benefit: string, benefitIndex: number) => (
-                    <div key={benefitIndex} className={`text-sm text-${feature.color}-600 font-medium`}>
+                    <div key={benefitIndex} className={`text-sm font-medium ${
+                      feature.color === 'green' ? 'text-green-600' :
+                      feature.color === 'red' ? 'text-red-600' :
+                      'text-gray-600'
+                    }`}>
                       ✓ {benefit}
                     </div>
                   ))}
@@ -829,9 +964,9 @@ export default function HomePage() {
 
       {/* User-Specific CTA Section */}
       <section className={`py-20 text-white ${
-        selectedUserType === 'buyer' ? 'bg-green-600' : 
-        selectedUserType === 'seller' ? 'bg-red-600' : 
-        'bg-green-600'
+        selectedUserType === 'buyer' ? 'bg-blue-600' : 
+        selectedUserType === 'seller' ? 'bg-green-600' : 
+        'bg-orange-600'
       }`}>
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">
