@@ -228,7 +228,8 @@ export default function CreateListingPage() {
         qualityGrade: 'A' as const,
         specifications: {},
         certificates: [],
-        specialConditions: formData.specialConditions
+        specialConditions: formData.specialConditions,
+        mapVisibility: true
       }
 
       // Call the store action to create listing

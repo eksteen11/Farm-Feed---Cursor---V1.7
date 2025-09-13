@@ -346,6 +346,7 @@ export const mockListings: Listing[] = [
       'https://via.placeholder.com/400x300?text=Lab+Report'
     ],
     labResults: ['https://via.placeholder.com/400x300?text=Lab+Results'],
+    mapVisibility: true,
     createdAt: new Date('2024-01-10'),
     updatedAt: new Date('2024-01-10')
   },
@@ -388,6 +389,7 @@ export const mockListings: Listing[] = [
       'https://via.placeholder.com/400x300?text=Quality+Certificate'
     ],
     labResults: ['https://via.placeholder.com/400x300?text=Lab+Results'],
+    mapVisibility: true,
     createdAt: new Date('2024-01-12'),
     updatedAt: new Date('2024-01-12')
   }
@@ -655,6 +657,8 @@ export const mockBackloadListings: BackloadListing[] = [
       specialEquipment: ['GPS Tracking', 'Load Straps']
     },
     restrictions: ['No hazardous materials', 'Max height 2.5m'],
+    distance: 1200, // Johannesburg to Cape Town in km
+    estimatedDuration: 12, // hours
     createdAt: new Date('2024-01-18'),
     updatedAt: new Date('2024-01-18')
   },
@@ -678,6 +682,8 @@ export const mockBackloadListings: BackloadListing[] = [
       specialEquipment: ['Load Straps', 'Tarpaulin']
     },
     restrictions: ['No liquids', 'Weather dependent'],
+    distance: 400, // Free State to Johannesburg in km
+    estimatedDuration: 4, // hours
     createdAt: new Date('2024-01-19'),
     updatedAt: new Date('2024-01-19')
   },
@@ -701,6 +707,8 @@ export const mockBackloadListings: BackloadListing[] = [
       specialEquipment: ['Temperature Control', 'GPS Tracking', 'Load Straps']
     },
     restrictions: ['Temperature sensitive goods only', 'No hazardous materials'],
+    distance: 1000, // Johannesburg to Durban in km
+    estimatedDuration: 8, // hours
     createdAt: new Date('2024-01-20'),
     updatedAt: new Date('2024-01-20')
   }
