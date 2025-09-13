@@ -20,7 +20,8 @@ import {
   CreditCard,
   ShieldCheck,
   CheckCircle,
-  FileText
+  FileText,
+  Map
 } from 'lucide-react'
 
 const Navigation: React.FC = () => {
@@ -94,6 +95,10 @@ const Navigation: React.FC = () => {
             </Link>
             <Link href="/transport" className="text-gray-600 hover:text-green-600 transition-colors">
               Transport
+            </Link>
+            <Link href="/maps" className="text-gray-600 hover:text-green-600 transition-colors flex items-center">
+              <Map className="w-4 h-4 mr-1" />
+              Maps
             </Link>
             <Link href="/support" className="text-gray-600 hover:text-green-600 transition-colors">
               Support
@@ -171,6 +176,10 @@ const Navigation: React.FC = () => {
                           <FileText className="w-4 h-4 mr-3" />
                           Documents
                         </Link>
+                        <Link href="/maps" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          <Map className="w-4 h-4 mr-3" />
+                          Maps
+                        </Link>
                         <div className="border-t border-gray-100 my-1"></div>
                       </div>
                       <Link href="/profile" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
@@ -241,6 +250,14 @@ const Navigation: React.FC = () => {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Transport
+              </Link>
+              <Link
+                href="/maps"
+                className="flex items-center px-3 py-2 text-gray-600 hover:text-primary-500 hover:bg-gray-100 rounded-md"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Map className="w-4 h-4 mr-2" />
+                Maps
               </Link>
               <Link
                 href="/support"

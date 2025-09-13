@@ -26,6 +26,7 @@ import { useRouter } from 'next/navigation'
 import TransportDashboard from '@/components/transport/TransportDashboard'
 import TransportAnalytics from '@/components/transport/TransportAnalytics'
 import { formatDate } from '@/lib/utils'
+import ClientOnly from '@/components/ui/ClientOnly'
 
 export default function TransportPage() {
   const { currentUser, isAuthenticated } = useStore()
@@ -309,10 +310,14 @@ export default function TransportPage() {
         </div>
 
         {/* Transport Dashboard */}
-        <TransportDashboard userId={currentUser?.id} userRole={currentUser?.role} />
+        <ClientOnly>
+          <TransportDashboard userId={currentUser?.id} userRole={currentUser?.role} />
+        </ClientOnly>
 
         {/* Transport Analytics */}
-        <TransportAnalytics />
+        <ClientOnly>
+          <TransportAnalytics />
+        </ClientOnly>
 
         {/* Search and Filters */}
         <div className="bg-white rounded-2xl shadow-card p-6 mb-8">

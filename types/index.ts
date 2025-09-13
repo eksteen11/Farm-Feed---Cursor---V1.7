@@ -11,6 +11,18 @@ export interface User {
   capabilities: UserCapability[] // New: unified capabilities
   company?: string
   location: string
+  // Enhanced Location Information
+  locationDetails?: {
+    address: string
+    coordinates: {
+      lat: number
+      lng: number
+    }
+    province: string
+    district?: string
+    farmName?: string
+    postalCode?: string
+  }
   phone?: string
   avatar?: string
   isVerified: boolean
@@ -101,6 +113,18 @@ export interface Listing {
   quantity: number
   availableQuantity: number
   location: string
+  // Enhanced Location Information
+  locationDetails?: {
+    address: string
+    coordinates: {
+      lat: number
+      lng: number
+    }
+    province: string
+    district?: string
+    farmName?: string
+    postalCode?: string
+  }
   images: string[]
   isActive: boolean
   expiresAt?: Date
@@ -119,6 +143,9 @@ export interface Listing {
   specifications: Record<string, any>
   certificates: string[]
   labResults?: string[]
+  // Map-specific fields
+  mapVisibility: boolean
+  transportRoutes?: TransportRoute[]
   createdAt: Date
   updatedAt: Date
 }
@@ -204,6 +231,36 @@ export interface Deal {
   specialConditions?: string
 }
 
+// New: Transport Route Interface
+export interface TransportRoute {
+  id: string
+  pickupLocation: {
+    address: string
+    coordinates: {
+      lat: number
+      lng: number
+    }
+    province: string
+    district?: string
+  }
+  deliveryLocation: {
+    address: string
+    coordinates: {
+      lat: number
+      lng: number
+    }
+    province: string
+    district?: string
+  }
+  distance: number // in kilometers
+  estimatedCost: number
+  estimatedDuration: number // in hours
+  status: 'available' | 'booked' | 'completed' | 'cancelled'
+  routeType: 'direct' | 'multi-stop' | 'backload'
+  createdAt: Date
+  updatedAt: Date
+}
+
 // New: Enhanced Transport Request
 export interface TransportRequest {
   id: string
@@ -215,6 +272,25 @@ export interface TransportRequest {
   requester: User
   pickupLocation: string
   deliveryLocation: string
+  // Enhanced Location Information
+  pickupLocationDetails?: {
+    address: string
+    coordinates: {
+      lat: number
+      lng: number
+    }
+    province: string
+    district?: string
+  }
+  deliveryLocationDetails?: {
+    address: string
+    coordinates: {
+      lat: number
+      lng: number
+    }
+    province: string
+    district?: string
+  }
   quantity: number
   unit: string
   preferredDate: Date
@@ -280,6 +356,25 @@ export interface BackloadListing {
   route: string
   pickupLocation: string
   deliveryLocation: string
+  // Enhanced Location Information
+  pickupLocationDetails?: {
+    address: string
+    coordinates: {
+      lat: number
+      lng: number
+    }
+    province: string
+    district?: string
+  }
+  deliveryLocationDetails?: {
+    address: string
+    coordinates: {
+      lat: number
+      lng: number
+    }
+    province: string
+    district?: string
+  }
   availableDate: Date
   capacity: number
   unit: string
@@ -294,6 +389,9 @@ export interface BackloadListing {
     specialEquipment: string[]
   }
   restrictions: string[]
+  // Route Information
+  distance: number // in kilometers
+  estimatedDuration: number // in hours
   createdAt: Date
   updatedAt: Date
 }
