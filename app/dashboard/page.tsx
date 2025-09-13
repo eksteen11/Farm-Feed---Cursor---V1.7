@@ -20,6 +20,7 @@ import Link from 'next/link'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import { useEffect, useState } from 'react'
+import ClientOnly from '@/components/ui/ClientOnly'
 
 // Dashboard sections configuration
 const DASHBOARD_SECTIONS = [
@@ -175,38 +176,41 @@ export default function UnifiedDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">
-                Welcome back, {currentUser.name}! 👋
-              </h1>
-              <p className="text-gray-600 mt-2">
-                Manage your Farm Feed activities from one place
-              </p>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="text-right">
-                <p className="text-sm text-gray-500">Subscription</p>
-                <p className="font-semibold text-green-600 capitalize">
-                  {currentUser.subscriptionStatus}
+      <ClientOnly>
+        {/* Header */}
+        <div className="bg-white shadow-sm border-b">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold text-gray-900">
+                  Welcome back, {currentUser.name}! 👋
+                </h1>
+                <p className="text-gray-600 mt-2">
+                  Manage your Farm Feed activities from one place
                 </p>
               </div>
-              <div className="text-right">
-                <p className="text-sm text-gray-500">Capabilities</p>
-                <p className="font-semibold text-green-600">
-                  {userCapabilities.join(', ')}
-                </p>
+              <div className="flex items-center space-x-4">
+                <div className="text-right">
+                  <p className="text-sm text-gray-500">Subscription</p>
+                  <p className="font-semibold text-green-600 capitalize">
+                    {currentUser.subscriptionStatus}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-sm text-gray-500">Capabilities</p>
+                  <p className="font-semibold text-green-600">
+                    {userCapabilities.join(', ')}
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </ClientOnly>
 
-      {/* Stats Overview */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <ClientOnly>
+        {/* Stats Overview */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -360,6 +364,7 @@ export default function UnifiedDashboard() {
           </Card>
         </div>
       </div>
+      </ClientOnly>
     </div>
   )
 }
