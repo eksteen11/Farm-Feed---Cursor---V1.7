@@ -316,10 +316,10 @@ export default function ListingDetailPage() {
                   </Button>
                   <Button 
                     className="w-full bg-red-600 hover:bg-red-700 text-white"
-                    onClick={() => setShowOfferModal(true)}
+                    onClick={() => router.push('/transport/create-backload')}
                   >
                     <Truck className="w-4 h-4 mr-2" />
-                    Make an Offer
+                    Request Transport
                   </Button>
                 </div>
               </CardContent>
