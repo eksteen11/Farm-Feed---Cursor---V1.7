@@ -41,13 +41,7 @@ export default function CreateListingPage() {
     pricePerMeasureUnit: '',
     deliveryOptions: {
       exFarm: true,
-      delivered: false,
-      ownTransport: {
-        available: false,
-        pricePerKm: '',
-        availableDates: [] as Date[],
-        routes: [] as string[]
-      }
+      delivered: false
     },
     images: [] as string[],
     videos: [] as string[],
@@ -99,79 +93,6 @@ export default function CreateListingPage() {
     }))
   }
 
-  const handleOwnTransportChange = (field: string, value: any) => {
-    setFormData(prev => ({
-      ...prev,
-      deliveryOptions: {
-        ...prev.deliveryOptions,
-        ownTransport: {
-          ...prev.deliveryOptions.ownTransport,
-          [field]: value
-        }
-      }
-    }))
-  }
-
-  const addRoute = () => {
-    const newRoute = prompt('Enter route (e.g., Free State → Johannesburg):')
-    if (newRoute && newRoute.trim()) {
-      setFormData(prev => ({
-        ...prev,
-        deliveryOptions: {
-          ...prev.deliveryOptions,
-          ownTransport: {
-            ...prev.deliveryOptions.ownTransport,
-            routes: [...prev.deliveryOptions.ownTransport.routes, newRoute.trim()]
-          }
-        }
-      }))
-    }
-  }
-
-  const removeRoute = (index: number) => {
-    setFormData(prev => ({
-      ...prev,
-      deliveryOptions: {
-        ...prev.deliveryOptions,
-        ownTransport: {
-          ...prev.deliveryOptions.ownTransport,
-          routes: prev.deliveryOptions.ownTransport.routes.filter((_, i) => i !== index)
-        }
-      }
-    }))
-  }
-
-  const addAvailableDate = () => {
-    const newDate = prompt('Enter available date (YYYY-MM-DD):')
-    if (newDate && newDate.trim()) {
-      const date = new Date(newDate)
-      if (!isNaN(date.getTime())) {
-        setFormData(prev => ({
-          ...prev,
-          deliveryOptions: {
-            ...prev.deliveryOptions,
-            ownTransport: {
-              ...prev.deliveryOptions.ownTransport,
-              availableDates: [...prev.deliveryOptions.ownTransport.availableDates, date]
-            }
-          }
-        }))
-      }
-    }
-  }
-
-  const removeAvailableDate = (index: number) => {
-    setFormData(prev => ({
-      ...prev,
-      deliveryOptions: {
-        ...prev.deliveryOptions,
-        ownTransport: {
-          ...prev.deliveryOptions.ownTransport,
-          availableDates: prev.deliveryOptions.ownTransport.availableDates.filter((_, i) => i !== index)
-        }
-      }
-    }))
-  }
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
@@ -182,13 +103,6 @@ export default function CreateListingPage() {
     if (!formData.grade.trim()) newErrors.grade = 'Grade is required'
     if (!formData.pricePerMeasureUnit || Number(formData.pricePerMeasureUnit) <= 0) newErrors.pricePerMeasureUnit = 'Valid price is required'
     if (!formData.expiresAt) newErrors.expiresAt = 'Expiry date is required'
-
-    // Validate own transport if enabled
-    if (formData.deliveryOptions.ownTransport.available) {
-      if (!formData.deliveryOptions.ownTransport.pricePerKm || Number(formData.deliveryOptions.ownTransport.pricePerKm) <= 0) {
-        newErrors['deliveryOptions.ownTransport.pricePerKm'] = 'Valid price per km is required'
-      }
-    }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -235,13 +149,7 @@ export default function CreateListingPage() {
         videos: formData.videos,
         isActive: true,
         expiresAt: new Date(formData.expiresAt),
-        deliveryOptions: {
-          ...formData.deliveryOptions,
-          ownTransport: {
-            ...formData.deliveryOptions.ownTransport,
-            pricePerKm: Number(formData.deliveryOptions.ownTransport.pricePerKm) || 0
-          }
-        },
+        deliveryOptions: formData.deliveryOptions,
         qualityGrade: 'A' as const,
         specifications: {
           protein: formData.protein ? `${formData.protein}%` : '',
@@ -491,7 +399,7 @@ export default function CreateListingPage() {
                     onChange={() => handleDeliveryOptionChange('exFarm')}
                     className="mr-3 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                   />
-                  <span className="text-sm font-medium text-gray-700">Ex-Farm Collection</span>
+                  <span className="text-sm font-medium text-gray-700">Buyer can collect</span>
                 </label>
 
                 <label className="flex items-center">
@@ -501,100 +409,9 @@ export default function CreateListingPage() {
                     onChange={() => handleDeliveryOptionChange('delivered')}
                     className="mr-3 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
                   />
-                  <span className="text-sm font-medium text-gray-700">Delivered to Buyer</span>
-                </label>
-
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={formData.deliveryOptions.ownTransport.available}
-                    onChange={() => handleOwnTransportChange('available', !formData.deliveryOptions.ownTransport.available)}
-                    className="mr-3 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
-                  />
-                  <span className="text-sm font-medium text-gray-700">Provide Own Transport</span>
+                  <span className="text-sm font-medium text-gray-700">Seller will prefer to deliver the product</span>
                 </label>
               </div>
-
-              {formData.deliveryOptions.ownTransport.available && (
-                <div className="pl-6 space-y-4 border-l-2 border-gray-200">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Price per km (ZAR)
-                    </label>
-                    <Input
-                      type="number"
-                      placeholder="2.50"
-                      value={formData.deliveryOptions.ownTransport.pricePerKm}
-                      onChange={(e) => handleOwnTransportChange('pricePerKm', e.target.value)}
-                      error={errors['deliveryOptions.ownTransport.pricePerKm']}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Available Routes
-                    </label>
-                    <div className="space-y-2">
-                      {formData.deliveryOptions.ownTransport.routes.map((route, index) => (
-                        <div key={index} className="flex items-center space-x-2">
-                          <span className="flex-1 px-3 py-2 bg-gray-50 rounded-lg text-sm">{route}</span>
-                          <Button
-                            type="button"
-                            variant="secondary"
-                            size="sm"
-                            leftIcon={<X className="w-4 h-4" />}
-                            onClick={() => removeRoute(index)}
-                          >
-                            Remove
-                          </Button>
-                        </div>
-                      ))}
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        size="sm"
-                        leftIcon={<Plus className="w-4 h-4" />}
-                        onClick={addRoute}
-                      >
-                        Add Route
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Available Dates
-                    </label>
-                    <div className="space-y-2">
-                      {formData.deliveryOptions.ownTransport.availableDates.map((date, index) => (
-                        <div key={index} className="flex items-center space-x-2">
-                          <span className="flex-1 px-3 py-2 bg-gray-50 rounded-lg text-sm">
-                            {date.toLocaleDateString()}
-                          </span>
-                          <Button
-                            type="button"
-                            variant="secondary"
-                            size="sm"
-                            leftIcon={<X className="w-4 h-4" />}
-                            onClick={() => removeAvailableDate(index)}
-                          >
-                            Remove
-                          </Button>
-                        </div>
-                      ))}
-                      <Button
-                        type="button"
-                        variant="secondary"
-                        size="sm"
-                        leftIcon={<Plus className="w-4 h-4" />}
-                        onClick={addAvailableDate}
-                      >
-                        Add Date
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              )}
             </CardContent>
           </Card>
 
