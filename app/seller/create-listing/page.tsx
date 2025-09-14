@@ -97,6 +97,10 @@ export default function CreateListingPage() {
       newErrors.deliveryOption = 'Delivery option is required'
     }
 
+    // Debug: Log the errors to help identify the issue
+    console.log('Validation errors:', newErrors)
+    console.log('Form data:', formData)
+
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
