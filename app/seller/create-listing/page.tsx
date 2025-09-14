@@ -57,14 +57,9 @@ export default function CreateListingPage() {
       router.push('/login')
       return
     }
-    
-    if (currentUser.role !== 'seller') {
-      router.push('/')
-      return
-    }
   }, [isAuthenticated, currentUser, router])
 
-  if (!isAuthenticated || !currentUser || currentUser.role !== 'seller') {
+  if (!isAuthenticated || !currentUser) {
     return null
   }
 

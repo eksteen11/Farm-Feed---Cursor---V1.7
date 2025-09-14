@@ -251,7 +251,7 @@ export default function HomePage() {
             }>
               {currentUser ? (
                 <>
-                  {/* Logged in user buttons - based on user type */}
+                  {/* Logged in user buttons - unified access to all features */}
                   {selectedUserType === 'buyer' && (
                     <>
                       {/* Primary CTA - Find Products */}
@@ -268,14 +268,14 @@ export default function HomePage() {
                           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                         </button>
                       </Link>
-                      {/* Secondary CTA - Arrange Transport */}
-                      <Link href="/transport" className="group">
+                      {/* Secondary CTA - Create Listing */}
+                      <Link href="/seller/create-listing" className="group">
                         <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
                           <span className="relative z-10 flex items-center">
                             <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
-                              <Truck className="w-6 h-6 mr-2" />
+                              <Plus className="w-6 h-6 mr-2" />
                             </ClientOnly>
-                            Arrange Transport
+                            Create Listing
                           </span>
                           <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                         </button>
@@ -298,14 +298,14 @@ export default function HomePage() {
                           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                         </button>
                       </Link>
-                      {/* Secondary CTA - Arrange Transport */}
-                      <Link href="/transport" className="group">
+                      {/* Secondary CTA - Find Products */}
+                      <Link href="/listings" className="group">
                         <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
                           <span className="relative z-10 flex items-center">
                             <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
-                              <Truck className="w-6 h-6 mr-2" />
+                              <Search className="w-6 h-6 mr-2" />
                             </ClientOnly>
-                            Arrange Transport
+                            Find Products
                           </span>
                           <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                         </button>
@@ -328,14 +328,14 @@ export default function HomePage() {
                           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                         </button>
                       </Link>
-                      {/* Secondary CTA - Create Backload Listing */}
-                      <Link href="/transport/create-backload" className="group">
+                      {/* Secondary CTA - Create Listing */}
+                      <Link href="/seller/create-listing" className="group">
                         <button className="relative overflow-hidden px-12 py-6 bg-white/10 backdrop-blur-sm text-white text-xl font-bold rounded-2xl border-2 border-white/30 shadow-cinematic transform transition-all duration-300 hover:scale-105 hover:bg-white/20 hover:border-white/50 active:scale-95">
                           <span className="relative z-10 flex items-center">
                             <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
                               <Plus className="w-6 h-6 mr-2" />
                             </ClientOnly>
-                            Create Backload Listing
+                            Create Listing
                           </span>
                           <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                         </button>
@@ -354,7 +354,7 @@ export default function HomePage() {
                           <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
                             <Search className="w-6 h-6 mr-2" />
                           </ClientOnly>
-                          Start Buying Today
+                          Start Trading Today
                         </span>
                         <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
@@ -383,7 +383,7 @@ export default function HomePage() {
                           <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
                             <Plus className="w-6 h-6 mr-2" />
                           </ClientOnly>
-                          Start Selling Today
+                          Start Trading Today
                         </span>
                         <div className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <div className="absolute inset-0 bg-gradient-to-r from-red-400 to-red-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
@@ -412,7 +412,7 @@ export default function HomePage() {
                           <ClientOnly fallback={<div className="w-6 h-6 bg-gray-300 rounded animate-pulse mr-2" />}>
                             <Truck className="w-6 h-6 mr-2" />
                           </ClientOnly>
-                          Start Transporting Today
+                          Start Trading Today
                         </span>
                         <div className="absolute inset-0 bg-gradient-to-r from-green-500 to-green-400 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-300 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
