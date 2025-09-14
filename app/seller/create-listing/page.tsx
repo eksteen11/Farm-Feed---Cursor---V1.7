@@ -27,13 +27,18 @@ export default function CreateListingPage() {
   
   // Form state
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    productId: '',
-    price: '',
+    productName: '',
+    areaLocation: '',
     quantity: '',
-    availableQuantity: '',
-    location: '',
+    measureUnit: 'ton', // ton, kg, litre, ml, cubic metres
+    packaging: 'Bulk', // Bulk, 25kg bag, 50kg bag, 250kg bags, 300kg bags, 500kg bags, 1000kg bags
+    grade: '',
+    extraNotes: '',
+    protein: '',
+    moisture: '',
+    fibre: '',
+    meEnergy: '',
+    pricePerMeasureUnit: '',
     deliveryOptions: {
       exFarm: true,
       delivered: false,
@@ -170,12 +175,11 @@ export default function CreateListingPage() {
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
 
-    if (!formData.title.trim()) newErrors.title = 'Title is required'
-    if (!formData.description.trim()) newErrors.description = 'Description is required'
-    if (!formData.productId) newErrors.productId = 'Product is required'
-    if (!formData.price || Number(formData.price) <= 0) newErrors.price = 'Valid price is required'
+    if (!formData.productName.trim()) newErrors.productName = 'Product name is required'
+    if (!formData.areaLocation.trim()) newErrors.areaLocation = 'Area/Location is required'
     if (!formData.quantity || Number(formData.quantity) <= 0) newErrors.quantity = 'Valid quantity is required'
-    if (!formData.location.trim()) newErrors.location = 'Location is required'
+    if (!formData.grade.trim()) newErrors.grade = 'Grade is required'
+    if (!formData.pricePerMeasureUnit || Number(formData.pricePerMeasureUnit) <= 0) newErrors.pricePerMeasureUnit = 'Valid price is required'
     if (!formData.expiresAt) newErrors.expiresAt = 'Expiry date is required'
 
     // Validate own transport if enabled
@@ -202,14 +206,30 @@ export default function CreateListingPage() {
     try {
       // Create the listing object
       const listingData = {
-        title: formData.title,
-        description: formData.description,
-        product: mockProducts.find(p => p.id === formData.productId)!,
-        price: Number(formData.price),
+        title: formData.productName,
+        description: `${formData.grade} - ${formData.extraNotes}`,
+        product: {
+          id: 'custom-product',
+          name: formData.productName,
+          category: 'grain' as const,
+          description: formData.extraNotes,
+          specifications: {
+            protein: formData.protein ? `${formData.protein}%` : '',
+            moisture: formData.moisture ? `${formData.moisture}%` : '',
+            fibre: formData.fibre ? `${formData.fibre}%` : '',
+            meEnergy: formData.meEnergy ? `${formData.meEnergy} MJ/kg` : '',
+            packaging: formData.packaging,
+            grade: formData.grade
+          },
+          unit: formData.measureUnit as 'kg' | 'ton' | 'bag' | 'liter',
+          minQuantity: 1,
+          maxQuantity: 10000
+        },
+        price: Number(formData.pricePerMeasureUnit),
         currency: 'ZAR' as const,
         quantity: Number(formData.quantity),
-        availableQuantity: Number(formData.availableQuantity || formData.quantity),
-        location: formData.location,
+        availableQuantity: Number(formData.quantity),
+        location: formData.areaLocation,
         images: formData.images,
         isActive: true,
         expiresAt: new Date(formData.expiresAt),
@@ -221,7 +241,14 @@ export default function CreateListingPage() {
           }
         },
         qualityGrade: 'A' as const,
-        specifications: {},
+        specifications: {
+          protein: formData.protein ? `${formData.protein}%` : '',
+          moisture: formData.moisture ? `${formData.moisture}%` : '',
+          fibre: formData.fibre ? `${formData.fibre}%` : '',
+          meEnergy: formData.meEnergy ? `${formData.meEnergy} MJ/kg` : '',
+          packaging: formData.packaging,
+          grade: formData.grade
+        },
         certificates: [],
         specialConditions: formData.specialConditions,
         mapVisibility: true
@@ -264,105 +291,38 @@ export default function CreateListingPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Basic Information */}
+          {/* Product Information */}
           <Card>
-            <CardTitle className="p-6 pb-4">Basic Information</CardTitle>
+            <CardTitle className="p-6 pb-4">Product Information</CardTitle>
             <CardContent className="p-6 pt-0 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Listing Title *
+                  Product Name *
                 </label>
                 <Input
-                  placeholder="e.g., Premium Yellow Maize - Free State"
-                  value={formData.title}
-                  onChange={(e) => handleInputChange('title', e.target.value)}
-                  error={errors.title}
+                  placeholder="e.g., Premium Yellow Maize"
+                  value={formData.productName}
+                  onChange={(e) => handleInputChange('productName', e.target.value)}
+                  error={errors.productName}
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Description *
+                  Area/Location *
                 </label>
-                <textarea
-                  rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-primary-500 focus:ring-2 focus:ring-primary-500/10"
-                  placeholder="Describe your product, quality, specifications, etc."
-                  value={formData.description}
-                  onChange={(e) => handleInputChange('description', e.target.value)}
+                <Input
+                  placeholder="e.g., Free State, Bloemfontein"
+                  value={formData.areaLocation}
+                  onChange={(e) => handleInputChange('areaLocation', e.target.value)}
+                  error={errors.areaLocation}
                 />
-                {errors.description && (
-                  <p className="mt-1 text-sm text-red-600">{errors.description}</p>
-                )}
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Product Type *
-                  </label>
-                  <select
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-primary-500 focus:ring-2 focus:ring-primary-500/10"
-                    value={formData.productId}
-                    onChange={(e) => handleInputChange('productId', e.target.value)}
-                  >
-                    <option value="">Select a product</option>
-                    {mockProducts.map(product => (
-                      <option key={product.id} value={product.id}>
-                        {product.name}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.productId && (
-                    <p className="mt-1 text-sm text-red-600">{errors.productId}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Location *
-                  </label>
-                  <select
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-primary-500 focus:ring-2 focus:ring-primary-500/10"
-                    value={formData.location}
-                    onChange={(e) => handleInputChange('location', e.target.value)}
-                  >
-                    <option value="">Select location</option>
-                    {locations.map(location => (
-                      <option key={location} value={location}>
-                        {location}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.location && (
-                    <p className="mt-1 text-sm text-red-600">{errors.location}</p>
-                  )}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Pricing & Quantity */}
-          <Card>
-            <CardTitle className="p-6 pb-4">Pricing & Quantity</CardTitle>
-            <CardContent className="p-6 pt-0 space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Price per ton (ZAR) *
-                  </label>
-                  <Input
-                    type="number"
-                    placeholder="3200"
-                    value={formData.price}
-                    onChange={(e) => handleInputChange('price', e.target.value)}
-                    error={errors.price}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Total Quantity (tons) *
+                    Quantity *
                   </label>
                   <Input
                     type="number"
@@ -372,34 +332,150 @@ export default function CreateListingPage() {
                     error={errors.quantity}
                   />
                 </div>
-
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Available Quantity (tons)
+                    Measure Unit *
+                  </label>
+                  <select
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-primary-500 focus:ring-2 focus:ring-primary-500/10"
+                    value={formData.measureUnit}
+                    onChange={(e) => handleInputChange('measureUnit', e.target.value)}
+                  >
+                    <option value="ton">Ton</option>
+                    <option value="kg">Kg</option>
+                    <option value="litre">Litre</option>
+                    <option value="ml">ml</option>
+                    <option value="cubic metres">Cubic Metres</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Packaging *
+                  </label>
+                  <select
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-primary-500 focus:ring-2 focus:ring-primary-500/10"
+                    value={formData.packaging}
+                    onChange={(e) => handleInputChange('packaging', e.target.value)}
+                  >
+                    <option value="Bulk">Bulk</option>
+                    <option value="25kg bag">25kg bag</option>
+                    <option value="50kg bag">50kg bag</option>
+                    <option value="250kg bags">250kg bags</option>
+                    <option value="300kg bags">300kg bags</option>
+                    <option value="500kg bags">500kg bags</option>
+                    <option value="1000kg bags">1000kg bags</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Grade *
                   </label>
                   <Input
-                    type="number"
-                    placeholder="100"
-                    value={formData.availableQuantity}
-                    onChange={(e) => handleInputChange('availableQuantity', e.target.value)}
+                    placeholder="e.g., Grade A, Premium Quality"
+                    value={formData.grade}
+                    onChange={(e) => handleInputChange('grade', e.target.value)}
+                    error={errors.grade}
                   />
-                  <p className="mt-1 text-xs text-gray-500">Leave empty to use total quantity</p>
                 </div>
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Expiry Date *
+                  Extra Notes
                 </label>
-                <Input
-                  type="date"
-                  value={formData.expiresAt}
-                  onChange={(e) => handleInputChange('expiresAt', e.target.value)}
-                  error={errors.expiresAt}
+                <textarea
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-primary-500 focus:ring-2 focus:ring-primary-500/10"
+                  placeholder="Any additional information about the product..."
+                  value={formData.extraNotes}
+                  onChange={(e) => handleInputChange('extraNotes', e.target.value)}
                 />
               </div>
             </CardContent>
           </Card>
+
+          {/* Quality Specifications */}
+          <Card>
+            <CardTitle className="p-6 pb-4">Quality Specifications</CardTitle>
+            <CardContent className="p-6 pt-0 space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Protein (%)
+                  </label>
+                  <Input
+                    type="number"
+                    step="0.1"
+                    placeholder="9.2"
+                    value={formData.protein}
+                    onChange={(e) => handleInputChange('protein', e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Moisture (%)
+                  </label>
+                  <Input
+                    type="number"
+                    step="0.1"
+                    placeholder="13.5"
+                    value={formData.moisture}
+                    onChange={(e) => handleInputChange('moisture', e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Fibre (%)
+                  </label>
+                  <Input
+                    type="number"
+                    step="0.1"
+                    placeholder="2.8"
+                    value={formData.fibre}
+                    onChange={(e) => handleInputChange('fibre', e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    ME Energy (MJ/kg)
+                  </label>
+                  <Input
+                    type="number"
+                    step="0.1"
+                    placeholder="12.5"
+                    value={formData.meEnergy}
+                    onChange={(e) => handleInputChange('meEnergy', e.target.value)}
+                  />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Pricing */}
+          <Card>
+            <CardTitle className="p-6 pb-4">Pricing</CardTitle>
+            <CardContent className="p-6 pt-0 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Price per {formData.measureUnit} (ZAR) *
+                </label>
+                <Input
+                  type="number"
+                  placeholder="3200"
+                  value={formData.pricePerMeasureUnit}
+                  onChange={(e) => handleInputChange('pricePerMeasureUnit', e.target.value)}
+                  error={errors.pricePerMeasureUnit}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
 
           {/* Delivery Options */}
           <Card>
