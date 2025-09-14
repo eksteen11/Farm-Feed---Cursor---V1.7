@@ -373,7 +373,7 @@ export default function CreateListingPage() {
             <CardContent className="p-6 pt-0 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Price per {formData.measureUnit} (ZAR) *
+                  Price per unit (ZAR) *
                 </label>
                 <Input
                   type="number"
