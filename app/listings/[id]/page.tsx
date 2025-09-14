@@ -201,22 +201,40 @@ export default function ListingDetailPage() {
               <CardContent className="p-6">
                 <CardTitle className="text-lg mb-4">Product Specifications</CardTitle>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {Object.entries(listing.product.specifications).map(([key, value]) => (
-                    <div key={key} className="flex justify-between py-2 border-b border-gray-100">
-                      <span className="text-gray-600 capitalize">{key}</span>
-                      <span className="font-medium">{value as string}</span>
-                    </div>
-                  ))}
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-600">Protein</span>
+                    <span className="font-medium">{listing.specifications?.protein || 'N/A'}</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-600">Moisture</span>
+                    <span className="font-medium">{listing.specifications?.moisture || 'N/A'}</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-600">Fibre</span>
+                    <span className="font-medium">{listing.specifications?.fibre || 'N/A'}</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-600">ME Energy</span>
+                    <span className="font-medium">{listing.specifications?.meEnergy || 'N/A'}</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-600">Grade</span>
+                    <span className="font-medium">{listing.specifications?.grade || listing.qualityGrade || 'N/A'}</span>
+                  </div>
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="text-gray-600">Packaging</span>
+                    <span className="font-medium">{listing.specifications?.packaging || 'N/A'}</span>
+                  </div>
                 </div>
               </CardContent>
             </Card>
 
             {/* Payment Terms */}
-            {listing.specialConditions && (
+            {listing.paymentTerms && (
               <Card>
                 <CardContent className="p-6">
                   <CardTitle className="text-lg mb-4">Payment Terms</CardTitle>
-                  <p className="text-gray-600">{listing.specialConditions}</p>
+                  <p className="text-gray-600">{listing.paymentTerms}</p>
                 </CardContent>
               </Card>
             )}

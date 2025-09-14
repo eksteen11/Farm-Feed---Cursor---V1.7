@@ -142,6 +142,7 @@ export interface Listing {
   }
   qualityGrade: 'A' | 'B' | 'C' | 'D'
   specifications: Record<string, any>
+  paymentTerms?: string
   certificates: string[]
   labResults?: string[]
   // Map-specific fields

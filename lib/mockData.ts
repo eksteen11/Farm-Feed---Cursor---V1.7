@@ -343,11 +343,12 @@ export const mockListings: Listing[] = [
     specifications: {
       protein: '9.2%',
       moisture: '13.5%',
-      aflatoxin: '15ppb',
-      color: 'Bright yellow',
+      fibre: '2.8%',
+      meEnergy: '12.5 MJ/kg',
       grade: 'Feed Grade',
       packaging: 'Bulk'
     },
+    paymentTerms: 'Payment required within 30 days of delivery. Bank transfer preferred. 2% discount for cash on collection.',
     certificates: [
       'https://via.placeholder.com/400x300?text=Quality+Certificate',
       'https://via.placeholder.com/400x300?text=Lab+Report'
@@ -393,11 +394,12 @@ export const mockListings: Listing[] = [
     specifications: {
       protein: '10.1%',
       moisture: '12.8%',
-      aflatoxin: '8ppb',
-      color: 'Pure white',
+      fibre: '1.9%',
+      meEnergy: '13.2 MJ/kg',
       grade: 'B1',
       packaging: '50kg bag'
     },
+    paymentTerms: 'Payment required within 14 days of delivery. Credit card accepted. 5% discount for early payment.',
     certificates: [
       'https://via.placeholder.com/400x300?text=Quality+Certificate'
     ],
