@@ -50,7 +50,8 @@ export default function CreateListingPage() {
       }
     },
     images: [] as string[],
-    specialConditions: '',
+    videos: [] as string[],
+    paymentTerms: '',
     expiresAt: ''
   })
 
@@ -231,6 +232,7 @@ export default function CreateListingPage() {
         availableQuantity: Number(formData.quantity),
         location: formData.areaLocation,
         images: formData.images,
+        videos: formData.videos,
         isActive: true,
         expiresAt: new Date(formData.expiresAt),
         deliveryOptions: {
@@ -250,7 +252,7 @@ export default function CreateListingPage() {
           grade: formData.grade
         },
         certificates: [],
-        specialConditions: formData.specialConditions,
+        specialConditions: formData.paymentTerms,
         mapVisibility: true
       }
 
@@ -596,20 +598,142 @@ export default function CreateListingPage() {
             </CardContent>
           </Card>
 
+          {/* Media Upload */}
+          <Card>
+            <CardTitle className="p-6 pb-4">Media Upload</CardTitle>
+            <CardContent className="p-6 pt-0 space-y-6">
+              {/* Image Upload */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Product Images
+                </label>
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary-500 transition-colors">
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    className="hidden"
+                    id="image-upload"
+                    onChange={(e) => {
+                      const files = Array.from(e.target.files || [])
+                      const imageUrls = files.map(file => URL.createObjectURL(file))
+                      setFormData(prev => ({
+                        ...prev,
+                        images: [...prev.images, ...imageUrls]
+                      }))
+                    }}
+                  />
+                  <label htmlFor="image-upload" className="cursor-pointer">
+                    <div className="flex flex-col items-center">
+                      <svg className="w-12 h-12 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      <p className="text-sm text-gray-600">Click to upload images</p>
+                      <p className="text-xs text-gray-500 mt-1">PNG, JPG, GIF up to 10MB each</p>
+                    </div>
+                  </label>
+                </div>
+                {formData.images.length > 0 && (
+                  <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {formData.images.map((image, index) => (
+                      <div key={index} className="relative">
+                        <img
+                          src={image}
+                          alt={`Product ${index + 1}`}
+                          className="w-full h-24 object-cover rounded-lg"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setFormData(prev => ({
+                              ...prev,
+                              images: prev.images.filter((_, i) => i !== index)
+                            }))
+                          }}
+                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Video Upload */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Product Videos
+                </label>
+                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-primary-500 transition-colors">
+                  <input
+                    type="file"
+                    multiple
+                    accept="video/*"
+                    className="hidden"
+                    id="video-upload"
+                    onChange={(e) => {
+                      const files = Array.from(e.target.files || [])
+                      const videoUrls = files.map(file => URL.createObjectURL(file))
+                      setFormData(prev => ({
+                        ...prev,
+                        videos: [...prev.videos, ...videoUrls]
+                      }))
+                    }}
+                  />
+                  <label htmlFor="video-upload" className="cursor-pointer">
+                    <div className="flex flex-col items-center">
+                      <svg className="w-12 h-12 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                      </svg>
+                      <p className="text-sm text-gray-600">Click to upload videos</p>
+                      <p className="text-xs text-gray-500 mt-1">MP4, MOV, AVI up to 50MB each</p>
+                    </div>
+                  </label>
+                </div>
+                {formData.videos.length > 0 && (
+                  <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {formData.videos.map((video, index) => (
+                      <div key={index} className="relative">
+                        <video
+                          src={video}
+                          className="w-full h-32 object-cover rounded-lg"
+                          controls
+                        />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setFormData(prev => ({
+                              ...prev,
+                              videos: prev.videos.filter((_, i) => i !== index)
+                            }))
+                          }}
+                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm hover:bg-red-600"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Additional Information */}
           <Card>
             <CardTitle className="p-6 pb-4">Additional Information</CardTitle>
             <CardContent className="p-6 pt-0">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Special Conditions
+                  Payment Terms
                 </label>
                 <textarea
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-primary-500 focus:ring-2 focus:ring-primary-500/10"
-                  placeholder="Any special terms, quality guarantees, or conditions..."
-                  value={formData.specialConditions}
-                  onChange={(e) => handleInputChange('specialConditions', e.target.value)}
+                  placeholder="e.g., 30% deposit on order, 70% on delivery. Bank transfer preferred..."
+                  value={formData.paymentTerms}
+                  onChange={(e) => handleInputChange('paymentTerms', e.target.value)}
                 />
               </div>
             </CardContent>
