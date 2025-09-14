@@ -162,16 +162,6 @@ export default function ListingDetailPage() {
                     </div>
                   </div>
                   
-                  <div className="flex items-center space-x-3">
-                    <User className="w-5 h-5 text-primary-600" />
-                    <div>
-                      <div className="text-sm text-gray-500">Seller</div>
-                      <div className="font-medium">{listing.seller.name || "Unknown Seller"}</div>
-                      {listing.seller.company && (
-                        <div className="text-sm text-gray-600">{listing.seller.company}</div>
-                      )}
-                    </div>
-                  </div>
                   
                   <div className="flex items-center space-x-3">
                     <DollarSign className="w-5 h-5 text-primary-600" />
