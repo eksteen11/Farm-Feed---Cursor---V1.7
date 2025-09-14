@@ -307,13 +307,19 @@ export default function ListingDetailPage() {
               <CardContent className="p-6">
                 <CardTitle className="text-lg mb-4">Quick Actions</CardTitle>
                 <div className="space-y-3">
-                  <Button variant="secondary" className="w-full">
+                  <Button 
+                    className="w-full bg-green-600 hover:bg-green-700 text-white"
+                    onClick={() => setShowOfferModal(true)}
+                  >
                     <MessageCircle className="w-4 h-4 mr-2" />
                     Contact Seller
                   </Button>
-                  <Button variant="ghost" className="w-full">
+                  <Button 
+                    className="w-full bg-red-600 hover:bg-red-700 text-white"
+                    onClick={() => setShowOfferModal(true)}
+                  >
                     <Truck className="w-4 h-4 mr-2" />
-                    Arrange Transport
+                    Make an Offer
                   </Button>
                 </div>
               </CardContent>
