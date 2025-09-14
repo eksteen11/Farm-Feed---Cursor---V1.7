@@ -5,6 +5,7 @@ import { useStore } from '@/store/useStore'
 import { Card, CardContent, CardTitle } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
+import ClientOnly from '@/components/ui/ClientOnly'
 import { 
   Package, 
   MapPin, 
@@ -181,8 +182,9 @@ export default function CreateListingPage() {
   const locations = ['Free State', 'Gauteng', 'Western Cape', 'KwaZulu-Natal', 'Mpumalanga', 'Limpopo', 'North West', 'Eastern Cape', 'Northern Cape']
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <ClientOnly>
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center space-x-4 mb-4">
@@ -598,7 +600,8 @@ export default function CreateListingPage() {
             </Button>
           </div>
         </form>
+        </div>
       </div>
-    </div>
+    </ClientOnly>
   )
 }
