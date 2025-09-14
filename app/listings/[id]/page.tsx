@@ -7,6 +7,7 @@ import { Card, CardContent, CardTitle } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import ImageComponent from '@/components/ui/Image'
+import ClientOnly from '@/components/ui/ClientOnly'
 import MakeOfferModal from '@/components/offers/MakeOfferModal'
 import { 
   MapPin, 
@@ -64,18 +65,19 @@ export default function ListingDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Back Button */}
-        <div className="mb-6">
-          <Button
-            variant="ghost"
-            onClick={() => router.push('/listings')}
-            leftIcon={<ArrowLeft className="w-4 h-4" />}
-          >
-            Back to Listings
-          </Button>
-        </div>
+    <ClientOnly>
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Back Button */}
+          <div className="mb-6">
+            <Button
+              variant="ghost"
+              onClick={() => router.push('/listings')}
+              leftIcon={<ArrowLeft className="w-4 h-4" />}
+            >
+              Back to Listings
+            </Button>
+          </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
@@ -101,64 +103,60 @@ export default function ListingDetailPage() {
                 <CardTitle className="text-2xl mb-4">{listing.title}</CardTitle>
                 <p className="text-gray-600 mb-6">{listing.description}</p>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-3">
-                      <Package className="w-5 h-5 text-primary-600" />
-                      <div>
-                        <div className="text-sm text-gray-500">Product</div>
-                        <div className="font-medium">{listing.product.name}</div>
-                      </div>
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-3">
+                    <Package className="w-5 h-5 text-primary-600" />
+                    <div>
+                      <div className="text-sm text-gray-500">Product</div>
+                      <div className="font-medium">{listing.product.name}</div>
                     </div>
-                    
-                    <div className="flex items-center space-x-3">
-                      <MapPin className="w-5 h-5 text-primary-600" />
-                      <div>
-                        <div className="text-sm text-gray-500">Location</div>
-                        <div className="font-medium">{listing.location}</div>
-                      </div>
+                  </div>
+                  
+                  <div className="flex items-center space-x-3">
+                    <MapPin className="w-5 h-5 text-primary-600" />
+                    <div>
+                      <div className="text-sm text-gray-500">Location</div>
+                      <div className="font-medium">{listing.location}</div>
                     </div>
-                    
-                    <div className="flex items-center space-x-3">
-                      <User className="w-5 h-5 text-primary-600" />
-                      <div>
-                        <div className="text-sm text-gray-500">Seller</div>
-                        <div className="font-medium">{listing.seller.name || "Unknown Seller"}</div>
-                        {listing.seller.company && (
-                          <div className="text-sm text-gray-600">{listing.seller.company}</div>
-                        )}
+                  </div>
+                  
+                  <div className="flex items-center space-x-3">
+                    <User className="w-5 h-5 text-primary-600" />
+                    <div>
+                      <div className="text-sm text-gray-500">Seller</div>
+                      <div className="font-medium">{listing.seller.name || "Unknown Seller"}</div>
+                      {listing.seller.company && (
+                        <div className="text-sm text-gray-600">{listing.seller.company}</div>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center space-x-3">
+                    <DollarSign className="w-5 h-5 text-primary-600" />
+                    <div>
+                      <div className="text-sm text-gray-500">Price</div>
+                      <div className="text-2xl font-bold text-primary-600">
+                        R{listing.price.toLocaleString()}
                       </div>
                     </div>
                   </div>
                   
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-3">
-                      <DollarSign className="w-5 h-5 text-primary-600" />
-                      <div>
-                        <div className="text-sm text-gray-500">Price</div>
-                        <div className="text-2xl font-bold text-primary-600">
-                          R{listing.price.toLocaleString()}
-                        </div>
+                  <div className="flex items-center space-x-3">
+                    <Package className="w-5 h-5 text-primary-600" />
+                    <div>
+                      <div className="text-sm text-gray-500">Available Quantity</div>
+                      <div className="font-medium">
+                        {listing.availableQuantity} {listing.product.unit}
                       </div>
                     </div>
-                    
-                    <div className="flex items-center space-x-3">
-                      <Package className="w-5 h-5 text-primary-600" />
-                      <div>
-                        <div className="text-sm text-gray-500">Available Quantity</div>
-                        <div className="font-medium">
-                          {listing.availableQuantity} {listing.product.unit}
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-center space-x-3">
-                      <Calendar className="w-5 h-5 text-primary-600" />
-                      <div>
-                        <div className="text-sm text-gray-500">Listed</div>
-                        <div className="font-medium">
-                          {formatDate(listing.createdAt)}
-                        </div>
+                  </div>
+                  
+                  <div className="flex items-center space-x-3">
+                    <Calendar className="w-5 h-5 text-primary-600" />
+                    <div>
+                      <div className="text-sm text-gray-500">Listed</div>
+                      <div className="font-medium">
+                        {formatDate(listing.createdAt)}
                       </div>
                     </div>
                   </div>
@@ -180,6 +178,37 @@ export default function ListingDetailPage() {
                 </div>
               </CardContent>
             </Card>
+
+            {/* Payment Terms */}
+            {listing.specialConditions && (
+              <Card>
+                <CardContent className="p-6">
+                  <CardTitle className="text-lg mb-4">Payment Terms</CardTitle>
+                  <p className="text-gray-600">{listing.specialConditions}</p>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Delivery Options */}
+            <Card>
+              <CardContent className="p-6">
+                <CardTitle className="text-lg mb-4">Delivery Options</CardTitle>
+                <div className="space-y-2">
+                  {listing.deliveryOptions.exFarm && (
+                    <div className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-sm">Buyer can collect</span>
+                    </div>
+                  )}
+                  {listing.deliveryOptions.delivered && (
+                    <div className="flex items-center space-x-2">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-sm">Seller will deliver</span>
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           {/* Sidebar */}
@@ -188,41 +217,7 @@ export default function ListingDetailPage() {
             <Card>
               <CardContent className="p-6">
                 <CardTitle className="text-lg mb-4">Make an Offer</CardTitle>
-                
-                {!isAuthenticated ? (
-                  <div className="space-y-4">
-                    <p className="text-gray-600 text-sm">
-                      Sign in to make an offer on this listing
-                    </p>
-                    <Button 
-                      onClick={() => router.push('/login')}
-                      className="w-full"
-                    >
-                      Sign In to Make Offer
-                    </Button>
-                  </div>
-                ) : currentUser?.role !== 'buyer' ? (
-                  <div className="text-center py-4">
-                    <p className="text-gray-600 text-sm">
-                      Only buyers can make offers
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <div className="flex items-center space-x-2 text-sm text-gray-600">
-                      <Shield className="w-4 h-4" />
-                      <span>Verified seller</span>
-                    </div>
-                    
-                    <Button 
-                      onClick={() => setShowOfferModal(true)}
-                      className="w-full"
-                      leftIcon={<MessageCircle className="w-4 h-4" />}
-                    >
-                      Make Offer
-                    </Button>
-                  </div>
-                )}
+                <p className="text-sm text-gray-600 mb-4">Only buyers can make offers</p>
               </CardContent>
             </Card>
 
@@ -288,7 +283,8 @@ export default function ListingDetailPage() {
             onOfferCreated={handleOfferCreated}
           />
         )}
+        </div>
       </div>
-    </div>
+    </ClientOnly>
   )
 }

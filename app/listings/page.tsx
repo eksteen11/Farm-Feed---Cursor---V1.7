@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useStore } from '@/store/useStore'
+import { mockListings } from '@/lib/mockData'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
@@ -17,25 +18,25 @@ import {
   DollarSign,
   Calendar,
   User,
-  Eye
+  Eye,
+  ArrowLeft
 } from 'lucide-react'
 import { FilterOptions } from '@/types'
 import { formatDate } from '@/lib/utils'
 
 export default function ListingsPage() {
   const router = useRouter()
-  const { listings, isLoading, fetchListings, filters, updateFilters, clearFilters, currentUser, isAuthenticated } = useStore()
+  const { currentUser, isAuthenticated } = useStore()
   const [searchTerm, setSearchTerm] = useState('')
   const [showFilters, setShowFilters] = useState(false)
   const [localFilters, setLocalFilters] = useState<FilterOptions>({})
+  const [listings, setListings] = useState(mockListings)
+  const [isLoading, setIsLoading] = useState(false)
 
-  useEffect(() => {
-    fetchListings()
-  }, [fetchListings])
-
-  useEffect(() => {
-    setLocalFilters(filters)
-  }, [filters])
+  // Debug logging
+  console.log('Listings page - listings:', listings)
+  console.log('Listings page - isLoading:', isLoading)
+  console.log('Listings page - listings length:', listings?.length)
 
   const handleFilterChange = (key: keyof FilterOptions, value: any) => {
     const newFilters = { ...localFilters, [key]: value }
@@ -43,13 +44,40 @@ export default function ListingsPage() {
   }
 
   const applyFilters = () => {
-    updateFilters(localFilters)
+    // Apply filters to local listings
+    let filteredListings = [...mockListings]
+    
+    if (localFilters.category) {
+      filteredListings = filteredListings.filter(listing => 
+        listing.product.category === localFilters.category
+      )
+    }
+    
+    if (localFilters.minPrice) {
+      filteredListings = filteredListings.filter(listing => 
+        listing.price >= localFilters.minPrice!
+      )
+    }
+    
+    if (localFilters.maxPrice) {
+      filteredListings = filteredListings.filter(listing => 
+        listing.price <= localFilters.maxPrice!
+      )
+    }
+    
+    if (localFilters.location) {
+      filteredListings = filteredListings.filter(listing => 
+        listing.location.toLowerCase().includes(localFilters.location!.toLowerCase())
+      )
+    }
+    
+    setListings(filteredListings)
   }
 
   const handleClearFilters = () => {
-    clearFilters()
     setLocalFilters({})
     setSearchTerm('')
+    setListings(mockListings)
   }
 
   const filteredListings = listings.filter(listing => {
@@ -66,20 +94,20 @@ export default function ListingsPage() {
   })
 
   const categories = ['grain', 'feed', 'seed', 'fertilizer', 'other']
-  const locations = ['Free State', 'Gauteng', 'Western Cape', 'KwaZulu-Natal', 'Mpumalanga']
+  const locations = ['Free State', 'Gauteng', 'Western Cape', 'KwaZulu-Natal', 'Mpumalanga', 'Limpopo', 'North West', 'Eastern Cape', 'Northern Cape']
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Browse Listings
-          </h1>
-          <p className="text-gray-600">
-            Discover agricultural products from verified sellers across South Africa
-          </p>
-        </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Browse Listings
+            </h1>
+            <p className="text-gray-600">
+              Discover agricultural products from verified sellers across South Africa
+            </p>
+          </div>
 
         {/* Search and Filters */}
         <div className="bg-white rounded-2xl shadow-card p-6 mb-8">
@@ -228,85 +256,119 @@ export default function ListingsPage() {
             </Button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredListings.map((listing) => (
-              <Card key={listing.id} className="overflow-hidden">
-                <div className="aspect-video bg-gray-200 relative">
-                  <ImageComponent
-                    src={listing.images[0]}
-                    alt={listing.title}
-                    className="w-full h-full object-cover"
-                    fallbackSrc="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop"
-                  />
-                  <div className="absolute top-3 right-3 bg-primary-500 text-white px-2 py-1 rounded-full text-xs font-medium">
-                    {listing.product.category}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredListings.map((listing) => (
+                <Card key={listing.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-200">
+                  {/* Product Image */}
+                  <div className="aspect-video bg-gray-200 relative">
+                    <ImageComponent
+                      src={listing.images[0]}
+                      alt={listing.title}
+                      className="w-full h-full object-cover"
+                      fallbackSrc="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop"
+                    />
+                    <div className="absolute top-3 right-3 bg-primary-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+                      {listing.product.category}
+                    </div>
                   </div>
-                </div>
-                
-                <CardContent className="p-6">
-                  <CardTitle className="text-lg mb-2 line-clamp-2">
-                    {listing.title}
-                  </CardTitle>
                   
-                  <p className="text-gray-600 mb-4 line-clamp-2">
-                    {listing.description}
-                  </p>
-                  
-                  <div className="space-y-3 mb-4">
-                    <div className="flex items-center justify-between">
-                      <div className="text-2xl font-bold text-primary-600">
-                        R{listing.price.toLocaleString()}
-                      </div>
-                      <div className="text-sm text-gray-500">
-                        {listing.quantity} {listing.product.unit}
-                      </div>
+                  <CardContent className="p-6">
+                    {/* Product Title */}
+                    <div className="text-2xl font-bold text-gray-900 mb-2 line-clamp-2">
+                      {listing.title}
                     </div>
                     
-                    <div className="flex items-center text-sm text-gray-500">
+                    {/* Location */}
+                    <div className="flex items-center text-sm text-gray-500 mb-4">
                       <MapPin className="w-4 h-4 mr-2" />
                       {listing.location}
                     </div>
                     
-                    <div className="flex items-center text-sm text-gray-500">
-                      <User className="w-4 h-4 mr-2" />
-                      {listing.seller.name || "Unknown Seller"}
+                    {/* Product Details */}
+                    <div className="space-y-3 mb-4">
+                      {/* Price and Quantity */}
+                      <div className="flex items-center justify-between">
+                        <div className="text-2xl font-bold text-primary-600">
+                          R{listing.price.toLocaleString()}
+                        </div>
+                        <div className="text-sm text-gray-500">
+                          {listing.quantity} {listing.product.unit}
+                        </div>
+                      </div>
+                      
+                      {/* Grade and Packaging */}
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-gray-700">
+                          Grade: {listing.specifications?.grade || listing.qualityGrade || 'N/A'}
+                        </span>
+                        <span className="text-sm font-medium text-gray-700">
+                          Packaging: {listing.specifications?.packaging || 'Bulk'}
+                        </span>
+                      </div>
+                      
+                      {/* Verified Seller */}
+                      <div className="flex items-center text-sm text-gray-500">
+                        <User className="w-4 h-4 mr-2" />
+                        <span className="flex items-center">
+                          {listing.seller.name || "Unknown Seller"}
+                          {listing.seller.isVerified && (
+                            <span className="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                              ✓ Verified
+                            </span>
+                          )}
+                        </span>
+                      </div>
+                      
+                      {/* Delivery Options */}
+                      <div className="flex items-center text-sm text-gray-500">
+                        <Package className="w-4 h-4 mr-2" />
+                        <span className="text-xs">
+                          {listing.deliveryOptions?.exFarm && listing.deliveryOptions?.delivered 
+                            ? 'Collection & Delivery Available'
+                            : listing.deliveryOptions?.exFarm 
+                            ? 'Collection Only'
+                            : listing.deliveryOptions?.delivered
+                            ? 'Delivery Only'
+                            : 'Contact Seller'
+                          }
+                        </span>
+                      </div>
+                      
+                      {/* Listed Date */}
+                      <div className="flex items-center text-sm text-gray-500">
+                        <Calendar className="w-4 h-4 mr-2" />
+                        Listed {formatDate(listing.createdAt)}
+                      </div>
                     </div>
                     
-                    <div className="flex items-center text-sm text-gray-500">
-                      <Calendar className="w-4 h-4 mr-2" />
-                      Listed {formatDate(listing.createdAt)}
-                    </div>
-                  </div>
-                  
-                  <div className="flex space-x-3">
-                    <Link href={`/listings/${listing.id}`} className="flex-1">
-                      <Button variant="secondary" className="w-full">
-                        <Eye className="w-4 h-4 mr-2" />
-                        View Details
+                    {/* Action Buttons */}
+                    <div className="flex space-x-3">
+                      <Link href={`/listings/${listing.id}`} className="flex-1">
+                        <Button variant="secondary" className="w-full">
+                          <Eye className="w-4 h-4 mr-2" />
+                          View Details
+                        </Button>
+                      </Link>
+                      <Button 
+                        className="flex-1 bg-primary-600 hover:bg-primary-700"
+                        onClick={() => {
+                          if (!isAuthenticated) {
+                            toast.error('Please log in to make an offer')
+                            router.push('/login')
+                          } else {
+                            router.push(`/listings/${listing.id}`)
+                          }
+                        }}
+                      >
+                        Make Offer
                       </Button>
-                    </Link>
-                    <Button 
-                      className="flex-1"
-                      onClick={() => {
-                        if (!isAuthenticated) {
-                          toast.error('Please log in to make an offer')
-                          router.push('/login')
-                        } else if (currentUser?.role !== 'buyer') {
-                          toast.error('Only buyers can make offers')
-                        } else {
-                          router.push(`/listings/${listing.id}`)
-                        }
-                      }}
-                    >
-                      Make Offer
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
         )}
+        </div>
       </div>
-    </div>
   )
 }

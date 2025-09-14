@@ -115,6 +115,7 @@ interface AppState {
   // Utility
   setLoading: (loading: boolean) => void
   setError: (error: string | null) => void
+  initializeData: () => void
 }
 
 // Helper function to generate stable IDs
@@ -131,18 +132,18 @@ export const useStore = create<AppState>((set, get) => {
   let initialState = {
     currentUser: null,
     isAuthenticated: false,
-    listings: mockListings, // Initialize with mock data
-    offers: mockOffers, // Initialize with mock data
-    deals: mockDeals, // Initialize with mock data
-    notifications: mockNotifications, // Initialize with mock data
-    transportRequests: mockTransportRequests, // Initialize with mock data
-    transportQuotes: mockTransportQuotes, // Initialize with mock data
-    backloadListings: mockBackloadListings, // Initialize with mock data
+    listings: [], // Start with empty array to avoid hydration issues
+    offers: [], // Start with empty array to avoid hydration issues
+    deals: [], // Start with empty array to avoid hydration issues
+    notifications: [], // Start with empty array to avoid hydration issues
+    transportRequests: [], // Start with empty array to avoid hydration issues
+    transportQuotes: [], // Start with empty array to avoid hydration issues
+    backloadListings: [], // Start with empty array to avoid hydration issues
     isLoading: false,
     error: null,
     filters: {},
-    dashboardMetrics: mockDashboardMetrics, // Initialize with mock data
-    marketDepth: mockMarketDepth, // Initialize with mock data
+    dashboardMetrics: null, // Start with null to avoid hydration issues
+    marketDepth: null, // Start with null to avoid hydration issues
   }
 
   // Restore authentication state from localStorage
@@ -180,6 +181,26 @@ export const useStore = create<AppState>((set, get) => {
 
   return {
     ...initialState,
+    
+    // Initialize data on client side
+    initializeData: () => {
+      console.log('initializeData called, window available:', typeof window !== 'undefined')
+      if (typeof window !== 'undefined') {
+        console.log('Setting mock data...')
+        set({
+          listings: mockListings,
+          offers: mockOffers,
+          deals: mockDeals,
+          notifications: mockNotifications,
+          transportRequests: mockTransportRequests,
+          transportQuotes: mockTransportQuotes,
+          backloadListings: mockBackloadListings,
+          dashboardMetrics: mockDashboardMetrics,
+          marketDepth: mockMarketDepth,
+        })
+        console.log('Mock data set successfully')
+      }
+    },
     
     // Authentication actions
   login: async (email: string, password: string) => {
@@ -320,10 +341,13 @@ export const useStore = create<AppState>((set, get) => {
   
   // Listings actions
   fetchListings: (filters = {}) => {
+    console.log('fetchListings called with filters:', filters)
+    console.log('mockListings length:', mockListings.length)
     set({ isLoading: true, error: null })
     
     try {
       let filteredListings = [...mockListings]
+      console.log('filteredListings length:', filteredListings.length)
       
       // Apply filters
       if (filters.category) {
@@ -387,8 +411,11 @@ export const useStore = create<AppState>((set, get) => {
         })
       }
       
+      console.log('Setting listings in store:', filteredListings.length)
       set({ listings: filteredListings, isLoading: false })
+      console.log('Listings set successfully')
     } catch (error) {
+      console.error('Error in fetchListings:', error)
       set({ 
         error: 'Failed to fetch listings', 
         isLoading: false 

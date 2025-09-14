@@ -5,7 +5,6 @@ import { useStore } from '@/store/useStore'
 import { Card, CardContent, CardTitle } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
-import ClientOnly from '@/components/ui/ClientOnly'
 import { 
   Package, 
   MapPin, 
@@ -48,18 +47,6 @@ export default function CreateListingPage() {
   })
 
   const [errors, setErrors] = useState<Record<string, string>>({})
-
-  // Redirect if not authenticated or not a seller
-  useEffect(() => {
-    if (!isAuthenticated || !currentUser) {
-      router.push('/login')
-      return
-    }
-  }, [isAuthenticated, currentUser, router])
-
-  if (!isAuthenticated || !currentUser) {
-    return null
-  }
 
   const handleInputChange = (field: string, value: any) => {
     if (field.includes('.')) {
@@ -169,7 +156,7 @@ export default function CreateListingPage() {
       await createListing(listingData)
       
       toast.success('Listing created successfully!')
-      router.push('/seller/dashboard')
+      router.push('/listings')
       
     } catch (error) {
       console.error('Error creating listing:', error)
@@ -181,9 +168,32 @@ export default function CreateListingPage() {
 
   const locations = ['Free State', 'Gauteng', 'Western Cape', 'KwaZulu-Natal', 'Mpumalanga', 'Limpopo', 'North West', 'Eastern Cape', 'Northern Cape']
 
-  return (
-    <ClientOnly>
+  // Redirect if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated || !currentUser) {
+      router.push('/login')
+      return
+    }
+  }, [isAuthenticated, currentUser, router])
+
+  if (!isAuthenticated || !currentUser) {
+    return (
       <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center py-12">
+            <h1 className="text-2xl font-bold text-gray-900 mb-4">Authentication Required</h1>
+            <p className="text-gray-600 mb-6">Please log in to create a listing.</p>
+            <Button onClick={() => router.push('/login')}>
+              Go to Login
+            </Button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-50 py-8">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
@@ -581,6 +591,27 @@ export default function CreateListingPage() {
           </Card>
 
 
+          {/* Expiry Date */}
+          <Card>
+            <CardTitle className="p-6 pb-4">Listing Expiry *</CardTitle>
+            <CardContent className="p-6 pt-0 space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Expiry Date *
+                </label>
+                <Input
+                  type="date"
+                  value={formData.expiresAt}
+                  onChange={(e) => handleInputChange('expiresAt', e.target.value)}
+                  error={errors.expiresAt}
+                />
+                <p className="mt-1 text-sm text-gray-500">
+                  When should this listing expire? (Minimum 30 days from today)
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Submit Button */}
           <div className="flex justify-end space-x-4">
             <Button
@@ -602,6 +633,5 @@ export default function CreateListingPage() {
         </form>
         </div>
       </div>
-    </ClientOnly>
   )
 }

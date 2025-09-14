@@ -302,13 +302,13 @@ export const mockListings: Listing[] = [
     sellerId: mockUsers[1].id,
     seller: mockUsers[1],
     product: mockProducts[0],
-    title: 'Premium Yellow Maize - Free State',
+    title: 'Barley',
     description: 'High-quality yellow maize from our Free State farm. Perfect for animal feed and industrial use. Available for immediate collection or delivery.',
-    price: 3200,
+    price: 4944,
     currency: 'ZAR',
-    quantity: 100,
+    quantity: 64,
     availableQuantity: 100,
-    location: 'Free State',
+    location: 'Caledon',
     images: [
       'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop',
       'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop&crop=center',
@@ -339,7 +339,9 @@ export const mockListings: Listing[] = [
       protein: '9.2%',
       moisture: '13.5%',
       aflatoxin: '15ppb',
-      color: 'Bright yellow'
+      color: 'Bright yellow',
+      grade: 'Feed Grade',
+      packaging: 'Bulk'
     },
     certificates: [
       'https://via.placeholder.com/400x300?text=Quality+Certificate',
@@ -355,13 +357,13 @@ export const mockListings: Listing[] = [
     sellerId: mockUsers[1].id,
     seller: mockUsers[1],
     product: mockProducts[1],
-    title: 'White Maize - Premium Grade',
+    title: 'Wheat',
     description: 'Premium white maize suitable for human consumption and milling. Strict quality control and testing.',
-    price: 3800,
+    price: 6500,
     currency: 'ZAR',
-    quantity: 50,
+    quantity: 1000,
     availableQuantity: 50,
-    location: 'Free State',
+    location: 'Malmesbury',
     images: [
       'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop&crop=left',
       'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop&crop=right'
@@ -383,7 +385,9 @@ export const mockListings: Listing[] = [
       protein: '10.1%',
       moisture: '12.8%',
       aflatoxin: '8ppb',
-      color: 'Pure white'
+      color: 'Pure white',
+      grade: 'B1',
+      packaging: '50kg bag'
     },
     certificates: [
       'https://via.placeholder.com/400x300?text=Quality+Certificate'
