@@ -91,6 +91,11 @@ export default function CreateListingPage() {
         [option]: !prev.deliveryOptions[option]
       }
     }))
+    
+    // Clear delivery options error when user selects an option
+    if (errors.deliveryOptions) {
+      setErrors(prev => ({ ...prev, deliveryOptions: '' }))
+    }
   }
 
 
@@ -103,6 +108,11 @@ export default function CreateListingPage() {
     if (!formData.grade.trim()) newErrors.grade = 'Grade is required'
     if (!formData.pricePerMeasureUnit || Number(formData.pricePerMeasureUnit) <= 0) newErrors.pricePerMeasureUnit = 'Valid price is required'
     if (!formData.expiresAt) newErrors.expiresAt = 'Expiry date is required'
+    
+    // Validate delivery options - at least one must be selected
+    if (!formData.deliveryOptions.exFarm && !formData.deliveryOptions.delivered) {
+      newErrors.deliveryOptions = 'At least one delivery option must be selected'
+    }
 
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -369,7 +379,7 @@ export default function CreateListingPage() {
 
           {/* Pricing */}
           <Card>
-            <CardTitle className="p-6 pb-4">Pricing</CardTitle>
+            <CardTitle className="p-6 pb-4">Pricing *</CardTitle>
             <CardContent className="p-6 pt-0 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -382,6 +392,9 @@ export default function CreateListingPage() {
                   onChange={(e) => handleInputChange('pricePerMeasureUnit', e.target.value)}
                   error={errors.pricePerMeasureUnit}
                 />
+                {errors.pricePerMeasureUnit && (
+                  <p className="mt-1 text-sm text-red-600">{errors.pricePerMeasureUnit}</p>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -389,7 +402,7 @@ export default function CreateListingPage() {
 
           {/* Delivery Options */}
           <Card>
-            <CardTitle className="p-6 pb-4">Delivery Options</CardTitle>
+            <CardTitle className="p-6 pb-4">Delivery Options *</CardTitle>
             <CardContent className="p-6 pt-0 space-y-4">
               <div className="space-y-3">
                 <label className="flex items-center">
@@ -412,6 +425,9 @@ export default function CreateListingPage() {
                   <span className="text-sm font-medium text-gray-700">Seller will prefer to deliver the product</span>
                 </label>
               </div>
+              {errors.deliveryOptions && (
+                <p className="text-sm text-red-600">{errors.deliveryOptions}</p>
+              )}
             </CardContent>
           </Card>
 
