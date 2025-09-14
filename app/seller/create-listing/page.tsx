@@ -393,6 +393,9 @@ export default function CreateListingPage() {
           <Card>
             <CardTitle className="p-6 pb-4">Payment Terms</CardTitle>
             <CardContent className="p-6 pt-0">
+              <p className="text-sm text-gray-600 mb-4">
+                Define your payment conditions and preferred transaction methods
+              </p>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Payment Terms
