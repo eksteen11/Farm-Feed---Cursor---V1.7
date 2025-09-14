@@ -126,6 +126,7 @@ export interface Listing {
     postalCode?: string
   }
   images: string[]
+  videos?: string[]
   isActive: boolean
   expiresAt?: Date
   // Enhanced Fields

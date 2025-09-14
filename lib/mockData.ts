@@ -298,7 +298,7 @@ export const mockProducts: Product[] = [
 // Enhanced Listing Data with Delivery Options
 export const mockListings: Listing[] = [
   {
-    id: generateId('listing'),
+    id: 'listing-11',
     sellerId: mockUsers[1].id,
     seller: mockUsers[1],
     product: mockProducts[0],
@@ -312,7 +312,12 @@ export const mockListings: Listing[] = [
     images: [
       'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop',
       'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop&crop=center',
-      'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop&crop=top'
+      'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop&crop=top',
+      'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop&crop=bottom'
+    ],
+    videos: [
+      'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4',
+      'https://sample-videos.com/zip/10/mp4/SampleVideo_640x360_1mb.mp4'
     ],
     isActive: true,
     expiresAt: new Date('2024-12-31'),
@@ -353,7 +358,7 @@ export const mockListings: Listing[] = [
     updatedAt: new Date('2024-01-10')
   },
   {
-    id: generateId('listing'),
+    id: 'listing-12',
     sellerId: mockUsers[1].id,
     seller: mockUsers[1],
     product: mockProducts[1],
@@ -366,7 +371,11 @@ export const mockListings: Listing[] = [
     location: 'Malmesbury',
     images: [
       'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop&crop=left',
-      'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop&crop=right'
+      'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop&crop=right',
+      'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop&crop=top'
+    ],
+    videos: [
+      'https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4'
     ],
     isActive: true,
     expiresAt: new Date('2024-12-31'),

@@ -65,36 +65,78 @@ export default function ListingDetailPage() {
   }
 
   return (
-    <ClientOnly>
-      <div className="min-h-screen bg-gray-50 py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Back Button */}
-          <div className="mb-6">
-            <Button
-              variant="ghost"
-              onClick={() => router.push('/listings')}
-              leftIcon={<ArrowLeft className="w-4 h-4" />}
-            >
-              Back to Listings
-            </Button>
-          </div>
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Back Button */}
+        <div className="mb-6">
+          <Button
+            variant="ghost"
+            onClick={() => router.push('/listings')}
+            leftIcon={<ArrowLeft className="w-4 h-4" />}
+          >
+            Back to Listings
+          </Button>
+        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Product Images */}
+            {/* Product Images and Videos */}
             <Card>
-              <div className="aspect-video bg-gray-200 relative">
-                <ImageComponent
-                  src={listing.images[0]}
-                  alt={listing.title}
-                  className="w-full h-full object-cover rounded-t-2xl"
-                  fallbackSrc="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop"
-                />
-                <div className="absolute top-4 right-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-medium">
-                  {listing.product.category}
+              <CardContent className="p-0">
+                {/* Main Image/Video Display */}
+                <div className="aspect-video bg-gray-200 relative">
+                  <ImageComponent
+                    src={listing.images[0]}
+                    alt={listing.title}
+                    className="w-full h-full object-cover rounded-t-2xl"
+                    fallbackSrc="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop"
+                  />
+                  <div className="absolute top-4 right-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                    {listing.product.category}
+                  </div>
                 </div>
-              </div>
+                
+                {/* Image Gallery */}
+                {listing.images && listing.images.length > 1 && (
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold mb-3">Product Images</h3>
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                      {listing.images.map((image: string, index: number) => (
+                        <div key={index} className="aspect-square bg-gray-200 rounded-lg overflow-hidden">
+                          <ImageComponent
+                            src={image}
+                            alt={`${listing.title} - Image ${index + 1}`}
+                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
+                            fallbackSrc="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
+                {/* Video Gallery */}
+                {listing.videos && listing.videos.length > 0 && (
+                  <div className="p-4 border-t">
+                    <h3 className="text-lg font-semibold mb-3">Product Videos</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {listing.videos.map((video: string, index: number) => (
+                        <div key={index} className="aspect-video bg-gray-200 rounded-lg overflow-hidden">
+                          <video
+                            src={video}
+                            controls
+                            className="w-full h-full object-cover"
+                            preload="metadata"
+                          >
+                            Your browser does not support the video tag.
+                          </video>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </CardContent>
             </Card>
 
             {/* Product Details */}
@@ -218,6 +260,12 @@ export default function ListingDetailPage() {
               <CardContent className="p-6">
                 <CardTitle className="text-lg mb-4">Make an Offer</CardTitle>
                 <p className="text-sm text-gray-600 mb-4">Only buyers can make offers</p>
+                <Button 
+                  className="w-full bg-red-600 hover:bg-red-700 text-white"
+                  onClick={() => setShowOfferModal(true)}
+                >
+                  Make an Offer
+                </Button>
               </CardContent>
             </Card>
 
@@ -283,8 +331,7 @@ export default function ListingDetailPage() {
             onOfferCreated={handleOfferCreated}
           />
         )}
-        </div>
       </div>
-    </ClientOnly>
+    </div>
   )
 }
