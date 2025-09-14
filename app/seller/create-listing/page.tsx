@@ -39,10 +39,7 @@ export default function CreateListingPage() {
     fibre: '',
     meEnergy: '',
     pricePerMeasureUnit: '',
-    deliveryOptions: {
-      exFarm: true,
-      delivered: false
-    },
+    deliveryOption: 'both', // 'buyer', 'seller', 'both'
     images: [] as string[],
     videos: [] as string[],
     paymentTerms: '',
@@ -83,20 +80,6 @@ export default function CreateListingPage() {
     }
   }
 
-  const handleDeliveryOptionChange = (option: 'exFarm' | 'delivered') => {
-    setFormData(prev => ({
-      ...prev,
-      deliveryOptions: {
-        ...prev.deliveryOptions,
-        [option]: !prev.deliveryOptions[option]
-      }
-    }))
-    
-    // Clear delivery options error when user selects an option
-    if (errors.deliveryOptions) {
-      setErrors(prev => ({ ...prev, deliveryOptions: '' }))
-    }
-  }
 
 
   const validateForm = () => {
@@ -109,9 +92,9 @@ export default function CreateListingPage() {
     if (!formData.pricePerMeasureUnit || Number(formData.pricePerMeasureUnit) <= 0) newErrors.pricePerMeasureUnit = 'Valid price is required'
     if (!formData.expiresAt) newErrors.expiresAt = 'Expiry date is required'
     
-    // Validate delivery options - at least one must be selected
-    if (!formData.deliveryOptions.exFarm && !formData.deliveryOptions.delivered) {
-      newErrors.deliveryOptions = 'At least one delivery option must be selected'
+    // Validate delivery option - must be selected
+    if (!formData.deliveryOption) {
+      newErrors.deliveryOption = 'Delivery option is required'
     }
 
     setErrors(newErrors)
@@ -159,7 +142,10 @@ export default function CreateListingPage() {
         videos: formData.videos,
         isActive: true,
         expiresAt: new Date(formData.expiresAt),
-        deliveryOptions: formData.deliveryOptions,
+        deliveryOptions: {
+          exFarm: formData.deliveryOption === 'buyer' || formData.deliveryOption === 'both',
+          delivered: formData.deliveryOption === 'seller' || formData.deliveryOption === 'both'
+        },
         qualityGrade: 'A' as const,
         specifications: {
           protein: formData.protein ? `${formData.protein}%` : '',
@@ -407,26 +393,42 @@ export default function CreateListingPage() {
               <div className="space-y-3">
                 <label className="flex items-center">
                   <input
-                    type="checkbox"
-                    checked={formData.deliveryOptions.exFarm}
-                    onChange={() => handleDeliveryOptionChange('exFarm')}
-                    className="mr-3 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                    type="radio"
+                    name="deliveryOption"
+                    value="buyer"
+                    checked={formData.deliveryOption === 'buyer'}
+                    onChange={(e) => handleInputChange('deliveryOption', e.target.value)}
+                    className="mr-3 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300"
                   />
                   <span className="text-sm font-medium text-gray-700">Buyer can collect</span>
                 </label>
 
                 <label className="flex items-center">
                   <input
-                    type="checkbox"
-                    checked={formData.deliveryOptions.delivered}
-                    onChange={() => handleDeliveryOptionChange('delivered')}
-                    className="mr-3 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                    type="radio"
+                    name="deliveryOption"
+                    value="seller"
+                    checked={formData.deliveryOption === 'seller'}
+                    onChange={(e) => handleInputChange('deliveryOption', e.target.value)}
+                    className="mr-3 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300"
                   />
-                  <span className="text-sm font-medium text-gray-700">Seller will prefer to deliver the product</span>
+                  <span className="text-sm font-medium text-gray-700">Seller will deliver</span>
+                </label>
+
+                <label className="flex items-center">
+                  <input
+                    type="radio"
+                    name="deliveryOption"
+                    value="both"
+                    checked={formData.deliveryOption === 'both'}
+                    onChange={(e) => handleInputChange('deliveryOption', e.target.value)}
+                    className="mr-3 h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300"
+                  />
+                  <span className="text-sm font-medium text-gray-700">Seller can deliver, but buyer can also collect</span>
                 </label>
               </div>
-              {errors.deliveryOptions && (
-                <p className="text-sm text-red-600">{errors.deliveryOptions}</p>
+              {errors.deliveryOption && (
+                <p className="text-sm text-red-600">{errors.deliveryOption}</p>
               )}
             </CardContent>
           </Card>
