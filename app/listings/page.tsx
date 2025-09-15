@@ -21,7 +21,8 @@ import {
   Eye,
   ArrowLeft,
   Star,
-  Box
+  Box,
+  Truck
 } from 'lucide-react'
 import { FilterOptions } from '@/types'
 import { formatDate } from '@/lib/utils'
@@ -329,7 +330,7 @@ export default function ListingsPage() {
                       
                       {/* Delivery Options */}
                       <div className="flex items-center text-sm text-gray-500">
-                        <Package className="w-4 h-4 mr-2" />
+                        <Truck className="w-4 h-4 mr-2 text-green-600" />
                         <span className="text-xs">
                           {listing.deliveryOptions?.exFarm && listing.deliveryOptions?.delivered 
                             ? 'Collection & Delivery Available'
