@@ -20,7 +20,17 @@ import {
   Star,
   Shield,
   Truck,
-  Box
+  Box,
+  Weight,
+  Droplet,
+  Leaf,
+  Zap,
+  Clock,
+  CheckCircle,
+  TrendingUp,
+  Award,
+  Phone,
+  Mail
 } from 'lucide-react'
 import { mockListings } from '@/lib/mockData'
 import toast from 'react-hot-toast'
@@ -79,268 +89,381 @@ export default function ListingDetailPage() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Product Images and Videos */}
-            <Card>
-              <CardContent className="p-0">
-                {/* Main Image/Video Display */}
-                <div className="aspect-video bg-gray-200 relative">
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-8">
+          {/* Main Content - Creative Staggered Layout */}
+          <div className="xl:col-span-3 space-y-6">
+            {/* Hero Section with Images and Key Info */}
+            <Card className="overflow-hidden">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
+                {/* Left: Main Image */}
+                <div className="aspect-video lg:aspect-square bg-gray-200 relative">
                   <ImageComponent
                     src={listing.images[0]}
                     alt={listing.title}
-                    className="w-full h-full object-cover rounded-t-2xl"
+                    className="w-full h-full object-cover"
                     fallbackSrc="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop"
                   />
-                  <div className="absolute top-4 right-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                  <div className="absolute top-4 left-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-medium">
                     {listing.product.category}
                   </div>
+                  <div className="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-medium flex items-center">
+                    <CheckCircle className="w-4 h-4 mr-1" />
+                    Verified
+                  </div>
                 </div>
                 
-                {/* Image Gallery */}
-                {listing.images && listing.images.length > 1 && (
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold mb-3">Product Images</h3>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                      {listing.images.map((image: string, index: number) => (
-                        <div key={index} className="aspect-square bg-gray-200 rounded-lg overflow-hidden">
-                          <ImageComponent
-                            src={image}
-                            alt={`${listing.title} - Image ${index + 1}`}
-                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
-                            fallbackSrc="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop"
-                          />
+                {/* Right: Key Product Info */}
+                <div className="p-8 bg-gradient-to-br from-gray-50 to-white">
+                  <div className="space-y-6">
+                    {/* Title and Description */}
+                    <div>
+                      <h1 className="text-3xl font-bold text-gray-900 mb-3">{listing.title}</h1>
+                      <p className="text-gray-600 leading-relaxed">{listing.description}</p>
+                    </div>
+                    
+                    {/* Price - Prominent Display */}
+                    <div className="bg-primary-50 rounded-2xl p-6 border-2 border-primary-100">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="text-sm text-primary-600 font-medium mb-1">Price per {listing.product.unit}</div>
+                          <div className="text-4xl font-bold text-primary-600">
+                            R{listing.price.toLocaleString()}
+                          </div>
                         </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                
-                {/* Video Gallery */}
-                {listing.videos && listing.videos.length > 0 && (
-                  <div className="p-4 border-t">
-                    <h3 className="text-lg font-semibold mb-3">Product Videos</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {listing.videos.map((video: string, index: number) => (
-                        <div key={index} className="aspect-video bg-gray-200 rounded-lg overflow-hidden">
-                          <video
-                            src={video}
-                            controls
-                            className="w-full h-full object-cover"
-                            preload="metadata"
-                          >
-                            Your browser does not support the video tag.
-                          </video>
+                        <div className="text-right">
+                          <div className="text-sm text-gray-500">Available</div>
+                          <div className="text-2xl font-bold text-gray-900">
+                            {listing.availableQuantity} {listing.product.unit}
+                          </div>
                         </div>
-                      ))}
+                      </div>
+                    </div>
+                    
+                    {/* Key Details Grid */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="bg-white rounded-xl p-4 border border-gray-200">
+                        <div className="flex items-center space-x-3">
+                          <MapPin className="w-5 h-5 text-blue-500" />
+                          <div>
+                            <div className="text-xs text-gray-500 uppercase tracking-wide">Location</div>
+                            <div className="font-semibold text-gray-900">{listing.location}</div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-white rounded-xl p-4 border border-gray-200">
+                        <div className="flex items-center space-x-3">
+                          <Star className="w-5 h-5 text-yellow-500" />
+                          <div>
+                            <div className="text-xs text-gray-500 uppercase tracking-wide">Grade</div>
+                            <div className="font-semibold text-gray-900">
+                              {listing.specifications?.grade || listing.qualityGrade || 'N/A'}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-white rounded-xl p-4 border border-gray-200">
+                        <div className="flex items-center space-x-3">
+                          <Box className="w-5 h-5 text-purple-500" />
+                          <div>
+                            <div className="text-xs text-gray-500 uppercase tracking-wide">Packaging</div>
+                            <div className="font-semibold text-gray-900">
+                              {listing.specifications?.packaging || 'Bulk'}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div className="bg-white rounded-xl p-4 border border-gray-200">
+                        <div className="flex items-center space-x-3">
+                          <Calendar className="w-5 h-5 text-green-500" />
+                          <div>
+                            <div className="text-xs text-gray-500 uppercase tracking-wide">Listed</div>
+                            <div className="font-semibold text-gray-900">
+                              {formatDate(listing.createdAt)}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                )}
-              </CardContent>
+                </div>
+              </div>
             </Card>
 
-            {/* Product Details */}
+            {/* Product Specifications - Creative Layout */}
             <Card>
-              <CardContent className="p-6">
-                <CardTitle className="text-2xl mb-4">{listing.title}</CardTitle>
-                <p className="text-gray-600 mb-6">{listing.description}</p>
+              <CardContent className="p-8">
+                <div className="flex items-center space-x-3 mb-6">
+                  <Award className="w-6 h-6 text-primary-600" />
+                  <CardTitle className="text-2xl">Quality Specifications</CardTitle>
+                </div>
                 
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <Package className="w-5 h-5 text-primary-600" />
-                    <div>
-                      <div className="text-sm text-gray-500">Product</div>
-                      <div className="font-medium">{listing.product.name}</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 text-center">
+                    <Weight className="w-8 h-8 text-blue-600 mx-auto mb-3" />
+                    <div className="text-sm text-blue-600 font-medium mb-1">Protein</div>
+                    <div className="text-2xl font-bold text-blue-900">
+                      {listing.specifications?.protein || 'N/A'}
                     </div>
                   </div>
                   
-                  <div className="flex items-center space-x-3">
-                    <MapPin className="w-5 h-5 text-primary-600" />
-                    <div>
-                      <div className="text-sm text-gray-500">Location</div>
-                      <div className="font-medium">{listing.location}</div>
+                  <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 text-center">
+                    <Droplet className="w-8 h-8 text-green-600 mx-auto mb-3" />
+                    <div className="text-sm text-green-600 font-medium mb-1">Moisture</div>
+                    <div className="text-2xl font-bold text-green-900">
+                      {listing.specifications?.moisture || 'N/A'}
                     </div>
                   </div>
                   
-                  <div className="flex items-center space-x-3">
-                    <Star className="w-5 h-5 text-yellow-500" />
-                    <div>
-                      <div className="text-sm text-gray-500">Grade</div>
-                      <div className="font-medium">
-                        {listing.specifications?.grade || listing.qualityGrade || 'N/A'}
-                      </div>
+                  <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-2xl p-6 text-center">
+                    <Leaf className="w-8 h-8 text-orange-600 mx-auto mb-3" />
+                    <div className="text-sm text-orange-600 font-medium mb-1">Fibre</div>
+                    <div className="text-2xl font-bold text-orange-900">
+                      {listing.specifications?.fibre || 'N/A'}
                     </div>
                   </div>
                   
-                  <div className="flex items-center space-x-3">
-                    <Box className="w-5 h-5 text-blue-500" />
-                    <div>
-                      <div className="text-sm text-gray-500">Packaging</div>
-                      <div className="font-medium">
-                        {listing.specifications?.packaging || 'Bulk'}
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center space-x-3">
-                    <DollarSign className="w-5 h-5 text-primary-600" />
-                    <div>
-                      <div className="text-sm text-gray-500">Price</div>
-                      <div className="text-2xl font-bold text-primary-600">
-                        R{listing.price.toLocaleString()}
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center space-x-3">
-                    <Package className="w-5 h-5 text-primary-600" />
-                    <div>
-                      <div className="text-sm text-gray-500">Available Quantity</div>
-                      <div className="font-medium">
-                        {listing.availableQuantity} {listing.product.unit}
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center space-x-3">
-                    <Calendar className="w-5 h-5 text-primary-600" />
-                    <div>
-                      <div className="text-sm text-gray-500">Listed</div>
-                      <div className="font-medium">
-                        {formatDate(listing.createdAt)}
-                      </div>
+                  <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-6 text-center">
+                    <Zap className="w-8 h-8 text-purple-600 mx-auto mb-3" />
+                    <div className="text-sm text-purple-600 font-medium mb-1">ME Energy</div>
+                    <div className="text-2xl font-bold text-purple-900">
+                      {listing.specifications?.meEnergy || 'N/A'}
                     </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Product Specifications */}
-            <Card>
-              <CardContent className="p-6">
-                <CardTitle className="text-lg mb-4">Product Specifications</CardTitle>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="flex justify-between py-2 border-b border-gray-100">
-                    <span className="text-gray-600">Protein</span>
-                    <span className="font-medium">{listing.specifications?.protein || 'N/A'}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100">
-                    <span className="text-gray-600">Moisture</span>
-                    <span className="font-medium">{listing.specifications?.moisture || 'N/A'}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100">
-                    <span className="text-gray-600">Fibre</span>
-                    <span className="font-medium">{listing.specifications?.fibre || 'N/A'}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100">
-                    <span className="text-gray-600">ME Energy</span>
-                    <span className="font-medium">{listing.specifications?.meEnergy || 'N/A'}</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Payment Terms */}
-            {listing.paymentTerms && (
+            {/* Media Gallery - Enhanced Layout */}
+            {(listing.images && listing.images.length > 1) || (listing.videos && listing.videos.length > 0) ? (
               <Card>
-                <CardContent className="p-6">
-                  <CardTitle className="text-lg mb-4">Payment Terms</CardTitle>
-                  <p className="text-gray-600">{listing.paymentTerms}</p>
+                <CardContent className="p-8">
+                  <div className="flex items-center space-x-3 mb-6">
+                    <Package className="w-6 h-6 text-primary-600" />
+                    <CardTitle className="text-2xl">Media Gallery</CardTitle>
+                  </div>
+                  
+                  {/* Image Gallery */}
+                  {listing.images && listing.images.length > 1 && (
+                    <div className="mb-8">
+                      <h3 className="text-lg font-semibold mb-4 text-gray-700">Product Images</h3>
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {listing.images.slice(1).map((image: string, index: number) => (
+                          <div key={index} className="aspect-square bg-gray-200 rounded-xl overflow-hidden group cursor-pointer">
+                            <ImageComponent
+                              src={image}
+                              alt={`${listing.title} - Image ${index + 2}`}
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                              fallbackSrc="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Video Gallery */}
+                  {listing.videos && listing.videos.length > 0 && (
+                    <div>
+                      <h3 className="text-lg font-semibold mb-4 text-gray-700">Product Videos</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {listing.videos.map((video: string, index: number) => (
+                          <div key={index} className="aspect-video bg-gray-200 rounded-xl overflow-hidden">
+                            <video
+                              src={video}
+                              controls
+                              className="w-full h-full object-cover"
+                              preload="metadata"
+                            >
+                              Your browser does not support the video tag.
+                            </video>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
-            )}
+            ) : null}
 
-            {/* Delivery Options */}
-            <Card>
-              <CardContent className="p-6">
-                <CardTitle className="text-lg mb-4">Delivery Options</CardTitle>
-                <div className="space-y-2">
-                  {listing.deliveryOptions.exFarm && (
-                    <div className="flex items-center space-x-2">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-sm">Buyer can collect</span>
+            {/* Payment Terms & Delivery - Side by Side */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Payment Terms */}
+              {listing.paymentTerms && (
+                <Card>
+                  <CardContent className="p-6">
+                    <div className="flex items-center space-x-3 mb-4">
+                      <DollarSign className="w-6 h-6 text-green-600" />
+                      <CardTitle className="text-xl">Payment Terms</CardTitle>
                     </div>
-                  )}
-                  {listing.deliveryOptions.delivered && (
-                    <div className="flex items-center space-x-2">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-sm">Seller will deliver</span>
-                    </div>
-                  )}
-                </div>
-              </CardContent>
-            </Card>
+                    <p className="text-gray-600 leading-relaxed">{listing.paymentTerms}</p>
+                  </CardContent>
+                </Card>
+              )}
+
+              {/* Delivery Options */}
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center space-x-3 mb-4">
+                    <Truck className="w-6 h-6 text-blue-600" />
+                    <CardTitle className="text-xl">Delivery Options</CardTitle>
+                  </div>
+                  <div className="space-y-3">
+                    {listing.deliveryOptions.exFarm && (
+                      <div className="flex items-center space-x-3 p-3 bg-green-50 rounded-lg">
+                        <CheckCircle className="w-5 h-5 text-green-600" />
+                        <span className="font-medium text-green-800">Buyer can collect</span>
+                      </div>
+                    )}
+                    {listing.deliveryOptions.delivered && (
+                      <div className="flex items-center space-x-3 p-3 bg-blue-50 rounded-lg">
+                        <Truck className="w-5 h-5 text-blue-600" />
+                        <span className="font-medium text-blue-800">Seller will deliver</span>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
 
-          {/* Sidebar */}
+          {/* Enhanced Sidebar */}
           <div className="space-y-6">
-            {/* Action Card */}
-            <Card>
-              <CardContent className="p-6">
-                <CardTitle className="text-lg mb-4">Make an Offer</CardTitle>
-                <p className="text-sm text-gray-600 mb-4">Only buyers can make offers</p>
-                <Button 
-                  className="w-full bg-red-600 hover:bg-red-700 text-white"
-                  onClick={() => setShowOfferModal(true)}
-                >
-                  Make an Offer
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Seller Info */}
-            <Card>
-              <CardContent className="p-6">
-                <CardTitle className="text-lg mb-4">Seller Information</CardTitle>
-                <div className="space-y-4">
-                  <div className="flex items-center space-x-3">
-                    <ImageComponent
-                      src={listing.seller.avatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"}
-                      alt={listing.seller.name || "Seller"}
-                      className="w-12 h-12 rounded-full"
-                      fallbackSrc="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
-                    />
-                    <div>
-                      <div className="font-medium">{listing.seller.name || "Unknown Seller"}</div>
-                      {listing.seller.company && (
-                        <div className="text-sm text-gray-600">{listing.seller.company}</div>
-                      )}
-                    </div>
+            {/* Seller Profile Card */}
+            <Card className="overflow-hidden">
+              <div className="bg-gradient-to-br from-primary-500 to-primary-600 p-6 text-white">
+                <div className="flex items-center space-x-4 mb-4">
+                  <ImageComponent
+                    src={listing.seller.avatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"}
+                    alt={listing.seller.name || "Seller"}
+                    className="w-16 h-16 rounded-full border-4 border-white"
+                    fallbackSrc="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
+                  />
+                  <div>
+                    <h3 className="text-xl font-bold">{listing.seller.name || "Unknown Seller"}</h3>
+                    {listing.seller.company && (
+                      <p className="text-primary-100">{listing.seller.company}</p>
+                    )}
                   </div>
-                  
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <MapPin className="w-4 h-4" />
+                </div>
+                
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold">{listing.seller.rating || 4.9}</div>
+                    <div className="text-sm text-primary-100">Rating</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold">{listing.seller.totalDeals || 23}</div>
+                    <div className="text-sm text-primary-100">Deals</div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center justify-center space-x-2 text-sm">
+                  <Shield className="w-4 h-4" />
+                  <span>Verified Seller</span>
+                </div>
+              </div>
+              
+              <CardContent className="p-6">
+                <div className="space-y-4">
+                  <div className="flex items-center space-x-3 text-gray-600">
+                    <MapPin className="w-5 h-5" />
                     <span>{listing.seller.location}</span>
                   </div>
                   
-                  <div className="flex items-center space-x-2 text-sm text-gray-600">
-                    <Star className="w-4 h-4 text-yellow-500" />
-                    <span>Verified Seller</span>
+                  <div className="flex items-center space-x-3 text-gray-600">
+                    <TrendingUp className="w-5 h-5" />
+                    <span>Reputation Score: {listing.seller.reputationScore || 95}</span>
+                  </div>
+                  
+                  <div className="flex items-center space-x-3 text-gray-600">
+                    <Clock className="w-5 h-5" />
+                    <span>Member since {new Date(listing.seller.createdAt).getFullYear()}</span>
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Quick Actions */}
+            {/* Action Buttons */}
             <Card>
               <CardContent className="p-6">
-                <CardTitle className="text-lg mb-4">Quick Actions</CardTitle>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   <Button 
-                    className="w-full bg-green-600 hover:bg-green-700 text-white"
+                    className="w-full bg-red-600 hover:bg-red-700 text-white py-4 text-lg font-semibold"
                     onClick={() => setShowOfferModal(true)}
                   >
-                    <MessageCircle className="w-4 h-4 mr-2" />
-                    Contact Seller
+                    <DollarSign className="w-5 h-5 mr-2" />
+                    Make an Offer
                   </Button>
-                  <Button 
-                    className="w-full bg-red-600 hover:bg-red-700 text-white"
-                    onClick={() => router.push('/transport/create-backload')}
-                  >
-                    <Truck className="w-4 h-4 mr-2" />
-                    Request Transport
-                  </Button>
+                  
+                  <div className="grid grid-cols-2 gap-3">
+                    <Button 
+                      className="bg-green-600 hover:bg-green-700 text-white"
+                      onClick={() => setShowOfferModal(true)}
+                    >
+                      <MessageCircle className="w-4 h-4 mr-2" />
+                      Contact
+                    </Button>
+                    <Button 
+                      className="bg-blue-600 hover:bg-blue-700 text-white"
+                      onClick={() => router.push('/transport/create-backload')}
+                    >
+                      <Truck className="w-4 h-4 mr-2" />
+                      Transport
+                    </Button>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Quick Stats */}
+            <Card>
+              <CardContent className="p-6">
+                <CardTitle className="text-lg mb-4 flex items-center">
+                  <TrendingUp className="w-5 h-5 mr-2 text-primary-600" />
+                  Listing Stats
+                </CardTitle>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">Views</span>
+                    <span className="font-semibold">1,247</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">Offers</span>
+                    <span className="font-semibold">8</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">Favorites</span>
+                    <span className="font-semibold">23</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-gray-600">Days Left</span>
+                    <span className="font-semibold text-orange-600">
+                      {Math.ceil((new Date(listing.expiresAt).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))}
+                    </span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Contact Information */}
+            <Card>
+              <CardContent className="p-6">
+                <CardTitle className="text-lg mb-4 flex items-center">
+                  <Phone className="w-5 h-5 mr-2 text-primary-600" />
+                  Contact Info
+                </CardTitle>
+                <div className="space-y-3">
+                  <div className="flex items-center space-x-3 text-gray-600">
+                    <Phone className="w-4 h-4" />
+                    <span>{listing.seller.phone || '+27 82 234 5678'}</span>
+                  </div>
+                  <div className="flex items-center space-x-3 text-gray-600">
+                    <Mail className="w-4 h-4" />
+                    <span>{listing.seller.email || 'seller@demo.com'}</span>
+                  </div>
                 </div>
               </CardContent>
             </Card>
