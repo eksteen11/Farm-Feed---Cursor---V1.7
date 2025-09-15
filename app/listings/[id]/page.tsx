@@ -77,7 +77,7 @@ export default function ListingDetailPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 rounded-2xl">
         {/* Back Button */}
         <div className="mb-6">
           <Button
@@ -96,11 +96,11 @@ export default function ListingDetailPage() {
             <Card className="overflow-hidden rounded-2xl">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
                 {/* Left: Main Image */}
-                <div className="aspect-video lg:aspect-square bg-gray-200 relative rounded-l-2xl lg:rounded-l-2xl lg:rounded-r-none">
+                <div className="aspect-video lg:aspect-square bg-gray-200 relative rounded-l-2xl lg:rounded-l-2xl lg:rounded-r-none lg:rounded-t-2xl lg:rounded-b-2xl">
                   <ImageComponent
                     src={listing.images[0]}
                     alt={listing.title}
-                    className="w-full h-full object-cover rounded-l-2xl lg:rounded-l-2xl lg:rounded-r-none"
+                    className="w-full h-full object-cover rounded-l-2xl lg:rounded-l-2xl lg:rounded-r-none lg:rounded-t-2xl lg:rounded-b-2xl"
                     fallbackSrc="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop"
                   />
                   <div className="absolute top-4 left-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-medium">
@@ -113,7 +113,7 @@ export default function ListingDetailPage() {
                 </div>
                 
                 {/* Right: Key Product Info */}
-                <div className="p-8 bg-gradient-to-br from-gray-50 to-white">
+                <div className="p-8 bg-gradient-to-br from-gray-50 to-white rounded-r-2xl lg:rounded-r-2xl lg:rounded-l-none lg:rounded-t-2xl lg:rounded-b-2xl">
                   <div className="space-y-6">
                     {/* Title and Description */}
                     <div>
