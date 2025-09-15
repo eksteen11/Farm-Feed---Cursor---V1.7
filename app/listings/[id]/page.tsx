@@ -19,7 +19,8 @@ import {
   ArrowLeft,
   Star,
   Shield,
-  Truck
+  Truck,
+  Box
 } from 'lucide-react'
 import { mockListings } from '@/lib/mockData'
 import toast from 'react-hot-toast'
@@ -162,6 +163,25 @@ export default function ListingDetailPage() {
                     </div>
                   </div>
                   
+                  <div className="flex items-center space-x-3">
+                    <Star className="w-5 h-5 text-yellow-500" />
+                    <div>
+                      <div className="text-sm text-gray-500">Grade</div>
+                      <div className="font-medium">
+                        {listing.specifications?.grade || listing.qualityGrade || 'N/A'}
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center space-x-3">
+                    <Box className="w-5 h-5 text-blue-500" />
+                    <div>
+                      <div className="text-sm text-gray-500">Packaging</div>
+                      <div className="font-medium">
+                        {listing.specifications?.packaging || 'Bulk'}
+                      </div>
+                    </div>
+                  </div>
                   
                   <div className="flex items-center space-x-3">
                     <DollarSign className="w-5 h-5 text-primary-600" />
@@ -216,14 +236,6 @@ export default function ListingDetailPage() {
                   <div className="flex justify-between py-2 border-b border-gray-100">
                     <span className="text-gray-600">ME Energy</span>
                     <span className="font-medium">{listing.specifications?.meEnergy || 'N/A'}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100">
-                    <span className="text-gray-600">Grade</span>
-                    <span className="font-medium">{listing.specifications?.grade || listing.qualityGrade || 'N/A'}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100">
-                    <span className="text-gray-600">Packaging</span>
-                    <span className="font-medium">{listing.specifications?.packaging || 'N/A'}</span>
                   </div>
                 </div>
               </CardContent>
