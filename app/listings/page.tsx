@@ -19,7 +19,9 @@ import {
   Calendar,
   User,
   Eye,
-  ArrowLeft
+  ArrowLeft,
+  Star,
+  Box
 } from 'lucide-react'
 import { FilterOptions } from '@/types'
 import { formatDate } from '@/lib/utils'
@@ -298,12 +300,18 @@ export default function ListingsPage() {
                       
                       {/* Grade and Packaging */}
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-700">
-                          Grade: {listing.specifications?.grade || listing.qualityGrade || 'N/A'}
-                        </span>
-                        <span className="text-sm font-medium text-gray-700">
-                          Packaging: {listing.specifications?.packaging || 'Bulk'}
-                        </span>
+                        <div className="flex items-center text-sm text-gray-700">
+                          <Star className="w-4 h-4 mr-1 text-yellow-500" />
+                          <span className="font-medium">
+                            {listing.specifications?.grade || listing.qualityGrade || 'N/A'}
+                          </span>
+                        </div>
+                        <div className="flex items-center text-sm text-gray-700">
+                          <Box className="w-4 h-4 mr-1 text-blue-500" />
+                          <span className="font-medium">
+                            {listing.specifications?.packaging || 'Bulk'}
+                          </span>
+                        </div>
                       </div>
                       
                       {/* Verified Seller */}
