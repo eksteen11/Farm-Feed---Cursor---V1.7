@@ -302,9 +302,8 @@ export default function ListingsPage() {
                       {/* Grade and Packaging */}
                       <div className="flex items-center justify-between">
                         <div className="flex items-center text-sm text-gray-700">
-                          <Star className="w-4 h-4 mr-1 text-yellow-500" />
                           <span className="font-medium">
-                            {listing.specifications?.grade || listing.qualityGrade || 'N/A'}
+                            Grade: {listing.specifications?.grade || listing.qualityGrade || 'N/A'}
                           </span>
                         </div>
                         <div className="flex items-center text-sm text-gray-700">
