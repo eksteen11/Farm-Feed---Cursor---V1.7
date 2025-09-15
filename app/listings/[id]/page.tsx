@@ -93,14 +93,14 @@ export default function ListingDetailPage() {
           {/* Main Content - Creative Staggered Layout */}
           <div className="xl:col-span-3 space-y-6">
             {/* Hero Section with Images and Key Info */}
-            <Card className="overflow-hidden">
+            <Card className="overflow-hidden rounded-2xl">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
                 {/* Left: Main Image */}
-                <div className="aspect-video lg:aspect-square bg-gray-200 relative">
+                <div className="aspect-video lg:aspect-square bg-gray-200 relative rounded-l-2xl lg:rounded-l-2xl lg:rounded-r-none">
                   <ImageComponent
                     src={listing.images[0]}
                     alt={listing.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover rounded-l-2xl lg:rounded-l-2xl lg:rounded-r-none"
                     fallbackSrc="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop"
                   />
                   <div className="absolute top-4 left-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-medium">
@@ -113,7 +113,7 @@ export default function ListingDetailPage() {
                 </div>
                 
                 {/* Right: Key Product Info */}
-                <div className="p-8 bg-gradient-to-br from-gray-50 to-white">
+                <div className="p-8 bg-gradient-to-br from-gray-50 to-white rounded-r-2xl lg:rounded-r-2xl lg:rounded-l-none">
                   <div className="space-y-6">
                     {/* Title and Description */}
                     <div>
@@ -193,7 +193,7 @@ export default function ListingDetailPage() {
             </Card>
 
             {/* Product Specifications - Creative Layout */}
-            <Card>
+            <Card className="rounded-2xl">
               <CardContent className="p-8">
                 <div className="flex items-center space-x-3 mb-6">
                   <Award className="w-6 h-6 text-primary-600" />
@@ -238,7 +238,7 @@ export default function ListingDetailPage() {
 
             {/* Media Gallery - Enhanced Layout */}
             {(listing.images && listing.images.length > 1) || (listing.videos && listing.videos.length > 0) ? (
-              <Card>
+              <Card className="rounded-2xl">
                 <CardContent className="p-8">
                   <div className="flex items-center space-x-3 mb-6">
                     <Package className="w-6 h-6 text-primary-600" />
@@ -292,7 +292,7 @@ export default function ListingDetailPage() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Payment Terms */}
               {listing.paymentTerms && (
-                <Card>
+                <Card className="rounded-2xl">
                   <CardContent className="p-6">
                     <div className="flex items-center space-x-3 mb-4">
                       <DollarSign className="w-6 h-6 text-green-600" />
@@ -304,7 +304,7 @@ export default function ListingDetailPage() {
               )}
 
               {/* Delivery Options */}
-              <Card>
+              <Card className="rounded-2xl">
                 <CardContent className="p-6">
                   <div className="flex items-center space-x-3 mb-4">
                     <Truck className="w-6 h-6 text-blue-600" />
@@ -332,8 +332,8 @@ export default function ListingDetailPage() {
           {/* Enhanced Sidebar */}
           <div className="space-y-6">
             {/* Seller Profile Card */}
-            <Card className="overflow-hidden">
-              <div className="bg-gradient-to-br from-primary-500 to-primary-600 p-6 text-white">
+            <Card className="overflow-hidden rounded-2xl">
+              <div className="bg-gradient-to-br from-primary-500 to-primary-600 p-6 text-white rounded-t-2xl">
                 <div className="flex items-center space-x-4 mb-4">
                   <ImageComponent
                     src={listing.seller.avatar || "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"}
@@ -387,7 +387,7 @@ export default function ListingDetailPage() {
             </Card>
 
             {/* Action Buttons */}
-            <Card>
+            <Card className="rounded-2xl">
               <CardContent className="p-6">
                 <div className="space-y-4">
                   <Button 
@@ -419,7 +419,7 @@ export default function ListingDetailPage() {
             </Card>
 
             {/* Quick Stats */}
-            <Card>
+            <Card className="rounded-2xl">
               <CardContent className="p-6">
                 <CardTitle className="text-lg mb-4 flex items-center">
                   <TrendingUp className="w-5 h-5 mr-2 text-primary-600" />
@@ -449,7 +449,7 @@ export default function ListingDetailPage() {
             </Card>
 
             {/* Contact Information */}
-            <Card>
+            <Card className="rounded-2xl">
               <CardContent className="p-6">
                 <CardTitle className="text-lg mb-4 flex items-center">
                   <Phone className="w-5 h-5 mr-2 text-primary-600" />
