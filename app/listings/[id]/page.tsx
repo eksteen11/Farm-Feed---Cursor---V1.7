@@ -113,7 +113,7 @@ export default function ListingDetailPage() {
                 </div>
                 
                 {/* Right: Key Product Info */}
-                <div className="p-8 bg-gradient-to-br from-gray-50 to-white rounded-r-2xl lg:rounded-r-2xl lg:rounded-l-none">
+                <div className="p-8 bg-gradient-to-br from-gray-50 to-white">
                   <div className="space-y-6">
                     {/* Title and Description */}
                     <div>
