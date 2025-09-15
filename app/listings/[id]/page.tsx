@@ -96,11 +96,11 @@ export default function ListingDetailPage() {
             <Card className="overflow-hidden rounded-2xl">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
                 {/* Left: Main Image */}
-                <div className="aspect-video lg:aspect-square bg-gray-200 relative rounded-l-2xl lg:rounded-l-2xl lg:rounded-r-none lg:rounded-t-2xl lg:rounded-b-2xl">
+                <div className="aspect-video lg:aspect-square bg-gray-200 relative rounded-2xl lg:rounded-l-2xl lg:rounded-r-none lg:rounded-t-2xl lg:rounded-b-2xl">
                   <ImageComponent
                     src={listing.images[0]}
                     alt={listing.title}
-                    className="w-full h-full object-cover rounded-l-2xl lg:rounded-l-2xl lg:rounded-r-none lg:rounded-t-2xl lg:rounded-b-2xl"
+                    className="w-full h-full object-cover rounded-2xl lg:rounded-l-2xl lg:rounded-r-none lg:rounded-t-2xl lg:rounded-b-2xl"
                     fallbackSrc="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop"
                   />
                   <div className="absolute top-4 left-4 bg-primary-500 text-white px-3 py-1 rounded-full text-sm font-medium">
@@ -141,7 +141,7 @@ export default function ListingDetailPage() {
                     
                     {/* Key Details Grid */}
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-white rounded-xl p-4 border border-gray-200">
+                      <div className="bg-white rounded-2xl p-4 border border-gray-200">
                         <div className="flex items-center space-x-3">
                           <MapPin className="w-5 h-5 text-blue-500" />
                           <div>
@@ -151,7 +151,7 @@ export default function ListingDetailPage() {
                         </div>
                       </div>
                       
-                      <div className="bg-white rounded-xl p-4 border border-gray-200">
+                      <div className="bg-white rounded-2xl p-4 border border-gray-200">
                         <div className="flex items-center space-x-3">
                           <Star className="w-5 h-5 text-yellow-500" />
                           <div>
@@ -163,7 +163,7 @@ export default function ListingDetailPage() {
                         </div>
                       </div>
                       
-                      <div className="bg-white rounded-xl p-4 border border-gray-200">
+                      <div className="bg-white rounded-2xl p-4 border border-gray-200">
                         <div className="flex items-center space-x-3">
                           <Box className="w-5 h-5 text-purple-500" />
                           <div>
@@ -175,7 +175,7 @@ export default function ListingDetailPage() {
                         </div>
                       </div>
                       
-                      <div className="bg-white rounded-xl p-4 border border-gray-200">
+                      <div className="bg-white rounded-2xl p-4 border border-gray-200">
                         <div className="flex items-center space-x-3">
                           <Calendar className="w-5 h-5 text-green-500" />
                           <div>
