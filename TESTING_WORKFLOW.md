@@ -10,10 +10,13 @@
 
 ### **Enhanced Listing Features**
 - **Image Galleries**: Multiple product photos with zoom functionality
+- **Video Support**: Product videos with HTML5 video players
 - **Grade Specifications**: Quality grades (A, B, C, Premium, Standard)
-- **Packaging Options**: Bulk, bulk bags, bales, custom packaging
+- **Packaging Options**: Bulk, 25kg bag, 50kg bag, 250kg bags, 300kg bags, 500kg bags, 1000kg bags
 - **Certificates & Analysis**: Upload and view quality documents
 - **Enhanced Delivery Options**: Seller transport choice (pickup vs delivery)
+- **Product Specifications**: Protein, Moisture, Fibre, ME Energy, Grade, Packaging
+- **Payment Terms**: Comprehensive payment conditions and terms
 
 ### **Advanced Communication Features**
 - **Listing-Specific Messages**: Message threads on listing detail pages
@@ -35,9 +38,11 @@
 1. Login as `seller@demo.com`
 2. Go to `/seller/create-listing`
 3. **Test Enhanced Features**:
-   - Upload multiple product images
+   - Upload multiple product images and videos
    - Select grade (A, B, C, Premium)
-   - Choose packaging options (bulk, bulk bags, bales)
+   - Choose packaging options (bulk, 25kg bag, 50kg bag, 250kg bags, 300kg bags, 500kg bags, 1000kg bags)
+   - Fill in product specifications (Protein, Moisture, Fibre, ME Energy)
+   - Add payment terms
    - Upload certificates and analysis reports
    - Configure delivery options (pickup vs delivery)
 4. **Expected**: Listing created with all enhanced features
@@ -46,8 +51,10 @@
 1. Login as `buyer@demo.com`
 2. Go to any enhanced listing
 3. **Test Enhanced Features**:
-   - View image gallery and certificates
+   - View image gallery and video players
    - Check grade and packaging information
+   - Review product specifications (Protein, Moisture, Fibre, ME Energy)
+   - View payment terms
    - Click "Make Offer"
    - Fill form with delivery preference
 4. **Expected**: Seller receives email notification immediately

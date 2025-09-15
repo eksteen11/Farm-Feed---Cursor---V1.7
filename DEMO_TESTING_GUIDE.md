@@ -1,3 +1,5 @@
+
+
 # 🚀 Farm Feed Demo Testing Guide
 
 ## 📋 **Demo Account Credentials**
@@ -23,17 +25,18 @@
 2. **Browse Listings**
    - Go to `/listings` to see available products
    - You'll see 2 listings from `seller@demo.com`:
-     - Yellow Maize (100 tons available)
-     - White Maize (50 tons available)
+     - Barley (64 tons available) - with images, videos, and enhanced specifications
+     - Wheat (1000 tons available) - with images, videos, and enhanced specifications
 
 3. **Create an Offer**
-   - Click on any listing (e.g., Yellow Maize)
+   - Click on any listing (e.g., Barley or Wheat)
+   - View the detailed listing page with images, videos, and specifications
    - Click "Make Offer" button
    - Fill out the comprehensive offer form:
      - Price: R2,800/ton (below asking price)
      - Quantity: 50 tons
      - Delivery: Delivered to Address
-     - Message: "Interested in your maize. Can you deliver to our feedlot?"
+     - Message: "Interested in your grain. Can you deliver to our feedlot?"
      - Terms: "Payment within 7 days of delivery"
    - Submit the offer
    - **Expected**: Seller receives email notification immediately
@@ -148,8 +151,10 @@
 
 ### **Current Demo Data:**
 - **2 Active Listings** (both from `seller@demo.com`)
+  - Barley (64 tons) - with images, videos, enhanced specifications
+  - Wheat (1000 tons) - with images, videos, enhanced specifications
 - **3 Offers** (2 pending, 1 accepted, 1 counter-offered)
-- **1 Confirmed Deal** (White Maize, 25 tons)
+- **1 Confirmed Deal** (Wheat, 25 tons)
 - **2 Transport Requests** (1 related to deal, 1 standalone)
 - **2 Transport Quotes** (from `transporter@demo.com`)
 - **1 Invoice & Contract** (for the confirmed deal)

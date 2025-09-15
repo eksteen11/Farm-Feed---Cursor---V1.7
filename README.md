@@ -6,12 +6,13 @@ A modern, responsive web application built with Next.js and Tailwind CSS for con
 
 ### Core Functionality
 - **Unified User System**: Every user can sell, buy, AND transport from a single account
-- **Enhanced Product Listings**: Browse with images, certificates, grades, and packaging options
+- **Enhanced Product Listings**: Browse with multiple images, videos, certificates, grades, and packaging options
 - **Advanced Trading System**: Make offers, negotiate deals, and complete transactions
 - **Comprehensive Dashboards**: Unified interfaces with document management
 - **Transport Marketplace**: Integrated transport requests, quotes, and backload listings
 - **Document Management**: Automatic contract/invoice generation and email notifications
 - **Real-time Communication**: Listing-specific messages and email notifications
+- **Enhanced Product Details**: Detailed specifications with packaging, grade, ME Energy, fibre, and payment terms
 
 ### User Capabilities
 - **Public Users**: Browse listings without registration
@@ -27,9 +28,11 @@ A modern, responsive web application built with Next.js and Tailwind CSS for con
 - **State Management**: Zustand for efficient state handling
 - **Component Library**: Reusable UI components following design system
 - **Document Management**: PDF generation, email notifications, dashboard attachments
-- **Enhanced Data Models**: Images, certificates, grades, packaging, backload listings
+- **Enhanced Data Models**: Images, videos, certificates, grades, packaging, backload listings
 - **Mock Data**: Fully functional with realistic sample data
 - **SEO Optimized**: Public pages are search engine friendly
+- **Image & Video Support**: Multiple image galleries and video players
+- **Enhanced Product Specifications**: Comprehensive product details with all required fields
 
 ## 🛠 Tech Stack
 
@@ -133,19 +136,28 @@ For testing purposes, the following demo accounts are available:
 
 ### Public Pages
 - `/` - Home page with hero section and featured listings
-- `/listings` - Browse all product listings with filters
+- `/listings` - Browse all product listings with filters and enhanced product cards
+- `/listings/[id]` - Detailed product listing with images, videos, specifications, and payment terms
 - `/support` - Help center and contact information
-- `/transport` - Transport marketplace (coming soon)
+- `/transport` - Transport marketplace with requests and backload listings
+- `/maps` - Interactive maps for location-based services
 
 ### Authentication
 - `/login` - User sign in
 - `/register` - User registration
 
 ### Protected Pages
-- `/dashboard` - User dashboard (role-based)
+- `/dashboard` - Unified user dashboard with all capabilities
+- `/seller/create-listing` - Create product listings with enhanced form fields
+- `/seller/dashboard` - Seller-specific dashboard and analytics
+- `/buyer/dashboard` - Buyer-specific dashboard and analytics
+- `/transport/create-backload` - Create transport backload listings
+- `/transport/my-requests` - Manage transport requests
+- `/transport/available` - Browse available transport opportunities
 - `/profile` - User profile management
 - `/notifications` - User notifications
 - `/subscription` - Subscription management
+- `/fica` - FICA verification and document upload
 
 ## 🏗 Component Architecture
 

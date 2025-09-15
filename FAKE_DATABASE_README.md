@@ -63,19 +63,24 @@ interface Listing {
   availableQuantity: number
   location: string
   images: string[]
+  videos?: string[] // Product videos
   grade: 'A' | 'B' | 'C' | 'Premium' | 'Standard'
   packaging: {
-    type: 'Bulk' | 'Bulk Bags' | 'Bags' | 'HDP Bales' | 'Block Bales' | 'Small Bales'
+    type: 'Bulk' | '25kg bag' | '50kg bag' | '250kg bags' | '300kg bags' | '500kg bags' | '1000kg bags'
     size?: string // e.g., '1 ton', '500kg', '25kg', etc.
     customNotes?: string
   }
   certificates: string[] // File paths to certificates
   analysisReports: string[] // File paths to lab analysis
-  qualitySpecifications: {
-    moistureContent?: number
-    proteinLevel?: number
-    other?: Record<string, any>
+  specifications: {
+    protein?: string // e.g., '9.2%'
+    moisture?: string // e.g., '13.5%'
+    fibre?: string // e.g., '2.8%'
+    meEnergy?: string // e.g., '12.5 MJ/kg'
+    grade?: string // e.g., 'Feed Grade'
+    packaging?: string // e.g., 'Bulk'
   }
+  paymentTerms?: string // Payment conditions and terms
   deliveryOptions: {
     exFarm: boolean
     delivered: boolean
@@ -350,7 +355,9 @@ All test users use the password `password`:
 
 ### Sample Data
 - **Products**: 6 different agricultural products
-- **Listings**: 5 active listings across different categories
+- **Listings**: 2 active listings with enhanced features:
+  - Barley (64 tons) - with images, videos, enhanced specifications
+  - Wheat (1000 tons) - with images, videos, enhanced specifications
 - **Offers**: 3 sample offers in various states
 - **Deals**: 2 completed deals
 - **Transport**: 2 transport requests with quotes
