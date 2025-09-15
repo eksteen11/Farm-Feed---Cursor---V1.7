@@ -263,11 +263,11 @@ export default function ListingsPage() {
               {filteredListings.map((listing) => (
                 <Card key={listing.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-200">
                   {/* Product Image */}
-                  <div className="aspect-video bg-gray-200 relative rounded-t-2xl">
+                  <div className="aspect-video bg-gray-200 relative rounded-t-2xl rounded-b-2xl">
                     <ImageComponent
                       src={listing.images[0]}
                       alt={listing.title}
-                      className="w-full h-full object-cover rounded-t-2xl"
+                      className="w-full h-full object-cover rounded-t-2xl rounded-b-2xl"
                       fallbackSrc="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop"
                     />
                     <div className="absolute top-3 right-3 bg-primary-500 text-white px-2 py-1 rounded-full text-xs font-medium">
