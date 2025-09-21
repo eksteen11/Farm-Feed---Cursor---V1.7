@@ -31,16 +31,7 @@ A modern, responsive web application built with Next.js and Tailwind CSS for con
 - **Enhanced Data Models**: Images, videos, certificates, grades, packaging, backload listings
 - **Mock Data**: Fully functional with realistic sample data
 - **SEO Optimized**: Public pages are search engine friendly
-- **Image & Video Support**: Multiple image galleries and video players
-- **Enhanced Product Specifications**: Comprehensive product details with all required fields
-
-## 🛠 Tech Stack
-
-- **Frontend**: Next.js 14, React 18, TypeScript
-- **Styling**: Tailwind CSS with custom design system
-- **State Management**: Zustand
-- **UI Components**: Custom component library with Lucide React icons
-- **Forms**: React Hook Form with Zod validation
+that make these two corners round againmake
 - **Notifications**: React Hot Toast
 - **Animations**: Framer Motion
 - **Development**: ESLint, PostCSS, Autoprefixer
