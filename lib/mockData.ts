@@ -24,6 +24,7 @@ export const mockUsers: User[] = [
     email: 'farmer@demo.com',
     name: 'Demo Farmer',
     role: 'buyer',
+    roles: ['buyer', 'seller', 'transporter'], // Multiple roles support
     capabilities: ['sell', 'buy', 'transport'], // TRUE UNIFIED: Can do everything
     company: 'Demo Mixed Farm',
     location: 'Free State',
@@ -61,6 +62,7 @@ export const mockUsers: User[] = [
     email: 'seller@demo.com',
     name: 'Sarah Johnson',
     role: 'seller',
+    roles: ['buyer', 'seller', 'transporter'], // Multiple roles support
     capabilities: ['sell', 'buy', 'transport'], // TRUE UNIFIED: Can do everything
     company: 'Demo Maize Farm',
     location: 'Free State',
@@ -96,6 +98,7 @@ export const mockUsers: User[] = [
     email: 'transporter@demo.com',
     name: 'Mike Transport',
     role: 'transporter',
+    roles: ['buyer', 'seller', 'transporter'], // Multiple roles support
     capabilities: ['transport', 'sell', 'buy'], // TRUE UNIFIED: Can do everything
     company: 'Demo Transport Services',
     location: 'Cape Town, Western Cape',
@@ -292,6 +295,38 @@ export const mockProducts: Product[] = [
     unit: 'ton',
     minQuantity: 1,
     maxQuantity: 200
+  },
+  {
+    id: generateId('product'),
+    name: 'Hybrid Maize Seeds',
+    category: 'seed',
+    subcategory: 'maize',
+    description: 'Premium hybrid maize seeds for optimal yield',
+    specifications: {
+      germination: '95%',
+      purity: '99.8%',
+      moisture: '<8%',
+      color: 'Bright yellow'
+    },
+    unit: 'bag',
+    minQuantity: 1,
+    maxQuantity: 100
+  },
+  {
+    id: generateId('product'),
+    name: 'Transport Services',
+    category: 'other',
+    subcategory: 'transport',
+    description: 'Professional agricultural transport services',
+    specifications: {
+      capacity: '30 tons',
+      insurance: 'Full coverage',
+      tracking: 'GPS enabled',
+      service: '24/7'
+    },
+    unit: 'ton',
+    minQuantity: 1,
+    maxQuantity: 1000
   }
 ]
 
@@ -407,6 +442,110 @@ export const mockListings: Listing[] = [
     mapVisibility: true,
     createdAt: new Date('2024-01-12'),
     updatedAt: new Date('2024-01-12')
+  },
+  // Additional listings for farmer@demo.com and transporter@demo.com
+  {
+    id: 'listing-farmer-1',
+    sellerId: mockUsers[0].id, // farmer@demo.com
+    seller: mockUsers[0],
+    product: mockProducts[2], // Feed
+    title: 'Premium Animal Feed',
+    description: 'High-quality animal feed perfect for livestock. Rich in nutrients and protein.',
+    price: 4200,
+    currency: 'ZAR',
+    quantity: 100,
+    availableQuantity: 80,
+    location: 'Free State',
+    images: [
+      'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop&crop=center'
+    ],
+    videos: [],
+    isActive: true,
+    expiresAt: new Date('2024-12-31'),
+    deliveryOptions: { exFarm: true, delivered: true, ownTransport: { available: true, pricePerKm: 5, availableDates: [new Date('2024-01-20'), new Date('2024-01-21')], routes: ['Free State to Gauteng'] } },
+    qualityGrade: 'A',
+    specifications: {
+      protein: '18.5%',
+      moisture: '10.2%',
+      fibre: '4.1%',
+      meEnergy: '14.8 MJ/kg',
+      grade: 'Premium',
+      packaging: '50kg bag'
+    },
+    paymentTerms: 'Payment within 14 days of delivery. 3% discount for cash on collection.',
+    certificates: ['https://via.placeholder.com/400x300?text=Feed+Certificate'],
+    labResults: ['https://via.placeholder.com/400x300?text=Feed+Analysis'],
+    mapVisibility: true,
+    createdAt: new Date('2024-01-14'),
+    updatedAt: new Date('2024-01-14')
+  },
+  {
+    id: 'listing-farmer-2',
+    sellerId: mockUsers[0].id, // farmer@demo.com
+    seller: mockUsers[0],
+    product: mockProducts[3], // Seeds
+    title: 'Hybrid Maize Seeds',
+    description: 'Premium hybrid maize seeds for optimal yield. Certified and tested.',
+    price: 850,
+    currency: 'ZAR',
+    quantity: 50,
+    availableQuantity: 35,
+    location: 'Free State',
+    images: [
+      'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop&crop=top'
+    ],
+    videos: [],
+    isActive: true,
+    expiresAt: new Date('2024-12-31'),
+    deliveryOptions: { exFarm: true, delivered: false, ownTransport: { available: true, pricePerKm: 3, availableDates: [new Date('2024-01-22'), new Date('2024-01-23')], routes: ['Free State to Cape Town'] } },
+    qualityGrade: 'A',
+    specifications: {
+      germination: '95%',
+      purity: '99.8%',
+      moisture: '8.5%',
+      grade: 'Certified',
+      packaging: '25kg bag'
+    },
+    paymentTerms: 'Payment within 7 days of collection. No returns on seeds.',
+    certificates: ['https://via.placeholder.com/400x300?text=Seed+Certificate'],
+    labResults: ['https://via.placeholder.com/400x300?text=Seed+Analysis'],
+    mapVisibility: true,
+    createdAt: new Date('2024-01-15'),
+    updatedAt: new Date('2024-01-15')
+  },
+  {
+    id: 'listing-transporter-1',
+    sellerId: mockUsers[2].id, // transporter@demo.com
+    seller: mockUsers[2],
+    product: mockProducts[4], // Transport Services
+    title: 'Agricultural Transport Services',
+    description: 'Professional transport services for agricultural products. Fleet of 20+ trucks.',
+    price: 250,
+    currency: 'ZAR',
+    quantity: 1000,
+    availableQuantity: 800,
+    location: 'Gauteng',
+    images: [
+      'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop&crop=bottom'
+    ],
+    videos: [],
+    isActive: true,
+    expiresAt: new Date('2024-12-31'),
+    deliveryOptions: { exFarm: false, delivered: true, ownTransport: { available: false, pricePerKm: 0, availableDates: [], routes: [] } },
+    qualityGrade: 'A',
+    specifications: {
+      capacity: '30 tons',
+      insurance: 'Full coverage',
+      tracking: 'GPS enabled',
+      grade: 'Professional',
+      packaging: 'Bulk transport'
+    },
+    paymentTerms: 'Payment within 5 days of service completion. Insurance included.',
+    certificates: ['https://via.placeholder.com/400x300?text=Transport+License'],
+    labResults: ['https://via.placeholder.com/400x300?text=Safety+Certificate'],
+    mapVisibility: true,
+    createdAt: new Date('2024-01-16'),
+    updatedAt: new Date('2024-01-16')
   }
 ]
 
@@ -466,6 +605,59 @@ export const mockOffers: Offer[] = [
     },
     isNegotiable: true,
     terms: 'Payment before delivery'
+  },
+  // NEW: Offers for farmer@demo.com as seller (testing reverse scenario)
+  {
+    id: 'offer-4',
+    listingId: 'listing-farmer-1', // Will be created for farmer@demo.com
+    buyerId: mockUsers[1].id, // seller@demo.com
+    sellerId: mockUsers[0].id, // farmer@demo.com
+    price: 4500,
+    quantity: 30,
+    deliveryType: 'delivered',
+    deliveryAddress: 'Demo Maize Farm, Free State',
+    message: 'Interested in your feed products. Can you deliver to our farm?',
+    status: 'pending',
+    createdAt: new Date('2024-01-16T08:30:00Z'),
+    updatedAt: new Date('2024-01-16T08:30:00Z'),
+    expiresAt: new Date('2024-01-23T08:30:00Z'),
+    isNegotiable: true,
+    terms: 'Payment within 10 days of delivery'
+  },
+  {
+    id: 'offer-5',
+    listingId: 'listing-farmer-2', // Will be created for farmer@demo.com
+    buyerId: mockUsers[2].id, // transporter@demo.com
+    sellerId: mockUsers[0].id, // farmer@demo.com
+    price: 5200,
+    quantity: 15,
+    deliveryType: 'ex-farm',
+    deliveryAddress: 'Demo Mixed Farm, Free State',
+    message: 'Looking for premium feed for our transport business.',
+    status: 'pending',
+    createdAt: new Date('2024-01-16T12:15:00Z'),
+    updatedAt: new Date('2024-01-16T12:15:00Z'),
+    expiresAt: new Date('2024-01-23T12:15:00Z'),
+    isNegotiable: true,
+    terms: 'Cash on collection, quality inspection required'
+  },
+  // NEW: Offers for transporter@demo.com as seller
+  {
+    id: 'offer-6',
+    listingId: 'listing-transporter-1', // Will be created for transporter@demo.com
+    buyerId: mockUsers[0].id, // farmer@demo.com
+    sellerId: mockUsers[2].id, // transporter@demo.com
+    price: 3800,
+    quantity: 20,
+    deliveryType: 'delivered',
+    deliveryAddress: 'Demo Transport Services, Gauteng',
+    message: 'Need transport services for our feed delivery.',
+    status: 'pending',
+    createdAt: new Date('2024-01-16T15:45:00Z'),
+    updatedAt: new Date('2024-01-16T15:45:00Z'),
+    expiresAt: new Date('2024-01-23T15:45:00Z'),
+    isNegotiable: true,
+    terms: 'Payment within 5 days of service completion'
   }
 ]
 

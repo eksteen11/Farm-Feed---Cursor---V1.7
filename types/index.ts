@@ -8,6 +8,7 @@ export interface User {
   email: string
   name: string
   role: UserRole // Keep for backward compatibility
+  roles?: UserRole[] // New: support for multiple roles
   capabilities: UserCapability[] // New: unified capabilities
   company?: string
   location: string
@@ -201,12 +202,16 @@ export interface Negotiation {
 
 export interface Message {
   id: string
-  negotiationId: string
+  offerId?: string // Link to offer if part of offer negotiation
+  negotiationId?: string // Legacy support
   senderId: string
-  sender: User
-  content: string
-  type: 'text' | 'image' | 'document'
+  receiverId: string
+  sender?: User // Optional for performance
+  message: string // Renamed from content for clarity
+  messageType: 'offer-discussion' | 'offer-negotiation' | 'general' | 'text' | 'image' | 'document'
+  isRead: boolean
   createdAt: Date
+  updatedAt: Date
 }
 
 // New: Enhanced Deal with Financial Tracking
@@ -455,7 +460,7 @@ export interface Notification {
   userId: string
   title: string
   message: string
-  type: 'info' | 'success' | 'warning' | 'error' | 'offer' | 'transport' | 'payment' | 'system'
+  type: 'info' | 'success' | 'warning' | 'error' | 'offer' | 'transport' | 'payment' | 'system' | 'message'
   isRead: boolean
   relatedId?: string
   relatedType?: 'offer' | 'deal' | 'transport' | 'payment' | 'listing' | 'subscription'

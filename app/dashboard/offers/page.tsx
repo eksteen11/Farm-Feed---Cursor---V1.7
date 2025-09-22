@@ -1,6 +1,6 @@
 'use client'
 
-import { useStore } from '@/store/useStore'
+import { useSupabaseStore } from '@/store/useSupabaseStore'
 import { canUserPerformAction } from '@/types'
 import { ShoppingCart, Package, TrendingUp, Clock, CheckCircle, XCircle, MessageSquare } from 'lucide-react'
 import Link from 'next/link'
@@ -9,11 +9,19 @@ import Button from '@/components/ui/Button'
 import { useEffect, useState } from 'react'
 
 export default function OffersPage() {
-  const { currentUser, offers, listings } = useStore()
+  const { currentUser, offers, listings, getCurrentUser, fetchOffers, fetchListings } = useSupabaseStore()
   const [isClient, setIsClient] = useState(false)
   
   useEffect(() => {
     setIsClient(true)
+    // Initialize user data and fetch offers when component mounts
+    const initData = async () => {
+      console.log('📋 Offers: Initializing data...')
+      await getCurrentUser()
+      await fetchOffers()
+      await fetchListings()
+    }
+    initData()
   }, [])
   
   if (!currentUser) {

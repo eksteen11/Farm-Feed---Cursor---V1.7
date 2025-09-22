@@ -1,6 +1,6 @@
 'use client'
 
-import { useStore } from '@/store/useStore'
+import { useSupabaseStore } from '@/store/useSupabaseStore'
 import { canUserPerformAction } from '@/types'
 import { Package, Truck, Plus, Eye, Edit, Trash2, MapPin, Calendar, DollarSign } from 'lucide-react'
 import Link from 'next/link'
@@ -9,11 +9,18 @@ import Button from '@/components/ui/Button'
 import { useEffect, useState } from 'react'
 
 export default function ListingsPage() {
-  const { currentUser, listings, transportRequests } = useStore()
+  const { currentUser, listings, transportRequests, getCurrentUser, fetchListings } = useSupabaseStore()
   const [isClient, setIsClient] = useState(false)
   
   useEffect(() => {
     setIsClient(true)
+    // Initialize user data and fetch listings when component mounts
+    const initData = async () => {
+      console.log('📦 Listings: Initializing data...')
+      await getCurrentUser()
+      await fetchListings()
+    }
+    initData()
   }, [])
   
   if (!currentUser) {

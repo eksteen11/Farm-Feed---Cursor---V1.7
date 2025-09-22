@@ -17,6 +17,7 @@ import {
 } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
+import OfferMessaging from '@/components/messaging/OfferMessaging'
 import { useStore } from '@/store/useStore'
 import { Offer, Listing, User as UserType } from '@/types'
 import { formatDate } from '@/lib/utils'
@@ -28,9 +29,10 @@ interface BuyerOffersProps {
 }
 
 export default function BuyerOffers({ offers, listings, currentUser }: BuyerOffersProps) {
-  const { updateOffer } = useStore()
+  const { updateOffer, users } = useStore()
   const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null)
   const [isCounterOfferModalOpen, setIsCounterOfferModalOpen] = useState(false)
+  const [isMessagingOpen, setIsMessagingOpen] = useState(false)
   const [counterOfferData, setCounterOfferData] = useState({
     price: 0,
     message: ''
@@ -41,8 +43,12 @@ export default function BuyerOffers({ offers, listings, currentUser }: BuyerOffe
   }
 
   const getSellerById = (sellerId: string) => {
-    // In a real app, you'd fetch this from the store
-    return { id: sellerId, name: 'Seller Name', company: 'Seller Company' }
+    return users.find(user => user.id === sellerId) || { 
+      id: sellerId, 
+      name: 'Seller Name', 
+      company: 'Seller Company',
+      email: 'seller@example.com'
+    }
   }
 
   const getStatusColor = (status: string) => {
@@ -296,6 +302,18 @@ export default function BuyerOffers({ offers, listings, currentUser }: BuyerOffe
                   View Listing
                 </Button>
                 
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    setSelectedOffer(offer)
+                    setIsMessagingOpen(true)
+                  }}
+                  className="flex-1"
+                >
+                  <MessageSquare className="w-4 h-4 mr-2" />
+                  Message Seller
+                </Button>
+                
                 {offer.status === 'counter-offered' && (
                   <>
                     <Button
@@ -411,6 +429,20 @@ export default function BuyerOffers({ offers, listings, currentUser }: BuyerOffe
             </div>
           </div>
         </div>
+      )}
+
+      {/* Offer Messaging Modal */}
+      {selectedOffer && (
+        <OfferMessaging
+          offer={selectedOffer}
+          currentUser={currentUser}
+          otherUser={getSellerById(selectedOffer.sellerId)}
+          isOpen={isMessagingOpen}
+          onClose={() => {
+            setIsMessagingOpen(false)
+            setSelectedOffer(null)
+          }}
+        />
       )}
     </div>
   )

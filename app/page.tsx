@@ -1,12 +1,12 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Button from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
 import ImageComponent from '@/components/ui/Image'
 import ClientOnly from '@/components/ui/ClientOnly'
-import { useStore } from '@/store/useStore'
+import { useSupabaseStore } from '@/store/useSupabaseStore'
 import { canUserPerformAction } from '@/types'
 import { 
   TrendingUp, 
@@ -39,9 +39,29 @@ import { mockListings } from '@/lib/mockData'
 type UserType = 'buyer' | 'seller' | 'transporter'
 
 export default function HomePage() {
-  const { currentUser } = useStore()
+  const { currentUser, getCurrentUser } = useSupabaseStore()
   const featuredListings = mockListings.slice(0, 3)
   const [selectedUserType, setSelectedUserType] = useState<UserType>('buyer')
+
+  // Initialize user data when component mounts
+  useEffect(() => {
+    getCurrentUser()
+  }, [])
+
+  // If user is logged in, redirect to dashboard
+  if (currentUser) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Welcome back, {currentUser.name}!</h1>
+          <p className="text-gray-600 mb-6">Redirecting you to your dashboard...</p>
+          <Link href="/dashboard">
+            <Button>Go to Dashboard</Button>
+          </Link>
+        </div>
+      </div>
+    )
+  }
 
   // User type configurations with industry-specific USPs
   const userTypeConfig = {

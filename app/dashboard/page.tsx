@@ -1,6 +1,6 @@
 'use client'
 
-import { useStore } from '@/store/useStore'
+import { useSupabaseStore } from '@/store/useSupabaseStore'
 import { getUserCapabilities, canUserPerformAction } from '@/types'
 import { 
   ShoppingCart, 
@@ -99,11 +99,19 @@ const DASHBOARD_SECTIONS = [
 ]
 
 export default function UnifiedDashboard() {
-  const { currentUser, listings, offers, deals, transportRequests, transportQuotes } = useStore()
+  const { currentUser, listings, offers, deals, transportRequests, transportQuotes, getCurrentUser, initializeData } = useSupabaseStore()
   const [isClient, setIsClient] = useState(false)
   
   useEffect(() => {
     setIsClient(true)
+    // Initialize user data when component mounts
+    const initUser = async () => {
+      console.log('🏠 Dashboard: Initializing user data...')
+      const user = await getCurrentUser()
+      console.log('🏠 Dashboard: Current user:', user ? user.name : 'No user')
+      await initializeData()
+    }
+    initUser()
   }, [])
 
   if (!currentUser) {

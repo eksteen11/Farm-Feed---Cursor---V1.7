@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useStore } from '@/store/useStore'
+import { useSupabaseStore } from '@/store/useSupabaseStore'
 import Button from '@/components/ui/Button'
 import ImageComponent from '@/components/ui/Image'
 import Logo from '@/components/ui/Logo'
@@ -23,9 +23,10 @@ import {
   FileText,
   Map
 } from 'lucide-react'
+import NotificationSystem from '@/components/notifications/NotificationSystem'
 
 const Navigation: React.FC = () => {
-  const { currentUser, isAuthenticated, logout, notifications } = useStore()
+  const { currentUser, isAuthenticated, logout, notifications, getCurrentUser } = useSupabaseStore()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
@@ -33,6 +34,8 @@ const Navigation: React.FC = () => {
   // Ensure component is mounted to prevent hydration mismatch
   useEffect(() => {
     setMounted(true)
+    // Initialize user data when component mounts
+    getCurrentUser()
   }, [])
 
   const handleLogout = () => {
@@ -110,14 +113,7 @@ const Navigation: React.FC = () => {
             {isAuthenticated && currentUser ? (
               <>
                 {/* Notifications */}
-                <Link href="/notifications" className="relative p-2 text-gray-600 hover:text-primary-500 transition-colors">
-                  <Bell className="w-5 h-5" />
-                  {unreadNotifications > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                      {unreadNotifications}
-                    </span>
-                  )}
-                </Link>
+                {currentUser && <NotificationSystem currentUser={currentUser} />}
 
                 {/* User Menu */}
                 <div className="relative">

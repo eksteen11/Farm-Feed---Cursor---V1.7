@@ -1,6 +1,6 @@
 'use client'
 
-import { useStore } from '@/store/useStore'
+import { useSupabaseStore } from '@/store/useSupabaseStore'
 import { canUserPerformAction } from '@/types'
 import { Truck, Package, Route, Plus, Eye, MessageSquare, Calendar, MapPin } from 'lucide-react'
 import Link from 'next/link'
@@ -9,11 +9,13 @@ import Button from '@/components/ui/Button'
 import { useEffect, useState } from 'react'
 
 export default function TransportPage() {
-  const { currentUser, transportRequests, transportQuotes, backloadListings } = useStore()
+  const { currentUser, transportRequests, transportQuotes, backloadListings, getCurrentUser } = useSupabaseStore()
   const [isClient, setIsClient] = useState(false)
   
   useEffect(() => {
     setIsClient(true)
+    // Initialize user data when component mounts
+    getCurrentUser()
   }, [])
 
   if (!currentUser) {

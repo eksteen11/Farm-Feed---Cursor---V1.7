@@ -25,10 +25,9 @@ import { formatDate } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 
 export default function SellerDashboardPage() {
-  const { currentUser, isAuthenticated } = useStore()
+  const { currentUser, isAuthenticated, offers, deals, notifications, transportRequests } = useStore()
   const router = useRouter()
   const [activeTab, setActiveTab] = useState('overview')
-  const { offers, deals, notifications, transportRequests } = useStore()
   
   // Redirect if not authenticated or not a seller
   useEffect(() => {
@@ -52,7 +51,25 @@ export default function SellerDashboardPage() {
   const sellerDeals = deals.filter(deal => deal.sellerId === currentUser.id)
   const sellerInvoices = mockInvoices.filter(invoice => invoice.sellerId === currentUser.id)
   
+  // Helper functions
+  const getListingById = (listingId: string) => {
+    return mockListings.find(listing => listing.id === listingId)
+  }
 
+  const getBuyerById = (buyerId: string) => {
+    // Mock user lookup - in real app this would come from API
+    const mockUsers = [
+      { id: 'user-1', name: 'Demo Farmer', company: 'Demo Mixed Farm', email: 'farmer@demo.com' },
+      { id: 'user-2', name: 'Sarah Johnson', company: 'Demo Maize Farm', email: 'seller@demo.com' },
+      { id: 'user-3', name: 'Mike Transport', company: 'Demo Transport Services', email: 'transporter@demo.com' }
+    ]
+    return mockUsers.find((user: any) => user.id === buyerId) || {
+      id: buyerId,
+      name: 'Unknown Buyer',
+      company: 'Unknown Company',
+      email: 'unknown@example.com'
+    }
+  }
   
   // Get chat messages for seller
   const sellerChats = mockChatMessages.filter(msg => 
@@ -121,38 +138,107 @@ export default function SellerDashboardPage() {
         </Card>
       </div>
 
+      {/* Pending Offers - Priority Section */}
+      {sellerOffers.filter(o => o.status === 'pending').length > 0 && (
+        <Card className="border-red-200">
+          <CardTitle className="p-6 pb-4 text-red-800">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <Clock className="w-5 h-5 text-red-600" />
+                <span>Pending Offers Requiring Attention</span>
+              </div>
+              <Button 
+                variant="secondary" 
+                size="sm"
+                onClick={() => setActiveTab('offers')}
+                className="text-red-700 border-red-300 hover:bg-red-50"
+              >
+                View All
+              </Button>
+            </div>
+          </CardTitle>
+          <CardContent className="p-6 pt-0">
+            <div className="space-y-4">
+              {sellerOffers.filter(o => o.status === 'pending').slice(0, 3).map(offer => {
+                const listing = getListingById(offer.listingId)
+                const buyer = getBuyerById(offer.buyerId)
+                return (
+                  <div key={offer.id} className="flex items-center justify-between p-4 bg-red-50 rounded-lg border border-red-200">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-4 h-4 rounded-full bg-red-500 animate-pulse" />
+                      <div>
+                        <p className="font-medium text-red-900">
+                          {buyer.name} wants {listing?.title || 'your product'}
+                        </p>
+                        <p className="text-sm text-red-700">
+                          R{offer.price.toLocaleString()}/ton for {offer.quantity} tons
+                        </p>
+                        <p className="text-xs text-red-600 mt-1">
+                          Expires: {formatDate(offer.expiresAt)}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex space-x-2">
+                      <Button 
+                        size="sm" 
+                        variant="primary"
+                        onClick={() => {
+                          setActiveTab('offers')
+                          // Could add logic to scroll to specific offer
+                        }}
+                        className="bg-red-600 hover:bg-red-700"
+                      >
+                        Review
+                      </Button>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {/* Recent Activity */}
       <Card>
         <CardTitle className="p-6 pb-4">Recent Activity</CardTitle>
         <CardContent className="p-6 pt-0">
           <div className="space-y-4">
-            {sellerOffers.slice(0, 5).map(offer => (
-              <div key={offer.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                <div className="flex items-center space-x-3">
-                  <div className={`w-3 h-3 rounded-full ${
-                    offer.status === 'pending' ? 'bg-red-500' :
-                    offer.status === 'accepted' ? 'bg-green-500' :
-                    offer.status === 'rejected' ? 'bg-red-500' : 'bg-gray-500'
-                  }`} />
-                  <div>
-                    <p className="font-medium">New offer on listing #{offer.listingId}</p>
-                    <p className="text-sm text-gray-600">
-                      R{offer.price.toLocaleString()} for {offer.quantity} tons
-                    </p>
+            {sellerOffers.slice(0, 5).map(offer => {
+              const listing = getListingById(offer.listingId)
+              const buyer = getBuyerById(offer.buyerId)
+              return (
+                <div key={offer.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div className="flex items-center space-x-3">
+                    <div className={`w-3 h-3 rounded-full ${
+                      offer.status === 'pending' ? 'bg-red-500' :
+                      offer.status === 'accepted' ? 'bg-green-500' :
+                      offer.status === 'rejected' ? 'bg-red-500' : 'bg-gray-500'
+                    }`} />
+                    <div>
+                      <p className="font-medium">
+                        {offer.status === 'pending' ? 'New offer' : 
+                         offer.status === 'accepted' ? 'Accepted offer' :
+                         offer.status === 'rejected' ? 'Rejected offer' : 'Offer update'} from {buyer.name}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        {listing?.title || 'Listing'} - R{offer.price.toLocaleString()} for {offer.quantity} tons
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-gray-500">{formatDate(offer.createdAt)}</p>
+                    <span className={`px-2 py-1 text-xs rounded-full ${
+                      offer.status === 'pending' ? 'bg-red-100 text-red-800' :
+                      offer.status === 'accepted' ? 'bg-green-100 text-green-800' :
+                      offer.status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'
+                    }`}>
+                      {offer.status}
+                    </span>
                   </div>
                 </div>
-                <div className="text-right">
-                  <p className="text-sm text-gray-500">{formatDate(offer.createdAt)}</p>
-                  <span className={`px-2 py-1 text-xs rounded-full ${
-                    offer.status === 'pending' ? 'bg-red-100 text-red-800' :
-                    offer.status === 'accepted' ? 'bg-green-100 text-green-800' :
-                    offer.status === 'rejected' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'
-                  }`}>
-                    {offer.status}
-                  </span>
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </CardContent>
       </Card>
@@ -317,6 +403,27 @@ export default function SellerDashboardPage() {
           </nav>
         </div>
 
+        {/* Priority Actions - Prominent Offer Management */}
+        {stats.pendingOffers > 0 && (
+          <Card className="border-red-200 bg-red-50 mb-6">
+            <CardTitle className="p-6 pb-4 text-red-800">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <Clock className="w-6 h-6 text-red-600" />
+                  <span>Action Required: {stats.pendingOffers} Pending Offer{stats.pendingOffers > 1 ? 's' : ''}</span>
+                </div>
+                <Button 
+                  variant="primary" 
+                  onClick={() => setActiveTab('offers')}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  Review Offers Now
+                </Button>
+              </div>
+            </CardTitle>
+          </Card>
+        )}
+
         {/* Quick Actions */}
         <Card>
           <CardTitle className="p-6 pb-4">Quick Actions</CardTitle>
@@ -330,6 +437,16 @@ export default function SellerDashboardPage() {
               >
                 Create New Listing
               </Button>
+              {stats.pendingOffers > 0 && (
+                <Button 
+                  variant="secondary" 
+                  leftIcon={<Clock className="w-4 h-4" />}
+                  onClick={() => setActiveTab('offers')}
+                  className="w-full border-red-200 text-red-700 hover:bg-red-50"
+                >
+                  Manage Pending Offers ({stats.pendingOffers})
+                </Button>
+              )}
               <Button variant="secondary" leftIcon={<User className="w-4 h-4" />} className="w-full">
                 Update Profile
               </Button>

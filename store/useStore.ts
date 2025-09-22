@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { User, Listing, Offer, Deal, Notification, FilterOptions, TransportRequest, TransportQuote, BackloadListing } from '@/types'
+import { User, Listing, Offer, Deal, Notification, Message, FilterOptions, TransportRequest, TransportQuote, BackloadListing } from '@/types'
 import { 
   mockUsers, 
   mockListings, 
@@ -37,6 +37,7 @@ interface AppState {
   listings: Listing[]
   offers: Offer[]
   deals: Deal[]
+  messages: Message[]
   notifications: Notification[]
   transportRequests: TransportRequest[]
   transportQuotes: TransportQuote[]
@@ -89,10 +90,17 @@ interface AppState {
   createTransportQuote: (quote: Omit<TransportQuote, 'id' | 'createdAt' | 'updatedAt' | 'transporter' | 'transporterId'>) => void
   updateTransportQuote: (id: string, updates: Partial<TransportQuote>) => void
   
+  // Messages
+  fetchMessages: (userId?: string) => void
+  addMessage: (message: Omit<Message, 'id' | 'createdAt' | 'updatedAt'>) => void
+  updateMessage: (id: string, updates: Partial<Message>) => void
+  deleteMessage: (id: string) => void
+  
   // Notifications
   fetchNotifications: (userId: string) => void
   markNotificationAsRead: (id: string) => void
   markAllNotificationsAsRead: (userId: string) => void
+  deleteNotification: (id: string) => void
   
   // Filters
   updateFilters: (filters: Partial<FilterOptions>) => void
@@ -135,6 +143,7 @@ export const useStore = create<AppState>((set, get) => {
     listings: [], // Start with empty array to avoid hydration issues
     offers: [], // Start with empty array to avoid hydration issues
     deals: [], // Start with empty array to avoid hydration issues
+    messages: [], // Start with empty array to avoid hydration issues
     notifications: [], // Start with empty array to avoid hydration issues
     transportRequests: [], // Start with empty array to avoid hydration issues
     transportQuotes: [], // Start with empty array to avoid hydration issues
@@ -697,6 +706,65 @@ export const useStore = create<AppState>((set, get) => {
     )
     
     set({ notifications: updatedNotifications })
+  },
+  
+  deleteNotification: (id) => {
+    const currentNotifications = get().notifications
+    const updatedNotifications = currentNotifications.filter(notification => notification.id !== id)
+    set({ notifications: updatedNotifications })
+  },
+  
+  // Message actions
+  fetchMessages: (userId) => {
+    // In a real app, this would fetch from API
+    // For now, we'll use empty array
+    set({ messages: [] })
+  },
+  
+  addMessage: (messageData) => {
+    const newMessage: Message = {
+      ...messageData,
+      id: generateId('msg'),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+    
+    const currentMessages = get().messages
+    set({ messages: [...currentMessages, newMessage] })
+    
+    // Create notification for message received
+    const notification: Notification = {
+      id: generateId('notif'),
+      userId: messageData.receiverId,
+      type: 'message',
+      title: 'New Message Received',
+      message: `You received a message from ${messageData.senderId}`,
+      isRead: false,
+      createdAt: new Date(),
+      priority: 'medium',
+      actionRequired: false,
+      relatedId: messageData.offerId,
+      relatedType: 'offer'
+    }
+    
+    const currentNotifications = get().notifications
+    set({ notifications: [...currentNotifications, notification] })
+  },
+  
+  updateMessage: (id, updates) => {
+    const currentMessages = get().messages
+    const updatedMessages = currentMessages.map(message => 
+      message.id === id 
+        ? { ...message, ...updates, updatedAt: new Date() }
+        : message
+    )
+    set({ messages: updatedMessages })
+  },
+  
+  deleteMessage: (id) => {
+    const currentMessages = get().messages
+    const updatedMessages = currentMessages.filter(message => message.id !== id)
+    set({ messages: updatedMessages })
   },
   
   // Filter actions

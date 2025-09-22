@@ -9,6 +9,8 @@ import Select from '@/components/ui/Select'
 import { useStore } from '@/store/useStore'
 import { Offer, Listing, User } from '@/types'
 import { generateId } from '@/lib/helpers'
+import { sendOfferNotification } from '@/lib/emailService'
+import { formatDate } from '@/lib/utils'
 
 interface MakeOfferModalProps {
   listing: Listing
@@ -98,6 +100,26 @@ export default function MakeOfferModal({
       
       // Create the offer in the store
       createOffer(newOffer)
+      
+      // Send email notification to seller
+      try {
+        await sendOfferNotification('offer-received', {
+          sellerEmail: listing.seller.email,
+          sellerName: listing.seller.name,
+          buyerName: buyer.name,
+          buyerCompany: buyer.company || 'Individual',
+          listingTitle: listing.title,
+          offerPrice: newOffer.price,
+          offerQuantity: newOffer.quantity,
+          deliveryType: newOffer.deliveryType,
+          offerMessage: newOffer.message,
+          expiryDate: formatDate(newOffer.expiresAt),
+          offerLink: `${window.location.origin}/dashboard/offers?offer=${newOffer.id}`
+        })
+      } catch (error) {
+        console.error('Failed to send email notification:', error)
+        // Don't fail the offer creation if email fails
+      }
       
       // Call the callback
       onOfferCreated(newOffer)

@@ -17,9 +17,11 @@ import {
 } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Badge from '@/components/ui/Badge'
+import OfferMessaging from '@/components/messaging/OfferMessaging'
 import { useStore } from '@/store/useStore'
 import { Offer, Listing, User as UserType } from '@/types'
 import { formatDate } from '@/lib/utils'
+import { sendOfferNotification } from '@/lib/emailService'
 
 interface OfferManagementProps {
   offers: Offer[]
@@ -28,9 +30,10 @@ interface OfferManagementProps {
 }
 
 export default function OfferManagement({ offers, listings, currentUser }: OfferManagementProps) {
-  const { updateOffer, createDeal } = useStore()
+  const { updateOffer, createDeal, users } = useStore()
   const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null)
   const [isActionModalOpen, setIsActionModalOpen] = useState(false)
+  const [isMessagingOpen, setIsMessagingOpen] = useState(false)
   const [actionType, setActionType] = useState<'accept' | 'reject' | 'counter' | null>(null)
   const [counterOfferData, setCounterOfferData] = useState({
     price: 0,
@@ -42,8 +45,12 @@ export default function OfferManagement({ offers, listings, currentUser }: Offer
   }
 
   const getBuyerById = (buyerId: string) => {
-    // In a real app, you'd fetch this from the store
-    return { id: buyerId, name: 'Buyer Name', company: 'Buyer Company' }
+    return users.find(user => user.id === buyerId) || { 
+      id: buyerId, 
+      name: 'Buyer Name', 
+      company: 'Buyer Company',
+      email: 'buyer@example.com'
+    }
   }
 
   const getStatusColor = (status: string) => {
@@ -93,8 +100,27 @@ export default function OfferManagement({ offers, listings, currentUser }: Offer
       
       updateOffer(updatedOffer.id, updatedOffer)
 
-      // Create a deal
+      // Send email notification to buyer
+      const buyer = getBuyerById(selectedOffer.buyerId)
       const listing = getListingById(selectedOffer.listingId)
+      
+      try {
+        await sendOfferNotification('offer-accepted', {
+          buyerEmail: buyer.email,
+          buyerName: buyer.name,
+          sellerName: currentUser.name,
+          sellerCompany: currentUser.company || 'Individual',
+          listingTitle: listing?.title || 'Product',
+          offerPrice: selectedOffer.price,
+          offerQuantity: selectedOffer.quantity,
+          deliveryType: selectedOffer.deliveryType,
+          dealLink: `${window.location.origin}/dashboard/deals?deal=${selectedOffer.id}`
+        })
+      } catch (error) {
+        console.error('Failed to send email notification:', error)
+      }
+
+      // Create a deal
       if (listing) {
         const deal = {
           offerId: selectedOffer.id,
@@ -159,6 +185,28 @@ export default function OfferManagement({ offers, listings, currentUser }: Offer
       }
       
       updateOffer(updatedOffer.id, updatedOffer)
+      
+      // Send email notification to buyer
+      const buyer = getBuyerById(selectedOffer.buyerId)
+      const listing = getListingById(selectedOffer.listingId)
+      
+      try {
+        await sendOfferNotification('offer-countered', {
+          buyerEmail: buyer.email,
+          buyerName: buyer.name,
+          sellerName: currentUser.name,
+          sellerCompany: currentUser.company || 'Individual',
+          listingTitle: listing?.title || 'Product',
+          originalPrice: selectedOffer.price,
+          counterPrice: counterOfferData.price,
+          offerQuantity: selectedOffer.quantity,
+          counterMessage: counterOfferData.message,
+          offerLink: `${window.location.origin}/dashboard/offers?offer=${selectedOffer.id}`
+        })
+      } catch (error) {
+        console.error('Failed to send email notification:', error)
+      }
+      
       setIsActionModalOpen(false)
       setSelectedOffer(null)
       setActionType(null)
@@ -327,11 +375,11 @@ export default function OfferManagement({ offers, listings, currentUser }: Offer
 
               {/* Action Buttons */}
               {offer.status === 'pending' && (
-                <div className="flex space-x-3 pt-4 border-t">
+                <div className="flex flex-wrap gap-3 pt-4 border-t">
                   <Button
                     variant="primary"
                     onClick={() => handleAction(offer, 'accept')}
-                    className="flex-1"
+                    className="flex-1 min-w-[120px]"
                   >
                     <CheckCircle className="w-4 h-4 mr-2" />
                     Accept Offer
@@ -340,7 +388,7 @@ export default function OfferManagement({ offers, listings, currentUser }: Offer
                   <Button
                     variant="secondary"
                     onClick={() => handleAction(offer, 'counter')}
-                    className="flex-1"
+                    className="flex-1 min-w-[120px]"
                   >
                     <RotateCcw className="w-4 h-4 mr-2" />
                     Counter Offer
@@ -348,8 +396,20 @@ export default function OfferManagement({ offers, listings, currentUser }: Offer
                   
                   <Button
                     variant="secondary"
+                    onClick={() => {
+                      setSelectedOffer(offer)
+                      setIsMessagingOpen(true)
+                    }}
+                    className="flex-1 min-w-[120px]"
+                  >
+                    <MessageSquare className="w-4 h-4 mr-2" />
+                    Message Buyer
+                  </Button>
+                  
+                  <Button
+                    variant="secondary"
                     onClick={() => handleAction(offer, 'reject')}
-                    className="flex-1"
+                    className="flex-1 min-w-[120px]"
                   >
                     <XCircle className="w-4 h-4 mr-2" />
                     Reject
@@ -509,6 +569,20 @@ export default function OfferManagement({ offers, listings, currentUser }: Offer
             </div>
           </div>
         </div>
+      )}
+
+      {/* Offer Messaging Modal */}
+      {selectedOffer && (
+        <OfferMessaging
+          offer={selectedOffer}
+          currentUser={currentUser}
+          otherUser={getBuyerById(selectedOffer.buyerId)}
+          isOpen={isMessagingOpen}
+          onClose={() => {
+            setIsMessagingOpen(false)
+            setSelectedOffer(null)
+          }}
+        />
       )}
     </div>
   )

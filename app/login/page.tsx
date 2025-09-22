@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useStore } from '@/store/useStore'
+import { useSupabaseStore } from '@/store/useSupabaseStore'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
@@ -12,7 +12,7 @@ import toast from 'react-hot-toast'
 
 export default function LoginPage() {
   const router = useRouter()
-  const { login, isLoading, error } = useStore()
+  const { login, isLoading, error } = useSupabaseStore()
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
     email: '',
@@ -58,14 +58,20 @@ export default function LoginPage() {
     }
 
     try {
+      console.log('🔐 Attempting login...')
       const success = await login(formData.email, formData.password)
+      console.log('🔐 Login result:', success)
+      
       if (success) {
+        console.log('✅ Login successful, redirecting to dashboard...')
         toast.success('Welcome back!')
         router.push('/dashboard')
       } else {
+        console.log('❌ Login failed')
         toast.error('Login failed. Please check your credentials.')
       }
     } catch (error) {
+      console.error('❌ Login error:', error)
       toast.error('An unexpected error occurred. Please try again.')
     }
   }
@@ -147,6 +153,7 @@ export default function LoginPage() {
                 </div>
               )}
 
+
               {/* Forgot Password */}
               <div className="text-right">
                 <Link
@@ -168,29 +175,6 @@ export default function LoginPage() {
               </Button>
             </form>
 
-            {/* Divider */}
-            <div className="relative my-6">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or continue with</span>
-              </div>
-            </div>
-
-            {/* Demo Account Info */}
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <h4 className="text-sm font-medium text-green-900 mb-2">
-                Demo Account
-              </h4>
-              <p className="text-sm text-green-700 mb-2">
-                Use these credentials to test the platform:
-              </p>
-              <div className="text-xs text-green-600 space-y-1">
-                <div>Email: john@maizefarm.co.za</div>
-                <div>Password: password</div>
-              </div>
-            </div>
 
             {/* Sign Up Link */}
             <div className="text-center mt-6">

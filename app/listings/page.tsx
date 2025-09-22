@@ -52,7 +52,7 @@ export default function ListingsPage() {
     
     if (localFilters.category) {
       filteredListings = filteredListings.filter(listing => 
-        listing.product.category === localFilters.category
+        listing.product?.category === localFilters.category
       )
     }
     
@@ -90,7 +90,7 @@ export default function ListingsPage() {
         listing.title.toLowerCase().includes(searchLower) ||
         listing.description.toLowerCase().includes(searchLower) ||
         listing.location.toLowerCase().includes(searchLower) ||
-        listing.product.name.toLowerCase().includes(searchLower)
+        listing.product?.name.toLowerCase().includes(searchLower)
       )
     }
     return true
@@ -271,7 +271,7 @@ export default function ListingsPage() {
                       fallbackSrc="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop"
                     />
                     <div className="absolute top-3 right-3 bg-primary-500 text-white px-2 py-1 rounded-full text-xs font-medium">
-                      {listing.product.category}
+                      {listing.product?.category || 'Product'}
                     </div>
                   </div>
                   
@@ -295,7 +295,7 @@ export default function ListingsPage() {
                           R{listing.price.toLocaleString()}
                         </div>
                         <div className="text-sm text-gray-500">
-                          {listing.quantity} {listing.product.unit}
+                          {listing.quantity} {listing.product?.unit || 'units'}
                         </div>
                       </div>
                       
