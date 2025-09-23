@@ -199,7 +199,7 @@ export const useSupabaseStore = create<SupabaseAppState>()(
               // If we can't get the profile, use the auth user data
               const authUser = {
                 id: result.user.id,
-                email: result.user.email,
+                email: result.user.email || 'user@example.com',
                 name: result.user.user_metadata?.name || 'User',
                 role: result.user.user_metadata?.role || 'buyer',
                 roles: result.user.user_metadata?.roles || ['buyer'],
