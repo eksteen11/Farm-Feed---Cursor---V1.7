@@ -43,12 +43,32 @@ export default function BuyerOffers({ offers, listings, currentUser }: BuyerOffe
     return listings.find(listing => listing.id === listingId)
   }
 
-  const getSellerById = (sellerId: string) => {
-    return mockUsers.find(user => user.id === sellerId) || { 
-      id: sellerId, 
-      name: 'Seller Name', 
+  const getSellerById = (sellerId: string): UserType => {
+    const foundUser = mockUsers.find(user => user.id === sellerId)
+    if (foundUser) {
+      return foundUser
+    }
+    
+    // Return a minimal User object with required fields
+    return {
+      id: sellerId,
+      email: 'seller@example.com',
+      name: 'Seller Name',
+      role: 'seller',
+      capabilities: ['sell'],
       company: 'Seller Company',
-      email: 'seller@example.com'
+      location: 'Unknown',
+      isVerified: false,
+      subscriptionStatus: 'inactive',
+      ficaStatus: 'pending',
+      ficaDocuments: {},
+      rating: 0,
+      totalDeals: 0,
+      totalTransactions: 0,
+      reputationScore: 0,
+      businessType: 'individual',
+      createdAt: new Date(),
+      updatedAt: new Date()
     }
   }
 
