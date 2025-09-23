@@ -603,7 +603,7 @@ export const useSupabaseStore = create<SupabaseAppState>()(
             priceRange: { min: 0, max: 1000000 },
             quantityRange: { min: 0, max: 10000 },
             dateRange: { start: null, end: null },
-            sortBy: 'created_at',
+            sortBy: 'date',
             sortOrder: 'desc'
           }
         })
