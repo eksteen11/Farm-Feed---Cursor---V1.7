@@ -137,9 +137,10 @@ export const useSupabaseStore = create<SupabaseAppState>()(
       filters: {
         category: '',
         location: '',
-        priceRange: { min: 0, max: 1000000 },
-        quantityRange: { min: 0, max: 10000 },
-        dateRange: { start: null, end: null },
+        minPrice: 0,
+        maxPrice: 1000000,
+        minQuantity: 0,
+        maxQuantity: 10000,
         sortBy: 'date',
         sortOrder: 'desc'
       },
@@ -600,9 +601,10 @@ export const useSupabaseStore = create<SupabaseAppState>()(
           filters: {
             category: '',
             location: '',
-            priceRange: { min: 0, max: 1000000 },
-            quantityRange: { min: 0, max: 10000 },
-            dateRange: { start: null, end: null },
+            minPrice: 0,
+            maxPrice: 1000000,
+            minQuantity: 0,
+            maxQuantity: 10000,
             sortBy: 'date',
             sortOrder: 'desc'
           }
