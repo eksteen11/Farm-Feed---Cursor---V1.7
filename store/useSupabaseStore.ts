@@ -209,7 +209,7 @@ export const useSupabaseStore = create<SupabaseAppState>()(
                 phone: '',
                 avatar: result.user.user_metadata?.avatar || '',
                 isVerified: false,
-                subscriptionStatus: 'free' as const,
+                subscriptionStatus: 'inactive' as const,
                 ficaStatus: 'pending' as const,
                 ficaDocuments: {},
                 rating: 0,
