@@ -324,7 +324,8 @@ export const useSupabaseStore = create<SupabaseAppState>()(
 
           const newListing = await SupabaseDatabaseService.createListing({
             ...listing,
-            sellerId: currentUser.id
+            sellerId: currentUser.id,
+            seller: currentUser
           })
           
           if (newListing) {
