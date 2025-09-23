@@ -22,6 +22,7 @@ import { useStore } from '@/store/useStore'
 import { Offer, Listing, User as UserType } from '@/types'
 import { formatDate } from '@/lib/utils'
 import { sendOfferNotification } from '@/lib/emailService'
+import { mockUsers } from '@/lib/mockData'
 
 interface OfferManagementProps {
   offers: Offer[]
@@ -30,7 +31,7 @@ interface OfferManagementProps {
 }
 
 export default function OfferManagement({ offers, listings, currentUser }: OfferManagementProps) {
-  const { updateOffer, createDeal, users } = useStore()
+  const { updateOffer, createDeal } = useStore()
   const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null)
   const [isActionModalOpen, setIsActionModalOpen] = useState(false)
   const [isMessagingOpen, setIsMessagingOpen] = useState(false)
@@ -44,12 +45,32 @@ export default function OfferManagement({ offers, listings, currentUser }: Offer
     return listings.find(listing => listing.id === listingId)
   }
 
-  const getBuyerById = (buyerId: string) => {
-    return users.find(user => user.id === buyerId) || { 
-      id: buyerId, 
-      name: 'Buyer Name', 
+  const getBuyerById = (buyerId: string): UserType => {
+    const foundUser = mockUsers.find(user => user.id === buyerId)
+    if (foundUser) {
+      return foundUser
+    }
+    
+    // Return a minimal User object with required fields
+    return {
+      id: buyerId,
+      email: 'buyer@example.com',
+      name: 'Buyer Name',
+      role: 'buyer',
+      capabilities: ['buy'],
       company: 'Buyer Company',
-      email: 'buyer@example.com'
+      location: 'Unknown',
+      isVerified: false,
+      subscriptionStatus: 'inactive',
+      ficaStatus: 'pending',
+      ficaDocuments: {},
+      rating: 0,
+      totalDeals: 0,
+      totalTransactions: 0,
+      reputationScore: 0,
+      businessType: 'individual',
+      createdAt: new Date(),
+      updatedAt: new Date()
     }
   }
 
