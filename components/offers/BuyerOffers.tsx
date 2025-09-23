@@ -21,6 +21,7 @@ import OfferMessaging from '@/components/messaging/OfferMessaging'
 import { useStore } from '@/store/useStore'
 import { Offer, Listing, User as UserType } from '@/types'
 import { formatDate } from '@/lib/utils'
+import { mockUsers } from '@/lib/mockData'
 
 interface BuyerOffersProps {
   offers: Offer[]
@@ -29,7 +30,7 @@ interface BuyerOffersProps {
 }
 
 export default function BuyerOffers({ offers, listings, currentUser }: BuyerOffersProps) {
-  const { updateOffer, users } = useStore()
+  const { updateOffer } = useStore()
   const [selectedOffer, setSelectedOffer] = useState<Offer | null>(null)
   const [isCounterOfferModalOpen, setIsCounterOfferModalOpen] = useState(false)
   const [isMessagingOpen, setIsMessagingOpen] = useState(false)
@@ -43,7 +44,7 @@ export default function BuyerOffers({ offers, listings, currentUser }: BuyerOffe
   }
 
   const getSellerById = (sellerId: string) => {
-    return users.find(user => user.id === sellerId) || { 
+    return mockUsers.find(user => user.id === sellerId) || { 
       id: sellerId, 
       name: 'Seller Name', 
       company: 'Seller Company',
