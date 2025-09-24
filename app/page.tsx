@@ -48,20 +48,8 @@ export default function HomePage() {
     getCurrentUser()
   }, [])
 
-  // If user is logged in, redirect to dashboard
-  if (currentUser) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Welcome back, {currentUser.name}!</h1>
-          <p className="text-gray-600 mb-6">Redirecting you to your dashboard...</p>
-          <Link href="/dashboard">
-            <Button>Go to Dashboard</Button>
-          </Link>
-        </div>
-      </div>
-    )
-  }
+  // Allow logged-in users to see the full homepage content
+  // The homepage will show different CTAs for logged-in vs non-logged-in users
 
   // User type configurations with industry-specific USPs
   const userTypeConfig = {
