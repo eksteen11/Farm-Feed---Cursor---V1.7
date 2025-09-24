@@ -12,7 +12,7 @@ import toast from 'react-hot-toast'
 
 export default function LoginPage() {
   const router = useRouter()
-  const { login, isLoading, error } = useSupabaseStore()
+  const { login, isLoading, error, resendVerificationEmail } = useSupabaseStore()
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
     email: '',
@@ -68,11 +68,38 @@ export default function LoginPage() {
         router.push('/dashboard')
       } else {
         console.log('❌ Login failed')
-        toast.error('Login failed. Please check your credentials.')
+        // Check if it's an email verification issue
+        if (error?.includes('email_not_confirmed') || error?.includes('Email not confirmed')) {
+          setFormErrors({ 
+            email: 'Email not confirmed. Please check your email and click the verification link.',
+            password: ''
+          })
+          toast.error('Please verify your email address before signing in.')
+        } else {
+          toast.error('Login failed. Please check your credentials.')
+        }
       }
     } catch (error) {
       console.error('❌ Login error:', error)
       toast.error('An unexpected error occurred. Please try again.')
+    }
+  }
+
+  const handleResendVerification = async () => {
+    if (!formData.email) {
+      toast.error('Please enter your email address first.')
+      return
+    }
+
+    try {
+      const success = await resendVerificationEmail(formData.email)
+      if (success) {
+        toast.success('Verification email sent! Please check your inbox.')
+      } else {
+        toast.error('Failed to send verification email. Please try again.')
+      }
+    } catch (error) {
+      toast.error('Failed to send verification email. Please try again.')
     }
   }
 
@@ -153,6 +180,24 @@ export default function LoginPage() {
                 </div>
               )}
 
+
+              {/* Email Verification Error with Resend Button */}
+              {formErrors.email?.includes('Email not confirmed') && (
+                <div className="rounded-md bg-yellow-50 p-4 mb-4">
+                  <div className="flex">
+                    <AlertCircle className="h-5 w-5 text-yellow-400" />
+                    <div className="ml-3">
+                      <p className="text-sm text-yellow-800">{formErrors.email}</p>
+                      <button
+                        onClick={handleResendVerification}
+                        className="mt-2 text-sm text-yellow-800 underline hover:text-yellow-900"
+                      >
+                        Resend verification email
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Forgot Password */}
               <div className="text-right">

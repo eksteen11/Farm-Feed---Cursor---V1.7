@@ -225,6 +225,32 @@ export class SupabaseAuthService {
       return null
     }
   }
+
+  // Resend verification email
+  static async resendVerificationEmail(email: string) {
+    try {
+      console.log('📧 Resending verification email to:', email)
+      
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email: email,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`
+        }
+      })
+
+      if (error) {
+        console.error('❌ Error resending verification email:', error)
+        throw error
+      }
+
+      console.log('✅ Verification email sent successfully')
+      return { success: true }
+    } catch (error: any) {
+      console.error('❌ Resend verification error:', error)
+      return { success: false, error: error.message }
+    }
+  }
 }
 
 // Database Service

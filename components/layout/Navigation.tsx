@@ -93,6 +93,9 @@ const Navigation: React.FC = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
+            <Link href="/" className="text-gray-600 hover:text-green-600 transition-colors font-medium">
+              Home
+            </Link>
             <Link href="/listings" className="text-gray-600 hover:text-green-600 transition-colors">
               Browse Listings
             </Link>
@@ -233,6 +236,13 @@ const Navigation: React.FC = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+              <Link
+                href="/"
+                className="block px-3 py-2 text-gray-600 hover:text-primary-500 hover:bg-gray-100 rounded-md font-medium"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                Home
+              </Link>
               <Link
                 href="/listings"
                 className="block px-3 py-2 text-gray-600 hover:text-primary-500 hover:bg-gray-100 rounded-md"

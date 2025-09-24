@@ -53,6 +53,7 @@ interface SupabaseAppState {
   register: (userData: Partial<User>, password: string) => Promise<boolean>
   logout: () => Promise<void>
   getCurrentUser: () => Promise<User | null>
+  resendVerificationEmail: (email: string) => Promise<boolean>
 
   // User management
   updateProfile: (updates: Partial<User>) => Promise<boolean>
@@ -300,6 +301,16 @@ export const useSupabaseStore = create<SupabaseAppState>()(
         } catch (error: any) {
           set({ error: error.message })
           return null
+        }
+      },
+
+      resendVerificationEmail: async (email: string) => {
+        try {
+          const result = await SupabaseAuthService.resendVerificationEmail(email)
+          return result.success
+        } catch (error: any) {
+          set({ error: error.message })
+          return false
         }
       },
 
