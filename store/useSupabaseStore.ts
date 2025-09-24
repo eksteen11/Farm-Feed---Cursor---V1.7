@@ -685,15 +685,41 @@ export const useSupabaseStore = create<SupabaseAppState>()(
               .eq('id', session.user.id)
               .single()
             
-            if (error) {
+            if (error && error.code !== 'PGRST116') {
+              // PGRST116 means no rows found, which is okay for new users
               console.error('❌ Error fetching user profile:', error)
-              // Clear invalid session
-              await supabase.auth.signOut()
+              // Don't clear the session immediately - the user might be newly registered
+              // Just use the auth user data for now
+              const authUser = {
+                id: session.user.id,
+                email: session.user.email || 'user@example.com',
+                name: session.user.user_metadata?.name || 'User',
+                role: session.user.user_metadata?.role || 'buyer',
+                roles: session.user.user_metadata?.roles || ['buyer'],
+                capabilities: session.user.user_metadata?.capabilities || ['buy'],
+                company: session.user.user_metadata?.company || '',
+                location: '',
+                phone: '',
+                avatar: session.user.user_metadata?.avatar || '',
+                isVerified: session.user.email_confirmed_at ? true : false,
+                subscriptionStatus: 'inactive' as const,
+                ficaStatus: 'pending' as const,
+                ficaDocuments: {},
+                rating: 0,
+                totalDeals: 0,
+                totalTransactions: 0,
+                reputationScore: 0,
+                businessType: 'individual' as const,
+                createdAt: new Date(),
+                updatedAt: new Date()
+              }
+              
               set({ 
-                currentUser: null, 
-                isAuthenticated: false, 
+                currentUser: authUser, 
+                isAuthenticated: true, 
                 isLoading: false 
               })
+              console.log('✅ Session restored with auth user data for:', session.user.email)
               return
             }
             
@@ -704,6 +730,38 @@ export const useSupabaseStore = create<SupabaseAppState>()(
                 isLoading: false 
               })
               console.log('✅ Session restored for:', profile.name)
+            } else {
+              // No profile found but session exists - use auth user data
+              const authUser = {
+                id: session.user.id,
+                email: session.user.email || 'user@example.com',
+                name: session.user.user_metadata?.name || 'User',
+                role: session.user.user_metadata?.role || 'buyer',
+                roles: session.user.user_metadata?.roles || ['buyer'],
+                capabilities: session.user.user_metadata?.capabilities || ['buy'],
+                company: session.user.user_metadata?.company || '',
+                location: '',
+                phone: '',
+                avatar: session.user.user_metadata?.avatar || '',
+                isVerified: session.user.email_confirmed_at ? true : false,
+                subscriptionStatus: 'inactive' as const,
+                ficaStatus: 'pending' as const,
+                ficaDocuments: {},
+                rating: 0,
+                totalDeals: 0,
+                totalTransactions: 0,
+                reputationScore: 0,
+                businessType: 'individual' as const,
+                createdAt: new Date(),
+                updatedAt: new Date()
+              }
+              
+              set({ 
+                currentUser: authUser, 
+                isAuthenticated: true, 
+                isLoading: false 
+              })
+              console.log('✅ Session restored with auth user data for:', session.user.email)
             }
           } else {
             console.log('ℹ️ No existing session found')
