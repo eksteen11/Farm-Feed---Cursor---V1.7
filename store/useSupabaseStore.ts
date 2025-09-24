@@ -93,10 +93,11 @@ interface SupabaseAppState {
   fetchProducts: () => Promise<void>
   getProductById: (id: string) => Promise<Product | null>
 
-  // Utility
-  setLoading: (loading: boolean) => void
-  setError: (error: string | null) => void
-  initializeData: () => Promise<void>
+      // Utility
+      setLoading: (loading: boolean) => void
+      setError: (error: string | null) => void
+      initializeData: () => Promise<void>
+      initializeSession: () => Promise<void>
 }
 
 export const useSupabaseStore = create<SupabaseAppState>()(
@@ -258,16 +259,33 @@ export const useSupabaseStore = create<SupabaseAppState>()(
 
       logout: async () => {
         try {
+          console.log('🚪 Logging out user...')
           await SupabaseAuthService.signOut()
+          
+          // Clear all data and reset state
           set({ 
             currentUser: null, 
             isAuthenticated: false,
             listings: [],
             offers: [],
             messages: [],
-            notifications: []
+            notifications: [],
+            deals: [],
+            transportRequests: [],
+            transportQuotes: [],
+            backloadListings: [],
+            subscriptions: [],
+            invoices: [],
+            contracts: [],
+            marketData: [],
+            products: [],
+            users: [],
+            error: null
           })
+          
+          console.log('✅ User logged out successfully')
         } catch (error: any) {
+          console.error('❌ Logout error:', error)
           set({ error: error.message })
         }
       },
@@ -637,6 +655,62 @@ export const useSupabaseStore = create<SupabaseAppState>()(
 
       setError: (error: string | null) => {
         set({ error })
+      },
+
+      initializeSession: async () => {
+        try {
+          set({ isLoading: true })
+          
+          // Check if there's an existing session
+          const { data: { session } } = await supabase.auth.getSession()
+          
+          if (session?.user) {
+            console.log('🔄 Found existing session for user:', session.user.email)
+            
+            // Get the user profile from our database
+            const { data: profile, error } = await supabase
+              .from('users')
+              .select('*')
+              .eq('id', session.user.id)
+              .single()
+            
+            if (error) {
+              console.error('❌ Error fetching user profile:', error)
+              // Clear invalid session
+              await supabase.auth.signOut()
+              set({ 
+                currentUser: null, 
+                isAuthenticated: false, 
+                isLoading: false 
+              })
+              return
+            }
+            
+            if (profile) {
+              set({ 
+                currentUser: profile, 
+                isAuthenticated: true, 
+                isLoading: false 
+              })
+              console.log('✅ Session restored for:', profile.name)
+            }
+          } else {
+            console.log('ℹ️ No existing session found')
+            set({ 
+              currentUser: null, 
+              isAuthenticated: false, 
+              isLoading: false 
+            })
+          }
+        } catch (error: any) {
+          console.error('❌ Session initialization error:', error)
+          set({ 
+            currentUser: null, 
+            isAuthenticated: false, 
+            isLoading: false,
+            error: error.message 
+          })
+        }
       },
 
       initializeData: async () => {
