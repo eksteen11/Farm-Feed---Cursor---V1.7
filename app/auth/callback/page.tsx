@@ -112,7 +112,7 @@ export default function AuthCallbackPage() {
                 <Button onClick={() => router.push('/dashboard')} className="w-full">
                   Go to Dashboard
                 </Button>
-                <Button onClick={handleGoHome} variant="outline" className="w-full">
+                <Button onClick={handleGoHome} variant="secondary" className="w-full">
                   Go to Home
                 </Button>
               </div>
@@ -127,7 +127,7 @@ export default function AuthCallbackPage() {
                 <Button onClick={handleRetry} className="w-full">
                   Try Again
                 </Button>
-                <Button onClick={handleGoHome} variant="outline" className="w-full">
+                <Button onClick={handleGoHome} variant="secondary" className="w-full">
                   Go to Home
                 </Button>
               </div>
