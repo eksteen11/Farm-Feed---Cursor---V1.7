@@ -180,7 +180,7 @@ export default function CreateListingPage() {
       console.error('❌ Is authenticated:', isAuthenticated)
       
       // Show more specific error message
-      if (error.message) {
+      if (error instanceof Error && error.message) {
         toast.error(`Failed to create listing: ${error.message}`)
       } else {
         toast.error('Failed to create listing. Please try again.')
