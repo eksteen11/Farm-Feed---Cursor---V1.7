@@ -1,5 +1,5 @@
 import { supabase } from './supabase'
-import { User, Listing, Offer, Message, Notification, Product } from '@/types'
+import { User, Listing, Offer, Message, Notification, Product } from '../types'
 
 // Auth Service
 export class SupabaseAuthService {
