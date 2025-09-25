@@ -1,7 +1,8 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { useStore } from '@/store/useStore'
+import { useSupabaseStore } from '@/store/useSupabaseStore'
+import { supabase } from '@/lib/supabase'
 import { Card, CardContent, CardTitle } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
@@ -17,11 +18,10 @@ import {
   ArrowLeft
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { mockProducts } from '@/lib/mockData'
 import toast from 'react-hot-toast'
 
 export default function CreateListingPage() {
-  const { currentUser, isAuthenticated, createListing } = useStore()
+  const { currentUser, isAuthenticated } = useSupabaseStore()
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   
@@ -96,71 +96,95 @@ export default function CreateListingPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
+    console.log('🚀 Starting form submission...')
+    console.log('👤 Current user:', currentUser)
+    console.log('🔐 Is authenticated:', isAuthenticated)
+    
     if (!validateForm()) {
       toast.error('Please fix the errors in the form')
       return
     }
 
+    if (!currentUser) {
+      console.error('❌ No current user found!')
+      toast.error('You must be logged in to create a listing')
+      return
+    }
+    
+    console.log('✅ User is authenticated:', currentUser.name, currentUser.email)
+
     setIsLoading(true)
 
     try {
-      // Create the listing object
+      console.log('🚀 Creating listing with Supabase...')
+      
+      // Use the generic product for all listings
+      const productId = '00000000-0000-0000-0000-000000000001'; // Generic product ID
+      
+      // Create the listing data directly for Supabase (matching database schema)
       const listingData = {
         title: formData.productName,
         description: `${formData.grade} - ${formData.extraNotes}`,
-        product: {
-          id: 'custom-product',
-          name: formData.productName,
-          category: 'grain' as const,
-          description: formData.extraNotes,
-          specifications: {
-            protein: formData.protein ? `${formData.protein}%` : '',
-            moisture: formData.moisture ? `${formData.moisture}%` : '',
-            fibre: formData.fibre ? `${formData.fibre}%` : '',
-            meEnergy: formData.meEnergy ? `${formData.meEnergy} MJ/kg` : '',
-            packaging: formData.packaging,
-            grade: formData.grade
-          },
-          unit: formData.measureUnit as 'kg' | 'ton' | 'bag' | 'liter',
-          minQuantity: 1,
-          maxQuantity: 10000
-        },
+        seller_id: currentUser.id,
+        product_id: productId,
         price: Number(formData.pricePerMeasureUnit),
-        currency: 'ZAR' as const,
+        currency: 'ZAR',
         quantity: Number(formData.quantity),
-        availableQuantity: Number(formData.quantity),
+        available_quantity: Number(formData.quantity),
         location: formData.areaLocation,
         images: formData.images,
         videos: formData.videos,
-        isActive: true,
-        expiresAt: new Date(formData.expiresAt),
-        deliveryOptions: {
-          exFarm: formData.deliveryOption === 'buyer' || formData.deliveryOption === 'both',
+        is_active: true,
+        expires_at: new Date(formData.expiresAt).toISOString(),
+        delivery_options: {
+          ex_farm: formData.deliveryOption === 'buyer' || formData.deliveryOption === 'both',
           delivered: formData.deliveryOption === 'seller' || formData.deliveryOption === 'both'
         },
-        qualityGrade: 'A' as const,
+        quality_grade: 'A',
         specifications: {
           protein: formData.protein ? `${formData.protein}%` : '',
           moisture: formData.moisture ? `${formData.moisture}%` : '',
           fibre: formData.fibre ? `${formData.fibre}%` : '',
-          meEnergy: formData.meEnergy ? `${formData.meEnergy} MJ/kg` : '',
+          me_energy: formData.meEnergy ? `${formData.meEnergy} MJ/kg` : '',
           packaging: formData.packaging,
           grade: formData.grade
         },
         certificates: [],
-        specialConditions: formData.paymentTerms,
-        mapVisibility: true
+        payment_terms: formData.paymentTerms,
+        map_visibility: true,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
       }
 
-      // Call the store action to create listing
-      await createListing(listingData)
+      console.log('📝 Listing data:', listingData)
+
+      // Call Supabase directly to create the listing
+      const { data: newListing, error: createError } = await supabase
+        .from('listings')
+        .insert([listingData])
+        .select()
+        .single()
+
+      if (createError) {
+        throw createError
+      }
       
+      console.log('✅ Listing created successfully:', newListing)
       toast.success('Listing created successfully!')
       router.push('/listings')
       
     } catch (error) {
-      console.error('Error creating listing:', error)
-      toast.error('Failed to create listing. Please try again.')
+      console.error('❌ Error creating listing:', error)
+      console.error('❌ Error details:', JSON.stringify(error, null, 2))
+      console.error('❌ Current user:', currentUser)
+      console.error('❌ Is authenticated:', isAuthenticated)
+      
+      // Show more specific error message
+      if (error.message) {
+        toast.error(`Failed to create listing: ${error.message}`)
+      } else {
+        toast.error('Failed to create listing. Please try again.')
+      }
     } finally {
       setIsLoading(false)
     }

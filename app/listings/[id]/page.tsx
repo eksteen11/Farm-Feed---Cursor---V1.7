@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { useStore } from '@/store/useStore'
+import { useSupabaseStore } from '@/store/useSupabaseStore'
+import { supabase } from '@/lib/supabase'
 import { Card, CardContent, CardTitle } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
@@ -33,29 +34,157 @@ import {
   Mail,
   Eye
 } from 'lucide-react'
-import { mockListings } from '@/lib/mockData'
 import toast from 'react-hot-toast'
 import { formatDate } from '@/lib/utils'
 
 export default function ListingDetailPage() {
   const params = useParams()
   const router = useRouter()
-  const { currentUser, isAuthenticated, createOffer } = useStore()
+  const { currentUser, isAuthenticated } = useSupabaseStore()
   const [listing, setListing] = useState<any>(null)
   const [showOfferModal, setShowOfferModal] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    if (params.id) {
-      const foundListing = mockListings.find(l => l.id === params.id)
-      if (foundListing) {
-        setListing(foundListing)
+    const fetchListing = async () => {
+      if (params.id) {
+        try {
+          setIsLoading(true)
+          console.log('🔍 Fetching listing:', params.id)
+          
+          const { data, error } = await supabase
+            .from('listings')
+            .select(`
+              *,
+              users:seller_id (
+                id,
+                email,
+                name,
+                role,
+                company,
+                location,
+                phone,
+                avatar,
+                rating,
+                total_deals,
+                total_transactions,
+                reputation_score
+              ),
+              products:product_id (
+                id,
+                name,
+                category,
+                subcategory,
+                description,
+                unit
+              )
+            `)
+            .eq('id', params.id)
+            .single()
+
+          if (error) {
+            console.error('❌ Error fetching listing:', error)
+            toast.error('Failed to load listing details')
+            return
+          }
+
+          if (data) {
+            console.log('✅ Listing found:', data)
+            
+            // Transform Supabase data to match our Listing type
+            const transformedListing = {
+              id: data.id,
+              title: data.title,
+              description: data.description,
+              sellerId: data.seller_id,
+              seller: {
+                id: data.users?.id || data.seller_id,
+                email: data.users?.email || '',
+                name: data.users?.name || 'Unknown Seller',
+                role: 'seller' as const,
+                roles: ['seller'],
+                capabilities: ['sell'],
+                company: data.users?.company || '',
+                location: data.users?.location || '',
+                phone: data.users?.phone || '',
+                avatar: data.users?.avatar || '',
+                isVerified: true,
+                subscriptionStatus: 'active' as const,
+                ficaStatus: 'verified' as const,
+                ficaDocuments: {},
+                rating: data.users?.rating || 4.5,
+                totalDeals: data.users?.total_deals || 10,
+                totalTransactions: data.users?.total_transactions || 15,
+                reputationScore: data.users?.reputation_score || 85,
+                businessType: 'individual' as const,
+                createdAt: new Date(),
+                updatedAt: new Date()
+              },
+              product: {
+                id: data.product_id || 'generic-product',
+                name: data.products?.name || data.title,
+                category: data.products?.category || 'grain',
+                description: data.products?.description || data.description,
+                specifications: data.specifications || {},
+                unit: data.products?.unit || 'ton',
+                minQuantity: 1,
+                maxQuantity: 10000
+              },
+              price: data.price,
+              currency: data.currency || 'ZAR',
+              quantity: data.quantity,
+              availableQuantity: data.available_quantity || data.quantity,
+              location: data.location,
+              images: data.images || ['https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop'],
+              videos: data.videos || [],
+              isActive: data.is_active,
+              expiresAt: new Date(data.expires_at),
+              deliveryOptions: {
+                exFarm: data.delivery_options?.ex_farm || false,
+                delivered: data.delivery_options?.delivered || false
+              },
+              qualityGrade: data.quality_grade || 'A',
+              specifications: data.specifications || {},
+              certificates: data.certificates || [],
+              paymentTerms: data.payment_terms || '',
+              mapVisibility: data.map_visibility || true,
+              createdAt: new Date(data.created_at),
+              updatedAt: new Date(data.updated_at)
+            }
+            
+            setListing(transformedListing)
+          }
+        } catch (error) {
+          console.error('❌ Unexpected error fetching listing:', error)
+          toast.error('Failed to load listing details')
+        } finally {
+          setIsLoading(false)
+        }
       }
     }
+
+    fetchListing()
   }, [params.id])
 
   const handleOfferCreated = (offer: any) => {
     toast.success('Offer submitted successfully!')
     setShowOfferModal(false)
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+            Loading Listing...
+          </h1>
+          <p className="text-gray-600">
+            Please wait while we fetch the listing details
+          </p>
+        </div>
+      </div>
+    )
   }
 
   if (!listing) {

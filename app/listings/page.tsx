@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { useStore } from '@/store/useStore'
-import { mockListings } from '@/lib/mockData'
+import { useSupabaseStore } from '@/store/useSupabaseStore'
+import { SupabaseDatabaseService } from '@/lib/supabaseService'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
@@ -24,17 +24,99 @@ import {
   Box,
   Truck
 } from 'lucide-react'
-import { FilterOptions } from '@/types'
+import { FilterOptions, Listing } from '@/types'
 import { formatDate } from '@/lib/utils'
 
 export default function ListingsPage() {
   const router = useRouter()
-  const { currentUser, isAuthenticated } = useStore()
+  const { currentUser, isAuthenticated } = useSupabaseStore()
   const [searchTerm, setSearchTerm] = useState('')
   const [showFilters, setShowFilters] = useState(false)
   const [localFilters, setLocalFilters] = useState<FilterOptions>({})
-  const [listings, setListings] = useState(mockListings)
+  const [listings, setListings] = useState<Listing[]>([])
   const [isLoading, setIsLoading] = useState(false)
+
+  // Load listings from Supabase on component mount
+  useEffect(() => {
+    loadListings()
+  }, [])
+
+  const loadListings = async () => {
+    setIsLoading(true)
+    try {
+      console.log('🔄 Loading listings from Supabase...')
+      const supabaseListings = await SupabaseDatabaseService.getListings()
+      console.log('✅ Loaded listings:', supabaseListings)
+      
+      // Transform Supabase data to match our Listing type
+      const transformedListings: Listing[] = supabaseListings.map((listing: any) => ({
+        id: listing.id,
+        title: listing.title,
+        description: listing.description,
+        sellerId: listing.seller_id,
+        seller: {
+          id: listing.users?.id || listing.seller_id,
+          email: listing.users?.email || '',
+          name: listing.users?.name || 'Unknown Seller',
+          role: 'seller' as const,
+          roles: ['seller'],
+          capabilities: ['sell'],
+          company: listing.users?.company || '',
+          location: listing.users?.location || '',
+          phone: '',
+          avatar: '',
+          isVerified: true,
+          subscriptionStatus: 'active' as const,
+          ficaStatus: 'verified' as const,
+          ficaDocuments: {},
+          rating: 4.5,
+          totalDeals: 10,
+          totalTransactions: 15,
+          reputationScore: 85,
+          businessType: 'individual' as const,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        },
+        product: {
+          id: listing.product_id || 'custom-product',
+          name: listing.products?.name || listing.title,
+          category: listing.products?.category || 'grain',
+          description: listing.products?.description || listing.description,
+          specifications: listing.specifications || {},
+          unit: listing.products?.unit || 'ton',
+          minQuantity: 1,
+          maxQuantity: 10000
+        },
+        price: listing.price,
+        currency: listing.currency || 'ZAR',
+        quantity: listing.quantity,
+        availableQuantity: listing.available_quantity || listing.quantity,
+        location: listing.location,
+        images: listing.images || ['https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop'],
+        videos: listing.videos || [],
+        isActive: listing.is_active,
+        expiresAt: new Date(listing.expires_at),
+        deliveryOptions: {
+          exFarm: listing.delivery_options?.ex_farm || false,
+          delivered: listing.delivery_options?.delivered || false
+        },
+        qualityGrade: listing.quality_grade || 'A',
+        specifications: listing.specifications || {},
+        certificates: listing.certificates || [],
+        paymentTerms: listing.payment_terms || '',
+        mapVisibility: listing.map_visibility || true,
+        createdAt: new Date(listing.created_at),
+        updatedAt: new Date(listing.updated_at)
+      }))
+      
+      setListings(transformedListings)
+    } catch (error) {
+      console.error('❌ Error loading listings:', error)
+      toast.error('Failed to load listings')
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   // Debug logging
   console.log('Listings page - listings:', listings)
@@ -48,7 +130,7 @@ export default function ListingsPage() {
 
   const applyFilters = () => {
     // Apply filters to local listings
-    let filteredListings = [...mockListings]
+    let filteredListings = [...listings]
     
     if (localFilters.category) {
       filteredListings = filteredListings.filter(listing => 
@@ -80,7 +162,7 @@ export default function ListingsPage() {
   const handleClearFilters = () => {
     setLocalFilters({})
     setSearchTerm('')
-    setListings(mockListings)
+    loadListings() // Reload all listings from Supabase
   }
 
   const filteredListings = listings.filter(listing => {
