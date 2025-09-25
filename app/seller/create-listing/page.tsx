@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSupabaseStore } from '@/store/useSupabaseStore'
 import { supabase } from '@/lib/supabase'
+import { SupabaseStorageService } from '@/lib/supabaseService'
 import { Card, CardContent, CardTitle } from '@/components/ui/Card'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
@@ -40,8 +41,8 @@ export default function CreateListingPage() {
     meEnergy: '',
     pricePerMeasureUnit: '',
     deliveryOption: 'both', // 'buyer', 'seller', 'both'
-    images: [] as string[],
-    videos: [] as string[],
+    images: [] as File[],
+    videos: [] as File[],
     paymentTerms: '',
     expiresAt: ''
   })
@@ -118,6 +119,21 @@ export default function CreateListingPage() {
     try {
       console.log('🚀 Creating listing with Supabase...')
       
+      // Upload images and videos to Supabase Storage
+      console.log('📤 Uploading images and videos...')
+      let imageUrls: string[] = []
+      let videoUrls: string[] = []
+      
+      if (formData.images.length > 0) {
+        imageUrls = await SupabaseStorageService.uploadImages(formData.images, 'listings')
+        console.log('✅ Images uploaded:', imageUrls)
+      }
+      
+      if (formData.videos.length > 0) {
+        videoUrls = await SupabaseStorageService.uploadVideos(formData.videos, 'listings')
+        console.log('✅ Videos uploaded:', videoUrls)
+      }
+      
       // Use the generic product for all listings
       const productId = '00000000-0000-0000-0000-000000000001'; // Generic product ID
       
@@ -132,8 +148,8 @@ export default function CreateListingPage() {
         quantity: Number(formData.quantity),
         available_quantity: Number(formData.quantity),
         location: formData.areaLocation,
-        images: formData.images,
-        videos: formData.videos,
+        images: imageUrls,
+        videos: videoUrls,
         is_active: true,
         expires_at: new Date(formData.expiresAt).toISOString(),
         delivery_options: {
@@ -510,10 +526,9 @@ export default function CreateListingPage() {
                     id="image-upload"
                     onChange={(e) => {
                       const files = Array.from(e.target.files || [])
-                      const imageUrls = files.map(file => URL.createObjectURL(file))
                       setFormData(prev => ({
                         ...prev,
-                        images: [...prev.images, ...imageUrls]
+                        images: [...prev.images, ...files]
                       }))
                     }}
                   />
@@ -532,7 +547,7 @@ export default function CreateListingPage() {
                     {formData.images.map((image, index) => (
                       <div key={index} className="relative">
                         <img
-                          src={image}
+                          src={URL.createObjectURL(image)}
                           alt={`Product ${index + 1}`}
                           className="w-full h-24 object-cover rounded-lg"
                         />
@@ -568,10 +583,9 @@ export default function CreateListingPage() {
                     id="video-upload"
                     onChange={(e) => {
                       const files = Array.from(e.target.files || [])
-                      const videoUrls = files.map(file => URL.createObjectURL(file))
                       setFormData(prev => ({
                         ...prev,
-                        videos: [...prev.videos, ...videoUrls]
+                        videos: [...prev.videos, ...files]
                       }))
                     }}
                   />
@@ -590,7 +604,7 @@ export default function CreateListingPage() {
                     {formData.videos.map((video, index) => (
                       <div key={index} className="relative">
                         <video
-                          src={video}
+                          src={URL.createObjectURL(video)}
                           className="w-full h-32 object-cover rounded-lg"
                           controls
                         />

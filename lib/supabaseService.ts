@@ -496,6 +496,142 @@ export class SupabaseDatabaseService {
   }
 }
 
+// Storage Service for Images and Videos
+export class SupabaseStorageService {
+  // Upload image to Supabase Storage
+  static async uploadImage(file: File, folder: string = 'listings'): Promise<string> {
+    try {
+      console.log('📤 Uploading image:', file.name)
+      
+      // Create unique filename
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`
+      const filePath = `${folder}/${fileName}`
+      
+      // Upload file to Supabase Storage
+      const { data, error } = await supabase.storage
+        .from('farm-feed-media')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        })
+      
+      if (error) {
+        console.error('❌ Upload error:', error)
+        throw error
+      }
+      
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('farm-feed-media')
+        .getPublicUrl(filePath)
+      
+      console.log('✅ Image uploaded successfully:', publicUrl)
+      return publicUrl
+    } catch (error: any) {
+      console.error('❌ Image upload error:', error)
+      throw new Error(`Failed to upload image: ${error.message}`)
+    }
+  }
+  
+  // Upload multiple images
+  static async uploadImages(files: File[], folder: string = 'listings'): Promise<string[]> {
+    try {
+      console.log('📤 Uploading multiple images:', files.length)
+      
+      const uploadPromises = files.map(file => this.uploadImage(file, folder))
+      const urls = await Promise.all(uploadPromises)
+      
+      console.log('✅ All images uploaded successfully')
+      return urls
+    } catch (error: any) {
+      console.error('❌ Multiple image upload error:', error)
+      throw new Error(`Failed to upload images: ${error.message}`)
+    }
+  }
+  
+  // Upload video to Supabase Storage
+  static async uploadVideo(file: File, folder: string = 'listings'): Promise<string> {
+    try {
+      console.log('📤 Uploading video:', file.name)
+      
+      // Create unique filename
+      const fileExt = file.name.split('.').pop()
+      const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`
+      const filePath = `${folder}/${fileName}`
+      
+      // Upload file to Supabase Storage
+      const { data, error } = await supabase.storage
+        .from('farm-feed-media')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false
+        })
+      
+      if (error) {
+        console.error('❌ Upload error:', error)
+        throw error
+      }
+      
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('farm-feed-media')
+        .getPublicUrl(filePath)
+      
+      console.log('✅ Video uploaded successfully:', publicUrl)
+      return publicUrl
+    } catch (error: any) {
+      console.error('❌ Video upload error:', error)
+      throw new Error(`Failed to upload video: ${error.message}`)
+    }
+  }
+  
+  // Upload multiple videos
+  static async uploadVideos(files: File[], folder: string = 'listings'): Promise<string[]> {
+    try {
+      console.log('📤 Uploading multiple videos:', files.length)
+      
+      const uploadPromises = files.map(file => this.uploadVideo(file, folder))
+      const urls = await Promise.all(uploadPromises)
+      
+      console.log('✅ All videos uploaded successfully')
+      return urls
+    } catch (error: any) {
+      console.error('❌ Multiple video upload error:', error)
+      throw new Error(`Failed to upload videos: ${error.message}`)
+    }
+  }
+  
+  // Delete file from storage
+  static async deleteFile(filePath: string): Promise<void> {
+    try {
+      console.log('🗑️ Deleting file:', filePath)
+      
+      const { error } = await supabase.storage
+        .from('farm-feed-media')
+        .remove([filePath])
+      
+      if (error) {
+        console.error('❌ Delete error:', error)
+        throw error
+      }
+      
+      console.log('✅ File deleted successfully')
+    } catch (error: any) {
+      console.error('❌ File delete error:', error)
+      throw new Error(`Failed to delete file: ${error.message}`)
+    }
+  }
+  
+  // Get file URL from path
+  static getFileUrl(filePath: string): string {
+    const { data: { publicUrl } } = supabase.storage
+      .from('farm-feed-media')
+      .getPublicUrl(filePath)
+    return publicUrl
+  }
+}
+
 // Real-time subscriptions
 export class SupabaseRealtimeService {
   // Subscribe to offer messages
