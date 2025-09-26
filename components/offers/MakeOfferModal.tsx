@@ -6,11 +6,12 @@ import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import Textarea from '@/components/ui/Textarea'
 import Select from '@/components/ui/Select'
-import { useStore } from '@/store/useStore'
+import { useSupabaseStore } from '@/store/useSupabaseStore'
+import { SupabaseDatabaseService } from '@/lib/supabaseService'
 import { Offer, Listing, User } from '@/types'
-import { generateId } from '@/lib/helpers'
-import { sendOfferNotification } from '@/lib/emailService'
+import { realEmailService } from '@/lib/realEmailService'
 import { formatDate } from '@/lib/utils'
+import toast from 'react-hot-toast'
 
 interface MakeOfferModalProps {
   listing: Listing
@@ -27,7 +28,7 @@ export default function MakeOfferModal({
   onClose, 
   onOfferCreated 
 }: MakeOfferModalProps) {
-  const { createOffer } = useStore()
+  const { currentUser } = useSupabaseStore()
   
   const [formData, setFormData] = useState({
     price: listing.price,
@@ -76,53 +77,62 @@ export default function MakeOfferModal({
     e.preventDefault()
     
     if (!validateForm()) return
+    if (!currentUser) {
+      toast.error('You must be logged in to make an offer')
+      return
+    }
     
     setIsSubmitting(true)
     
     try {
-      const newOffer: Offer = {
-        id: generateId('offer'),
-        listingId: listing.id,
-        buyerId: buyer.id,
-        sellerId: listing.sellerId,
+      console.log('🚀 Creating offer with Supabase...')
+      
+      // Create offer data for Supabase
+      const offerData = {
+        listing_id: listing.id,
+        buyer_id: currentUser.id,
+        seller_id: listing.sellerId,
         price: formData.price,
         quantity: formData.quantity,
-        deliveryType: formData.deliveryType,
-        deliveryAddress: formData.deliveryType === 'delivered' ? formData.deliveryAddress : undefined,
+        delivery_type: formData.deliveryType,
+        delivery_address: formData.deliveryType === 'delivered' ? formData.deliveryAddress : null,
         message: formData.message,
         status: 'pending',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
-        isNegotiable: formData.isNegotiable,
-        terms: formData.terms
+        is_negotiable: formData.isNegotiable,
+        terms: formData.terms,
+        expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days
       }
       
-      // Create the offer in the store
-      createOffer(newOffer)
+      // Create the offer in Supabase
+      const newOffer = await SupabaseDatabaseService.createOffer(offerData)
+      console.log('✅ Offer created successfully:', newOffer)
       
       // Send email notification to seller
       try {
-        await sendOfferNotification('offer-received', {
-          sellerEmail: listing.seller.email,
-          sellerName: listing.seller.name,
-          buyerName: buyer.name,
-          buyerCompany: buyer.company || 'Individual',
-          listingTitle: listing.title,
-          offerPrice: newOffer.price,
-          offerQuantity: newOffer.quantity,
-          deliveryType: newOffer.deliveryType,
-          offerMessage: newOffer.message,
-          expiryDate: formatDate(newOffer.expiresAt),
-          offerLink: `${window.location.origin}/dashboard/offers?offer=${newOffer.id}`
-        })
+        await realEmailService.sendOfferReceivedEmail(
+          listing.seller.email,
+          listing.seller.name,
+          currentUser.name,
+          currentUser.company || 'Individual',
+          listing.title,
+          formData.price,
+          formData.quantity,
+          formData.deliveryType,
+          formData.message,
+          formatDate(new Date(offerData.expires_at)),
+          `${window.location.origin}/dashboard/offers?offer=${newOffer.id}`
+        )
+        console.log('✅ Email notification sent')
       } catch (error) {
-        console.error('Failed to send email notification:', error)
+        console.error('❌ Failed to send email notification:', error)
         // Don't fail the offer creation if email fails
       }
       
+      // Show success message
+      toast.success('Offer submitted successfully!')
+      
       // Call the callback
-      onOfferCreated(newOffer)
+      onOfferCreated(newOffer as Offer)
       
       // Close the modal
       onClose()
@@ -139,7 +149,8 @@ export default function MakeOfferModal({
       })
       
     } catch (error) {
-      console.error('Error creating offer:', error)
+      console.error('❌ Error creating offer:', error)
+      toast.error('Failed to create offer. Please try again.')
       setErrors({ submit: 'Failed to create offer. Please try again.' })
     } finally {
       setIsSubmitting(false)

@@ -367,7 +367,7 @@ export class SupabaseDatabaseService {
     return data
   }
 
-  static async createOffer(offer: Omit<Offer, 'id' | 'createdAt' | 'updatedAt'>) {
+  static async createOffer(offer: any) {
     const { data, error } = await supabase
       .from('offers')
       .insert([offer])
