@@ -86,6 +86,9 @@ export default function MakeOfferModal({
     
     try {
       console.log('🚀 Creating offer with Supabase...')
+      console.log('📋 Current user:', currentUser)
+      console.log('📋 Listing data:', listing)
+      console.log('📋 Form data:', formData)
       
       // Create offer data for Supabase
       const offerData = {
@@ -102,6 +105,8 @@ export default function MakeOfferModal({
         terms: formData.terms,
         expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString() // 7 days
       }
+      
+      console.log('📤 Offer data to submit:', offerData)
       
       // Create the offer in Supabase
       const newOffer = await SupabaseDatabaseService.createOffer(offerData)
@@ -150,8 +155,26 @@ export default function MakeOfferModal({
       
     } catch (error) {
       console.error('❌ Error creating offer:', error)
-      toast.error('Failed to create offer. Please try again.')
-      setErrors({ submit: 'Failed to create offer. Please try again.' })
+      
+      // Show more specific error message
+      let errorMessage = 'Failed to create offer. Please try again.'
+      if (error instanceof Error) {
+        console.error('Error details:', error.message)
+        if (error.message.includes('offers') || error.message.includes('relation "offers" does not exist')) {
+          errorMessage = 'Database setup required: Please run the enhanced-offer-system.sql script in Supabase.'
+        } else if (error.message.includes('listing_id')) {
+          errorMessage = 'Invalid listing. Please refresh the page and try again.'
+        } else if (error.message.includes('buyer_id') || error.message.includes('seller_id')) {
+          errorMessage = 'User authentication error. Please log out and log back in.'
+        } else if (error.message.includes('placeholder')) {
+          errorMessage = 'Database not configured: Please set up Supabase environment variables.'
+        } else {
+          errorMessage = `Error: ${error.message}`
+        }
+      }
+      
+      toast.error(errorMessage)
+      setErrors({ submit: errorMessage })
     } finally {
       setIsSubmitting(false)
     }
@@ -386,6 +409,13 @@ export default function MakeOfferModal({
                   <AlertCircle className="w-4 h-4 mr-2" />
                   {errors.submit}
                 </p>
+                {(errors.submit.includes('Database setup required') || errors.submit.includes('Database not configured')) && (
+                  <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                    <p className="text-blue-800 text-sm">
+                      <strong>Setup Required:</strong> See the <code className="bg-blue-100 px-1 rounded">OFFER_SYSTEM_SETUP.md</code> file for detailed setup instructions.
+                    </p>
+                  </div>
+                )}
               </div>
             )}
 
