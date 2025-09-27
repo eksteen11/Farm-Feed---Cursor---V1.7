@@ -1,4 +1,4 @@
--- Enhanced Offer System Database Schema
+-- Enhanced Offer System Database Schema (Fixed Version)
 -- Run this in your Supabase SQL Editor to upgrade the offer system
 
 -- First, let's add the missing columns to the offers table (without foreign key constraints for now)
@@ -167,3 +167,14 @@ CREATE TRIGGER new_offer_trigger
 GRANT ALL ON notifications TO authenticated;
 GRANT EXECUTE ON FUNCTION create_notification TO authenticated;
 GRANT SELECT ON offers_with_details TO authenticated;
+
+-- Success message
+DO $$
+BEGIN
+    RAISE NOTICE 'Enhanced offer system setup completed successfully!';
+    RAISE NOTICE 'Tables created/updated: offers, notifications';
+    RAISE NOTICE 'Views created: offers_with_details';
+    RAISE NOTICE 'Functions created: create_notification, handle_offer_status_change, handle_new_offer';
+    RAISE NOTICE 'Triggers created: offer_status_change_trigger, new_offer_trigger';
+    RAISE NOTICE 'RLS policies created for notifications table';
+END $$;
