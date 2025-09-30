@@ -15,13 +15,13 @@ import {
   Truck,
   Eye
 } from 'lucide-react'
-import Button from '@/components/ui/Button'
-import Badge from '@/components/ui/Badge'
-import OfferMessaging from '@/components/messaging/OfferMessaging'
+import Button from '@/shared/ui/Button'
+import Badge from '@/shared/ui/Badge'
+import OfferMessaging from '@/features/messaging/components/OfferMessaging'
 import { useStore } from '@/store/useStore'
 import { Offer, Listing, User as UserType } from '@/types'
-import { formatDate } from '@/lib/utils'
-import { mockUsers } from '@/lib/mockData'
+import { formatDate } from '@/shared/utils'
+import { mockUsers } from '@/share@/shared/utils/mockData'
 
 interface BuyerOffersProps {
   offers: Offer[]

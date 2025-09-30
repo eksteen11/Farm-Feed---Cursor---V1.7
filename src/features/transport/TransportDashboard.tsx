@@ -15,7 +15,7 @@ import {
   Star,
   Eye
 } from 'lucide-react'
-import { mockTransportRequests, mockTransportQuotes } from '@/shared/utils/mockData'
+import { mockTransportRequests, mockTransportQuotes } from '@/shared/util@/shared/utils/mockData'
 import { formatDate } from '@/shared/utils/utils'
 import ClientOnly from '@/shared/ui/ClientOnly'
 

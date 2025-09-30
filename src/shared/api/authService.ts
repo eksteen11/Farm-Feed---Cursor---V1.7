@@ -6,7 +6,7 @@ import {
   deleteUser, 
   getUserByEmail,
   getUserById 
-} from './mockData'
+} from '@/shared/utils/mockData'
 
 export interface LoginCredentials {
   email: string

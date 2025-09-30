@@ -18,15 +18,15 @@ import {
   Eye,
   Reply
 } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
-import Button from '@/components/ui/Button'
-import Input from '@/components/ui/Input'
-import Badge from '@/components/ui/Badge'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card'
+import Button from '@/shared/ui/Button'
+import Input from '@/shared/ui/Input'
+import Badge from '@/shared/ui/Badge'
 import { useSupabaseStore } from '@/store/useSupabaseStore'
-import { SupabaseDatabaseService } from '@/lib/supabaseService'
-import { supabase } from '@/lib/supabase'
-import { realEmailService } from '@/lib/realEmailService'
-import { formatDate } from '@/lib/utils'
+import { SupabaseDatabaseService } from '@/shared/api/supabase'
+import { supabase } from '@/shared/supabase'
+import { realEmailService } from '@/shared/realEmailService'
+import { formatDate } from '@/shared/utils'
 import toast from 'react-hot-toast'
 
 interface Offer {

@@ -19,7 +19,7 @@ import {
   Calendar,
   Star
 } from 'lucide-react'
-import { mockListings } from '@/shared/utils/mockData'
+import { mockListings } from '@/shared/util@/shared/utils/mockData'
 import { formatDate } from '@/shared/utils/utils'
 import { useRouter } from 'next/navigation'
 

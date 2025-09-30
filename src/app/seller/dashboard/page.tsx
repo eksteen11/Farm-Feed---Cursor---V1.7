@@ -20,7 +20,7 @@ import {
   Star,
   Settings
 } from 'lucide-react'
-import { mockChatMessages, mockInvoices, mockListings } from '@/shared/utils/mockData'
+import { mockChatMessages, mockInvoices, mockListings } from '@/shared/util@/shared/utils/mockData'
 import { formatDate } from '@/shared/utils/utils'
 import { useRouter } from 'next/navigation'
 

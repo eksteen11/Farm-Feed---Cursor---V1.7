@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from 'react'
 import { useStore } from '@/store/useStore'
-import { FicaService, FicaDocument } from '@/lib/ficaService'
+import { FicaService, FicaDocument } from '@/features/fica/services/ficaService'
 import { 
   Upload, 
   CheckCircle, 

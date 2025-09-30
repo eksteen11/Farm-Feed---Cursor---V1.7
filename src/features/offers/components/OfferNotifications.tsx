@@ -11,10 +11,10 @@ import {
   DollarSign,
   X
 } from 'lucide-react'
-import Badge from '@/components/ui/Badge'
-import Button from '@/components/ui/Button'
+import Badge from '@/shared/ui/Badge'
+import Button from '@/shared/ui/Button'
 import { Offer, User } from '@/types'
-import { formatDate } from '@/lib/utils'
+import { formatDate } from '@/shared/utils'
 
 interface OfferNotification {
   id: string

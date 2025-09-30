@@ -26,7 +26,7 @@ import {
   getTransportQuotesByTransporterId,
   getListingsByCategory,
   getListingsByLocation
-} from '@/shared/utils/mockData'
+} from '@/shared/util@/shared/utils/mockData'
 
 interface AppState {
   // User state

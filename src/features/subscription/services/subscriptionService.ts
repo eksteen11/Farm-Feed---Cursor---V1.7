@@ -1,6 +1,6 @@
 import { Subscription, User, UserRole } from '@/types'
-import { mockSubscriptions, mockUsers } from './mockData'
-import { generateId } from './helpers'
+import { mockSubscriptions, mockUsers } from '@/shared/util@/shared/utils/mockData'
+import { generateId } from '@/shared/utils/helpers'
 
 // Subscription Plans Configuration
 export const SUBSCRIPTION_PLANS = {

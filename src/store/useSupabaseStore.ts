@@ -18,7 +18,7 @@ import {
   MarketData,
   SystemMetrics
 } from '@/types'
-import { SupabaseAuthService, SupabaseDatabaseService } from '@/shared/api/supabaseService'
+import { SupabaseAuthService, SupabaseDatabaseService } from '@/shared/api/supabase'
 import { supabase } from '@/shared/api/supabase'
 
 interface SupabaseAppState {

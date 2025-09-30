@@ -13,11 +13,11 @@ import {
   ArrowRight,
   Plus
 } from 'lucide-react'
-import { Card, CardContent, CardTitle } from '@/components/ui/Card'
-import Button from '@/components/ui/Button'
-import Badge from '@/components/ui/Badge'
+import { Card, CardContent, CardTitle } from '@/shared/ui/Card'
+import Button from '@/shared/ui/Button'
+import Badge from '@/shared/ui/Badge'
 import { Offer, Listing, User } from '@/types'
-import { formatDate } from '@/lib/utils'
+import { formatDate } from '@/shared/utils'
 
 interface OfferSummaryProps {
   offers: Offer[]

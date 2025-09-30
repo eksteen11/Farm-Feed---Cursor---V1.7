@@ -10,7 +10,7 @@ import {
   Clock,
   BarChart3
 } from 'lucide-react'
-import { mockTransportRequests, mockTransportQuotes } from '@/shared/utils/mockData'
+import { mockTransportRequests, mockTransportQuotes } from '@/shared/util@/shared/utils/mockData'
 import ClientOnly from '@/shared/ui/ClientOnly'
 
 export default function TransportAnalytics() {

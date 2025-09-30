@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { useSupabaseStore } from '@/store/useSupabaseStore'
 import { supabase } from '@/shared/api/supabase'
-import { SupabaseStorageService } from '@/shared/api/supabaseService'
+import { SupabaseStorageService } from '@/shared/api/supabase'
 import { Card, CardContent, CardTitle } from '@/shared/ui/Card'
 import Button from '@/shared/ui/Button'
 import Input from '@/shared/ui/Input'

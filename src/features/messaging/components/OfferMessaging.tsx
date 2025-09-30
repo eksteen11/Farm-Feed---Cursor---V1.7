@@ -16,11 +16,11 @@ import {
   AlertCircle,
   Star
 } from 'lucide-react'
-import Button from '@/components/ui/Button'
-import Input from '@/components/ui/Input'
+import Button from '@/shared/ui/Button'
+import Input from '@/shared/ui/Input'
 import { useStore } from '@/store/useStore'
 import { Offer, User as UserType, Message } from '@/types'
-import { formatDate } from '@/lib/utils'
+import { formatDate } from '@/shared/utils'
 
 interface OfferMessagingProps {
   offer: Offer

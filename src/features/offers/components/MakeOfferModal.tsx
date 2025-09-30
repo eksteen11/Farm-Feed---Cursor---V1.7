@@ -2,15 +2,15 @@
 
 import { useState } from 'react'
 import { X, Package, Truck, MapPin, MessageSquare, DollarSign, Calendar, AlertCircle } from 'lucide-react'
-import Button from '@/components/ui/Button'
-import Input from '@/components/ui/Input'
-import Textarea from '@/components/ui/Textarea'
-import Select from '@/components/ui/Select'
+import Button from '@/shared/ui/Button'
+import Input from '@/shared/ui/Input'
+import Textarea from '@/shared/ui/Textarea'
+import Select from '@/shared/ui/Select'
 import { useSupabaseStore } from '@/store/useSupabaseStore'
-import { SupabaseDatabaseService } from '@/lib/supabaseService'
+import { SupabaseDatabaseService } from '@/shared/api/supabase'
 import { Offer, Listing, User } from '@/types'
-import { realEmailService } from '@/lib/realEmailService'
-import { formatDate } from '@/lib/utils'
+import { realEmailService } from '@/shared/realEmailService'
+import { formatDate } from '@/shared/utils'
 import toast from 'react-hot-toast'
 
 interface MakeOfferModalProps {
