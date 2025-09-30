@@ -18,6 +18,8 @@ export function UserContextProvider({ children }: { children: ReactNode }) {
   );
 }
 
+export const UserProvider = UserContextProvider;
+
 export function useUserContext() {
   const context = useContext(UserContext);
   if (!context) {

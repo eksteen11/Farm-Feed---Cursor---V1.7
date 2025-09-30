@@ -24,9 +24,9 @@ import Input from '@/shared/ui/Input'
 import Badge from '@/shared/ui/Badge'
 import { useSupabaseStore } from '@/store/useSupabaseStore'
 import { SupabaseDatabaseService } from '@/shared/api/supabase'
-import { supabase } from '@/shared/supabase'
+import { supabase } from '@/shared/api/supabase'
 import { realEmailService } from '@/features/messaging/services/realEmailService'
-import { formatDate } from '@/shared/utils/utils
+import { formatDate } from '@/shared/utils/utils'
 import toast from 'react-hot-toast'
 
 interface Offer {

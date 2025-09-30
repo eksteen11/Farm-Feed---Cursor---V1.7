@@ -2,7 +2,7 @@
 import { useState } from 'react';
 
 interface UserTypeSelectorProps {
-  onUserTypeChange: (userType: string) => void;
+  onUserTypeChange?: (userType: string) => void;
 }
 
 export default function UserTypeSelector({ onUserTypeChange }: UserTypeSelectorProps) {
@@ -10,7 +10,7 @@ export default function UserTypeSelector({ onUserTypeChange }: UserTypeSelectorP
 
   const handleChange = (userType: string) => {
     setSelectedType(userType);
-    onUserTypeChange(userType);
+    onUserTypeChange?.(userType);
   };
 
   return (

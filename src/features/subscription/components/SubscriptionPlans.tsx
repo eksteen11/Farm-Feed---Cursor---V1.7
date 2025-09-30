@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import { useStore } from '@/store/useStore'
 import { SUBSCRIPTION_PLANS } from '@/features/subscription/services/subscriptionService'
 import { Check, X } from 'lucide-react'
-import { formatDate } from '@/shared/utils/utils
+import { formatDate } from '@/shared/utils/utils'
 
 interface SubscriptionPlansProps {
   onSubscribe?: (plan: keyof typeof SUBSCRIPTION_PLANS) => void

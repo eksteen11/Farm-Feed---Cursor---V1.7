@@ -17,7 +17,7 @@ import { Card, CardContent, CardTitle } from '@/shared/ui/Card'
 import Button from '@/shared/ui/Button'
 import Badge from '@/shared/ui/Badge'
 import { Offer, Listing, User } from '@/types'
-import { formatDate } from '@/shared/utils/utils
+import { formatDate } from '@/shared/utils/utils'
 
 interface OfferSummaryProps {
   offers: Offer[]

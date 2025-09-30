@@ -20,7 +20,7 @@ import Button from '@/shared/ui/Button'
 import Input from '@/shared/ui/Input'
 import { useStore } from '@/store/useStore'
 import { Offer, User as UserType, Message } from '@/types'
-import { formatDate } from '@/shared/utils/utils
+import { formatDate } from '@/shared/utils/utils'
 
 interface OfferMessagingProps {
   offer: Offer

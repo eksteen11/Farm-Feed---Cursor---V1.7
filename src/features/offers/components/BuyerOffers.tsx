@@ -20,7 +20,7 @@ import Badge from '@/shared/ui/Badge'
 import OfferMessaging from '@/features/messaging/components/OfferMessaging'
 import { useStore } from '@/store/useStore'
 import { Offer, Listing, User as UserType } from '@/types'
-import { formatDate } from '@/shared/utils/utils
+import { formatDate } from '@/shared/utils/utils'
 import { mockUsers } from '@/shared/utils/mockData'
 
 interface BuyerOffersProps {

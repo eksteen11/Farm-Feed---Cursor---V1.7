@@ -2,11 +2,12 @@
 import { useEffect, useRef } from 'react';
 
 interface EnhancedGoogleMapsProps {
-  userType: string;
+  userType?: string;
   onLocationSelect?: (location: any) => void;
+  height?: string;
 }
 
-export default function EnhancedGoogleMaps({ userType, onLocationSelect }: EnhancedGoogleMapsProps) {
+export default function EnhancedGoogleMaps({ userType, onLocationSelect, height = "400px" }: EnhancedGoogleMapsProps) {
   const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -18,7 +19,7 @@ export default function EnhancedGoogleMaps({ userType, onLocationSelect }: Enhan
   }, [userType]);
 
   return (
-    <div className="w-full h-96 border rounded-lg">
+    <div className="w-full border rounded-lg" style={{ height }}>
       <div ref={mapRef} className="w-full h-full" />
     </div>
   );

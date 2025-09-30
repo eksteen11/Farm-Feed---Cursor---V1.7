@@ -26,6 +26,7 @@ export const mockDashboardMetrics = [];
 export const mockMarketDepth = [];
 export const mockChatMessages = [];
 export const mockInvoices = [];
+export const mockSubscriptions = [];
 
 // Export mock functions for backward compatibility
 export const authenticateUser = () => null;
