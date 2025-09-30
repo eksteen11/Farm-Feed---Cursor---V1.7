@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react'
 import { useStore } from '@/store/useStore'
-import { Card, CardContent, CardTitle } from '@/components/ui/Card'
-import Button from '@/components/ui/Button'
-import BuyerOffers from '@/components/offers/BuyerOffers'
+import { Card, CardContent, CardTitle } from '@/shared/ui/Card'
+import Button from '@/shared/ui/Button'
+import BuyerOffers from '@/features/offers/components/BuyerOffers'
 import { 
   ShoppingCart, 
   MessageCircle, 
@@ -19,8 +19,8 @@ import {
   Calendar,
   Star
 } from 'lucide-react'
-import { mockListings } from '@/lib/mockData'
-import { formatDate } from '@/lib/utils'
+import { mockListings } from '@/shared/utils/mockData'
+import { formatDate } from '@/shared/utils/utils'
 import { useRouter } from 'next/navigation'
 
 export default function BuyerDashboardPage() {

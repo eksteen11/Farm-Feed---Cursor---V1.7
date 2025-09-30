@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useStore } from '@/store/useStore'
-import { Card, CardContent } from '@/components/ui/Card'
-import Button from '@/components/ui/Button'
+import { Card, CardContent } from '@/shared/ui/Card'
+import Button from '@/shared/ui/Button'
 import { 
   ArrowLeft, 
   MapPin, 
@@ -20,10 +20,10 @@ import {
   Eye,
   Truck
 } from 'lucide-react'
-import { mockTransportRequests, mockTransportQuotes } from '@/lib/mockData'
+import { mockTransportRequests, mockTransportQuotes } from '@/shared/utils/mockData'
 import { TransportRequest, TransportQuote } from '@/types'
 import toast from 'react-hot-toast'
-import { formatDate } from '@/lib/utils'
+import { formatDate } from '@/shared/utils/utils'
 
 export default function MyTransportRequestsPage() {
   const router = useRouter()

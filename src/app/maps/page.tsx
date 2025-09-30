@@ -1,6 +1,6 @@
-import { UserProvider } from '@/components/maps/UserContext'
-import UserTypeSelector from '@/components/maps/UserTypeSelector'
-import EnhancedGoogleMaps from '@/components/maps/EnhancedGoogleMaps'
+import { UserProvider } from '@/features/maps/components/UserContext'
+import UserTypeSelector from '@/features/maps/components/UserTypeSelector'
+import EnhancedGoogleMaps from '@/features/maps/components/EnhancedGoogleMaps'
 
 export default function MapsPage() {
   return (

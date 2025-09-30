@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from 'react'
 import { useStore } from '@/store/useStore'
-import { SubscriptionService } from '@/lib/subscriptionService'
-import SubscriptionPlans from '@/components/subscription/SubscriptionPlans'
+import { SubscriptionService } from '@/features/subscription/services/subscriptionService'
+import SubscriptionPlans from '@/features/subscription/components/SubscriptionPlans'
 import { useRouter } from 'next/navigation'
-import { formatDate } from '@/lib/utils'
+import { formatDate } from '@/shared/utils/utils'
 
 const SubscriptionPage: React.FC = () => {
   const { currentUser, isAuthenticated } = useStore()

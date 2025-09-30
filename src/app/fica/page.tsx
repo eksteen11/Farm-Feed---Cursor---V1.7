@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react'
 import { useStore } from '@/store/useStore'
-import { FicaService, FicaVerification } from '@/lib/ficaService'
-import FicaDocumentUpload from '@/components/fica/FicaDocumentUpload'
+import { FicaService, FicaVerification } from '@/features/fica/services/ficaService'
+import FicaDocumentUpload from '@/features/fica/components/FicaDocumentUpload'
 import { useRouter } from 'next/navigation'
 import { 
   CheckCircle, 
@@ -11,7 +11,7 @@ import {
   Clock,
   FileText 
 } from 'lucide-react'
-import { formatDate } from '@/lib/utils'
+import { formatDate } from '@/shared/utils/utils'
 
 const FicaPage: React.FC = () => {
   const { currentUser, isAuthenticated } = useStore()

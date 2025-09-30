@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect } from 'react'
 import { useStore } from '@/store/useStore'
-import { Card, CardContent, CardTitle } from '@/components/ui/Card'
-import Button from '@/components/ui/Button'
-import Input from '@/components/ui/Input'
+import { Card, CardContent, CardTitle } from '@/shared/ui/Card'
+import Button from '@/shared/ui/Button'
+import Input from '@/shared/ui/Input'
 import { 
   Truck, 
   MapPin, 
@@ -19,14 +19,14 @@ import {
   Filter,
   Eye
 } from 'lucide-react'
-import { mockTransportRequests, mockUsers } from '@/lib/mockData'
+import { mockTransportRequests, mockUsers } from '@/shared/utils/mockData'
 import { TransportRequest } from '@/types'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
-import TransportDashboard from '@/components/transport/TransportDashboard'
-import TransportAnalytics from '@/components/transport/TransportAnalytics'
-import { formatDate } from '@/lib/utils'
-import ClientOnly from '@/components/ui/ClientOnly'
+import TransportDashboard from '@/features/transport/components/TransportDashboard'
+import TransportAnalytics from '@/features/transport/components/TransportAnalytics'
+import { formatDate } from '@/shared/utils/utils'
+import ClientOnly from '@/shared/ui/ClientOnly'
 
 export default function TransportPage() {
   const { currentUser, isAuthenticated } = useStore()

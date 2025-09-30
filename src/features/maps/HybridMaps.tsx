@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { Loader } from '@googlemaps/js-api-loader'
-import { Card, CardContent } from '@/components/ui/Card'
+import { Card, CardContent } from '@/shared/ui/Card'
 import { Package, Truck, Route, MapPin, ExternalLink, RefreshCw } from 'lucide-react'
 
 interface HybridMapsProps {

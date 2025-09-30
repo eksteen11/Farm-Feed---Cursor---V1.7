@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
-import Button from '@/components/ui/Button'
-import { Card, CardContent } from '@/components/ui/Card'
-import ImageComponent from '@/components/ui/Image'
-import ClientOnly from '@/components/ui/ClientOnly'
+import Button from '@/shared/ui/Button'
+import { Card, CardContent } from '@/shared/ui/Card'
+import ImageComponent from '@/shared/ui/Image'
+import ClientOnly from '@/shared/ui/ClientOnly'
 import { useSupabaseStore } from '@/store/useSupabaseStore'
 import { canUserPerformAction } from '@/types'
 import { 
@@ -34,7 +34,7 @@ import {
   BarChart3,
   Smartphone
 } from 'lucide-react'
-import { mockListings } from '@/lib/mockData'
+import { mockListings } from '@/shared/utils/mockData'
 
 type UserType = 'buyer' | 'seller' | 'transporter'
 

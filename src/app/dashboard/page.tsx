@@ -17,10 +17,10 @@ import {
   Clock
 } from 'lucide-react'
 import Link from 'next/link'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/Card'
-import Button from '@/components/ui/Button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/shared/ui/Card'
+import Button from '@/shared/ui/Button'
 import { useEffect, useState } from 'react'
-import ClientOnly from '@/components/ui/ClientOnly'
+import ClientOnly from '@/shared/ui/ClientOnly'
 
 // Dashboard sections configuration
 const DASHBOARD_SECTIONS = [

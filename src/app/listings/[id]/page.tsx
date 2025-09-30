@@ -3,13 +3,13 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useSupabaseStore } from '@/store/useSupabaseStore'
-import { supabase } from '@/lib/supabase'
-import { Card, CardContent, CardTitle } from '@/components/ui/Card'
-import Button from '@/components/ui/Button'
-import Input from '@/components/ui/Input'
-import ImageComponent from '@/components/ui/Image'
-import ClientOnly from '@/components/ui/ClientOnly'
-import MakeOfferModal from '@/components/offers/MakeOfferModal'
+import { supabase } from '@/shared/api/supabase'
+import { Card, CardContent, CardTitle } from '@/shared/ui/Card'
+import Button from '@/shared/ui/Button'
+import Input from '@/shared/ui/Input'
+import ImageComponent from '@/shared/ui/Image'
+import ClientOnly from '@/shared/ui/ClientOnly'
+import MakeOfferModal from '@/features/offers/components/MakeOfferModal'
 import { 
   MapPin, 
   User, 
@@ -35,7 +35,7 @@ import {
   Eye
 } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { formatDate } from '@/lib/utils'
+import { formatDate } from '@/shared/utils/utils'
 
 export default function ListingDetailPage() {
   const params = useParams()

@@ -2,11 +2,11 @@
 
 import React, { useState, useEffect } from 'react'
 import { useSupabaseStore } from '@/store/useSupabaseStore'
-import { supabase } from '@/lib/supabase'
-import { SupabaseStorageService } from '@/lib/supabaseService'
-import { Card, CardContent, CardTitle } from '@/components/ui/Card'
-import Button from '@/components/ui/Button'
-import Input from '@/components/ui/Input'
+import { supabase } from '@/shared/api/supabase'
+import { SupabaseStorageService } from '@/shared/api/supabaseService'
+import { Card, CardContent, CardTitle } from '@/shared/ui/Card'
+import Button from '@/shared/ui/Button'
+import Input from '@/shared/ui/Input'
 import { 
   Package, 
   MapPin, 

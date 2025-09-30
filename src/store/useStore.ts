@@ -26,7 +26,7 @@ import {
   getTransportQuotesByTransporterId,
   getListingsByCategory,
   getListingsByLocation
-} from '@/lib/mockData'
+} from '@/shared/utils/mockData'
 
 interface AppState {
   // User state
@@ -796,7 +796,7 @@ export const useStore = create<AppState>((set, get) => {
       set({ isLoading: true, error: null })
       
       // Import subscription service
-      const { SubscriptionService } = await import('@/lib/subscriptionService')
+      const { SubscriptionService } = await import('@/features/subscription/services/subscriptionService')
       const subscription = await SubscriptionService.createSubscription(currentUser.id, plan)
       
       if (subscription) {
@@ -825,7 +825,7 @@ export const useStore = create<AppState>((set, get) => {
     try {
       set({ isLoading: true, error: null })
       
-      const { SubscriptionService } = await import('@/lib/subscriptionService')
+      const { SubscriptionService } = await import('@/features/subscription/services/subscriptionService')
       const updated = await SubscriptionService.updateSubscriptionStatus(subscriptionId, updates.status)
       
       set({ isLoading: false })
@@ -840,7 +840,7 @@ export const useStore = create<AppState>((set, get) => {
     try {
       set({ isLoading: true, error: null })
       
-      const { SubscriptionService } = await import('@/lib/subscriptionService')
+      const { SubscriptionService } = await import('@/features/subscription/services/subscriptionService')
       const cancelled = await SubscriptionService.cancelSubscription(subscriptionId)
       
               if (cancelled) {
@@ -869,7 +869,7 @@ export const useStore = create<AppState>((set, get) => {
     if (!currentUser) return null
     
     try {
-      const { SubscriptionService } = await import('@/lib/subscriptionService')
+      const { SubscriptionService } = await import('@/features/subscription/services/subscriptionService')
       return await SubscriptionService.getSubscriptionByUserId(currentUser.id)
     } catch (error) {
       set({ error: 'Failed to fetch subscription status' })
@@ -885,7 +885,7 @@ export const useStore = create<AppState>((set, get) => {
     try {
       set({ isLoading: true, error: null })
       
-      const { FicaService } = await import('@/lib/ficaService')
+      const { FicaService } = await import('@/features/fica/services/ficaService')
       const document = await FicaService.uploadDocument(
         currentUser.id,
         documentType,
@@ -906,7 +906,7 @@ export const useStore = create<AppState>((set, get) => {
     if (!currentUser) return null
     
     try {
-      const { FicaService } = await import('@/lib/ficaService')
+      const { FicaService } = await import('@/features/fica/services/ficaService')
       return await FicaService.getFicaVerification(currentUser.id)
     } catch (error) {
       set({ error: 'Failed to fetch FICA status' })

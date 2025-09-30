@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import Logo from '@/components/ui/Logo'
+import Logo from '@/shared/ui/Logo'
 import { 
   Mail, 
   Phone, 

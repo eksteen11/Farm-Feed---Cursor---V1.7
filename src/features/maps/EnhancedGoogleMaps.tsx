@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback, useMemo } from 'react'
 import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-maps/api'
-import { Card, CardContent } from '@/components/ui/Card'
+import { Card, CardContent } from '@/shared/ui/Card'
 import { Package, Truck, Route, MapPin, ExternalLink, Phone, Mail, Star, Clock, DollarSign, Users, ZoomIn, ZoomOut, RotateCcw, Maximize2 } from 'lucide-react'
 import { useUser } from './UserContext'
 

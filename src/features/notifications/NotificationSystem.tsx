@@ -17,7 +17,7 @@ import {
 } from 'lucide-react'
 import { useStore } from '@/store/useStore'
 import { Notification, User } from '@/types'
-import { formatDate } from '@/lib/utils'
+import { formatDate } from '@/shared/utils/utils'
 
 interface NotificationSystemProps {
   currentUser: User

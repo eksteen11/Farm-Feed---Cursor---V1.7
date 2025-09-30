@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Card, CardContent } from '@/components/ui/Card'
+import { Card, CardContent } from '@/shared/ui/Card'
 import { Package, Truck, Route, MapPin, ExternalLink } from 'lucide-react'
 
 interface UltraSimpleMapsProps {

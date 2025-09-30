@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useSupabaseStore } from '@/store/useSupabaseStore'
-import { supabase } from '@/lib/supabase'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
-import Button from '@/components/ui/Button'
+import { supabase } from '@/shared/api/supabase'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card'
+import Button from '@/shared/ui/Button'
 import { CheckCircle, XCircle, Loader2 } from 'lucide-react'
 
 export default function AuthCallbackPage() {

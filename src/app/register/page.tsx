@@ -4,9 +4,9 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useSupabaseStore } from '@/store/useSupabaseStore'
-import Button from '@/components/ui/Button'
-import Input from '@/components/ui/Input'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
+import Button from '@/shared/ui/Button'
+import Input from '@/shared/ui/Input'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card'
 import { Eye, EyeOff } from 'lucide-react'
 
 export default function RegisterPage() {

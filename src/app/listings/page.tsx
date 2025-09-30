@@ -4,11 +4,11 @@ import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useSupabaseStore } from '@/store/useSupabaseStore'
-import { SupabaseDatabaseService } from '@/lib/supabaseService'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
-import Button from '@/components/ui/Button'
-import Input from '@/components/ui/Input'
-import ImageComponent from '@/components/ui/Image'
+import { SupabaseDatabaseService } from '@/shared/api/supabaseService'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card'
+import Button from '@/shared/ui/Button'
+import Input from '@/shared/ui/Input'
+import ImageComponent from '@/shared/ui/Image'
 import toast from 'react-hot-toast'
 import { 
   Search, 
@@ -25,7 +25,7 @@ import {
   Truck
 } from 'lucide-react'
 import { FilterOptions, Listing } from '@/types'
-import { formatDate } from '@/lib/utils'
+import { formatDate } from '@/shared/utils/utils'
 
 export default function ListingsPage() {
   const router = useRouter()

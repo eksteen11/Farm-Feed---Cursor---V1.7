@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react'
 import { useStore } from '@/store/useStore'
-import { Card, CardContent, CardTitle } from '@/components/ui/Card'
+import { Card, CardContent, CardTitle } from '@/shared/ui/Card'
 import { 
   Truck, 
   MapPin, 
@@ -15,9 +15,9 @@ import {
   Star,
   Eye
 } from 'lucide-react'
-import { mockTransportRequests, mockTransportQuotes } from '@/lib/mockData'
-import { formatDate } from '@/lib/utils'
-import ClientOnly from '@/components/ui/ClientOnly'
+import { mockTransportRequests, mockTransportQuotes } from '@/shared/utils/mockData'
+import { formatDate } from '@/shared/utils/utils'
+import ClientOnly from '@/shared/ui/ClientOnly'
 
 interface TransportDashboardProps {
   userId?: string

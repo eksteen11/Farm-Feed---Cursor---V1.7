@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { Card, CardContent, CardTitle } from '@/components/ui/Card'
+import { Card, CardContent, CardTitle } from '@/shared/ui/Card'
 import { 
   TrendingUp, 
   TrendingDown, 
@@ -10,8 +10,8 @@ import {
   Clock,
   BarChart3
 } from 'lucide-react'
-import { mockTransportRequests, mockTransportQuotes } from '@/lib/mockData'
-import ClientOnly from '@/components/ui/ClientOnly'
+import { mockTransportRequests, mockTransportQuotes } from '@/shared/utils/mockData'
+import ClientOnly from '@/shared/ui/ClientOnly'
 
 export default function TransportAnalytics() {
   const allRequests = mockTransportRequests

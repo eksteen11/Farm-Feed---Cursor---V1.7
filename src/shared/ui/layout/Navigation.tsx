@@ -3,9 +3,9 @@
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useSupabaseStore } from '@/store/useSupabaseStore'
-import Button from '@/components/ui/Button'
-import ImageComponent from '@/components/ui/Image'
-import Logo from '@/components/ui/Logo'
+import Button from '@/shared/ui/Button'
+import ImageComponent from '@/shared/ui/Image'
+import Logo from '@/shared/ui/Logo'
 import { 
   Menu, 
   X, 
@@ -23,7 +23,7 @@ import {
   FileText,
   Map
 } from 'lucide-react'
-import NotificationSystem from '@/components/notifications/NotificationSystem'
+import NotificationSystem from '@/features/messaging/components/NotificationSystem'
 
 const Navigation: React.FC = () => {
   const { currentUser, isAuthenticated, logout, notifications, getCurrentUser } = useSupabaseStore()

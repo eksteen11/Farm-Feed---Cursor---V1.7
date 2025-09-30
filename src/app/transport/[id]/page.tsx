@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useStore } from '@/store/useStore'
-import { Card, CardContent, CardTitle } from '@/components/ui/Card'
-import Button from '@/components/ui/Button'
+import { Card, CardContent, CardTitle } from '@/shared/ui/Card'
+import Button from '@/shared/ui/Button'
 import { 
   Truck, 
   MapPin, 
@@ -23,11 +23,11 @@ import {
   XCircle,
   AlertTriangle
 } from 'lucide-react'
-import { mockTransportRequests, mockTransportQuotes } from '@/lib/mockData'
+import { mockTransportRequests, mockTransportQuotes } from '@/shared/utils/mockData'
 import { TransportRequest, TransportQuote } from '@/types'
 import toast from 'react-hot-toast'
-import TransportTracking from '@/components/transport/TransportTracking'
-import { formatDate } from '@/lib/utils'
+import TransportTracking from '@/features/transport/components/TransportTracking'
+import { formatDate } from '@/shared/utils/utils'
 
 export default function TransportRequestDetailPage({ params }: { params: { id: string } }) {
   const router = useRouter()

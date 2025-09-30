@@ -4,8 +4,8 @@ import { useSupabaseStore } from '@/store/useSupabaseStore'
 import { canUserPerformAction } from '@/types'
 import { ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
-import Button from '@/components/ui/Button'
-import SellerOfferDashboard from '@/components/offers/SellerOfferDashboard'
+import Button from '@/shared/ui/Button'
+import SellerOfferDashboard from '@/features/offers/components/SellerOfferDashboard'
 import { useEffect, useState } from 'react'
 
 export default function OffersPage() {

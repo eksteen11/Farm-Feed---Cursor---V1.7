@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Card, CardContent, CardTitle } from '@/components/ui/Card'
-import Button from '@/components/ui/Button'
+import { Card, CardContent, CardTitle } from '@/shared/ui/Card'
+import Button from '@/shared/ui/Button'
 import { 
   Truck, 
   MapPin, 
@@ -14,7 +14,7 @@ import {
   MessageSquare
 } from 'lucide-react'
 import { TransportRequest, TransportQuote } from '@/types'
-import ClientOnly from '@/components/ui/ClientOnly'
+import ClientOnly from '@/shared/ui/ClientOnly'
 
 interface TransportTrackingProps {
   request: TransportRequest

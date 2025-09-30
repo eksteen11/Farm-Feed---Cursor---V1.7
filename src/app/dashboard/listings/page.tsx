@@ -4,8 +4,8 @@ import { useSupabaseStore } from '@/store/useSupabaseStore'
 import { canUserPerformAction } from '@/types'
 import { Package, Truck, Plus, Eye, Edit, Trash2, MapPin, Calendar, DollarSign } from 'lucide-react'
 import Link from 'next/link'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
-import Button from '@/components/ui/Button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card'
+import Button from '@/shared/ui/Button'
 import { useEffect, useState } from 'react'
 
 export default function ListingsPage() {
