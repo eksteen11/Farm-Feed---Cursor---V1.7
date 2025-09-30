@@ -2,9 +2,11 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Toaster } from 'react-hot-toast'
-import Navigation from '@/components/layout/Navigation'
-import Footer from '@/components/layout/Footer'
-import SessionProvider from '@/components/SessionProvider'
+import Navigation from '@/shared/ui/layout/Navigation'
+import Footer from '@/shared/ui/layout/Footer'
+import SessionProvider from '@/shared/ui/SessionProvider'
+import QueryProvider from '@/shared/ui/QueryProvider'
+import { AppErrorBoundary } from '@/shared/ui/AppErrorBoundary'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -30,23 +32,27 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SessionProvider>
-          <Navigation />
-          <main>
-            {children}
-          </main>
-          <Footer />
-          <Toaster 
-            position="top-right"
-            toastOptions={{
-              duration: 4000,
-              style: {
-                background: '#363636',
-                color: '#fff',
-              },
-            }}
-          />
-        </SessionProvider>
+        <AppErrorBoundary>
+          <QueryProvider>
+            <SessionProvider>
+              <Navigation />
+              <main>
+                {children}
+              </main>
+              <Footer />
+              <Toaster 
+                position="top-right"
+                toastOptions={{
+                  duration: 4000,
+                  style: {
+                    background: '#363636',
+                    color: '#fff',
+                  },
+                }}
+              />
+            </SessionProvider>
+          </QueryProvider>
+        </AppErrorBoundary>
       </body>
     </html>
   )
