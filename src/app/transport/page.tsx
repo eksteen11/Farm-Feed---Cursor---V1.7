@@ -19,7 +19,7 @@ import {
   Filter,
   Eye
 } from 'lucide-react'
-import { mockTransportRequests, mockUsers } from '@/shared/util@/shared/utils/mockData'
+import { mockTransportRequests, mockUsers } from '@/shared/utils/mockData'
 import { TransportRequest } from '@/types'
 import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation'

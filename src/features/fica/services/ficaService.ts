@@ -1,5 +1,5 @@
 import { User } from '@/types'
-import { mockUsers } from '@/shared/util@/shared/utils/mockData'
+import { mockUsers } from '@/shared/utils/mockData'
 import { generateId } from '@/shared/utils/helpers'
 
 export interface FicaDocument {

@@ -1,5 +1,5 @@
 import { Subscription, User, UserRole } from '@/types'
-import { mockSubscriptions, mockUsers } from '@/shared/util@/shared/utils/mockData'
+import { mockSubscriptions, mockUsers } from '@/shared/utils/mockData'
 import { generateId } from '@/shared/utils/helpers'
 
 // Subscription Plans Configuration

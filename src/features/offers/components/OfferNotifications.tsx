@@ -14,7 +14,7 @@ import {
 import Badge from '@/shared/ui/Badge'
 import Button from '@/shared/ui/Button'
 import { Offer, User } from '@/types'
-import { formatDate } from '@/shared/utils'
+import { formatDate } from '@/shared/utils/utils
 
 interface OfferNotification {
   id: string

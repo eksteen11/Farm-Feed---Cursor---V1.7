@@ -33,6 +33,7 @@ export const createUser = () => null;
 export const updateUser = () => null;
 export const deleteUser = () => null;
 export const getUserById = () => null;
+export const getUserByEmail = () => null;
 export const getListingById = () => null;
 export const getOffersByListingId = () => [];
 export const getOffersByUserId = () => [];

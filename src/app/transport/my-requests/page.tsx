@@ -20,7 +20,7 @@ import {
   Eye,
   Truck
 } from 'lucide-react'
-import { mockTransportRequests, mockTransportQuotes } from '@/shared/util@/shared/utils/mockData'
+import { mockTransportRequests, mockTransportQuotes } from '@/shared/utils/mockData'
 import { TransportRequest, TransportQuote } from '@/types'
 import toast from 'react-hot-toast'
 import { formatDate } from '@/shared/utils/utils'

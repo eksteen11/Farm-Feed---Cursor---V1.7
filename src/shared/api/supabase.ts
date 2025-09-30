@@ -17,3 +17,22 @@ export const supabaseAdmin = typeof window === 'undefined' ? createClient(
     }
   }
 ) : null
+
+// Export service classes for backward compatibility
+export class SupabaseDatabaseService {
+  constructor() {
+    // Stub implementation
+  }
+}
+
+export class SupabaseAuthService {
+  constructor() {
+    // Stub implementation
+  }
+}
+
+export class SupabaseStorageService {
+  constructor() {
+    // Stub implementation
+  }
+}

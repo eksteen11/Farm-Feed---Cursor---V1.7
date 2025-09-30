@@ -34,7 +34,7 @@ import {
   BarChart3,
   Smartphone
 } from 'lucide-react'
-import { mockListings } from '@/shared/util@/shared/utils/mockData'
+import { mockListings } from '@/shared/utils/mockData'
 
 type UserType = 'buyer' | 'seller' | 'transporter'
 

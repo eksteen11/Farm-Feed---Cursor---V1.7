@@ -9,8 +9,8 @@ import Select from '@/shared/ui/Select'
 import { useSupabaseStore } from '@/store/useSupabaseStore'
 import { SupabaseDatabaseService } from '@/shared/api/supabase'
 import { Offer, Listing, User } from '@/types'
-import { realEmailService } from '@/shared/realEmailService'
-import { formatDate } from '@/shared/utils'
+import { realEmailService } from '@/features/messaging/services/realEmailService'
+import { formatDate } from '@/shared/utils/utils
 import toast from 'react-hot-toast'
 
 interface MakeOfferModalProps {

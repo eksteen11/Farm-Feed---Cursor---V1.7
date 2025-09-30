@@ -20,9 +20,9 @@ import Badge from '@/shared/ui/Badge'
 import OfferMessaging from '@/features/messaging/components/OfferMessaging'
 import { useStore } from '@/store/useStore'
 import { Offer, Listing, User as UserType } from '@/types'
-import { formatDate } from '@/shared/utils'
-import { sendOfferNotification } from '@/shared/emailService'
-import { mockUsers } from '@/share@/shared/utils/mockData'
+import { formatDate } from '@/shared/utils/utils
+import { sendOfferNotification } from '@/features/messaging/services/emailService'
+import { mockUsers } from '@/shared/utils/mockData'
 
 interface OfferManagementProps {
   offers: Offer[]
