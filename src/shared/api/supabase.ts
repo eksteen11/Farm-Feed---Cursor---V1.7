@@ -23,11 +23,61 @@ export class SupabaseDatabaseService {
   constructor() {
     // Stub implementation
   }
+
+  async getListings() {
+    // Stub implementation
+    return { data: [], error: null }
+  }
+
+  async getListingById(id: string) {
+    // Stub implementation
+    return { data: null, error: null }
+  }
+
+  async getOffers() {
+    // Stub implementation
+    return { data: [], error: null }
+  }
+
+  async createOffer(offer: any) {
+    // Stub implementation
+    return { data: null, error: null }
+  }
+
+  async updateOffer(id: string, updates: any) {
+    // Stub implementation
+    return { data: null, error: null }
+  }
+
+  async deleteOffer(id: string) {
+    // Stub implementation
+    return { data: null, error: null }
+  }
 }
 
 export class SupabaseAuthService {
   constructor() {
     // Stub implementation
+  }
+
+  async getCurrentUser() {
+    // Stub implementation - return null for now
+    return null
+  }
+
+  async signIn(email: string, password: string) {
+    // Stub implementation
+    return { user: null, error: null }
+  }
+
+  async signOut() {
+    // Stub implementation
+    return { error: null }
+  }
+
+  async signUp(email: string, password: string) {
+    // Stub implementation
+    return { user: null, error: null }
   }
 }
 
