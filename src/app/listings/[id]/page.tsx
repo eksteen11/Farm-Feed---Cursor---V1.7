@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useSupabaseStore } from '@/store/useSupabaseStore'
 import { supabase } from '@/shared/api/supabase'
+import { mockListings } from '@/shared/utils/mockData'
 import { Card, CardContent, CardTitle } from '@/shared/ui/Card'
 import Button from '@/shared/ui/Button'
 import Input from '@/shared/ui/Input'
@@ -50,112 +51,20 @@ export default function ListingDetailPage() {
       if (params.id) {
         try {
           setIsLoading(true)
-          console.log('🔍 Fetching listing:', params.id)
+          console.log('🔍 Fetching listing from mock data:', params.id)
           
-          const { data, error } = await supabase
-            .from('listings')
-            .select(`
-              *,
-              users:seller_id (
-                id,
-                email,
-                name,
-                role,
-                company,
-                location,
-                phone,
-                avatar,
-                rating,
-                total_deals,
-                total_transactions,
-                reputation_score
-              ),
-              products:product_id (
-                id,
-                name,
-                category,
-                subcategory,
-                description,
-                unit
-              )
-            `)
-            .eq('id', params.id)
-            .single()
-
-          if (error) {
-            console.error('❌ Error fetching listing:', error)
+          // Find the listing in mock data
+          const foundListing = mockListings.find(listing => listing.id === params.id)
+          
+          if (foundListing) {
+            console.log('✅ Found listing:', foundListing)
+            setListing(foundListing)
+          } else {
+            console.log('❌ Listing not found in mock data')
             toast.error('Failed to load listing details')
-            return
-          }
-
-          if (data) {
-            console.log('✅ Listing found:', data)
-            
-            // Transform Supabase data to match our Listing type
-            const transformedListing = {
-              id: data.id,
-              title: data.title,
-              description: data.description,
-              sellerId: data.seller_id,
-              seller: {
-                id: data.users?.id || data.seller_id,
-                email: data.users?.email || '',
-                name: data.users?.name || 'Unknown Seller',
-                role: 'seller' as const,
-                roles: ['seller'],
-                capabilities: ['sell'],
-                company: data.users?.company || '',
-                location: data.users?.location || '',
-                phone: data.users?.phone || '',
-                avatar: data.users?.avatar || '',
-                isVerified: true,
-                subscriptionStatus: 'active' as const,
-                ficaStatus: 'verified' as const,
-                ficaDocuments: {},
-                rating: data.users?.rating || 4.5,
-                totalDeals: data.users?.total_deals || 10,
-                totalTransactions: data.users?.total_transactions || 15,
-                reputationScore: data.users?.reputation_score || 85,
-                businessType: 'individual' as const,
-                createdAt: new Date(),
-                updatedAt: new Date()
-              },
-              product: {
-                id: data.product_id || 'generic-product',
-                name: data.products?.name || data.title,
-                category: data.products?.category || 'grain',
-                description: data.products?.description || data.description,
-                specifications: data.specifications || {},
-                unit: data.products?.unit || 'ton',
-                minQuantity: 1,
-                maxQuantity: 10000
-              },
-              price: data.price,
-              currency: data.currency || 'ZAR',
-              quantity: data.quantity,
-              availableQuantity: data.available_quantity || data.quantity,
-              location: data.location,
-              images: data.images || ['https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop'],
-              videos: data.videos || [],
-              isActive: data.is_active,
-              expiresAt: new Date(data.expires_at),
-              deliveryOptions: {
-                exFarm: data.delivery_options?.ex_farm || false,
-                delivered: data.delivery_options?.delivered || false
-              },
-              qualityGrade: data.quality_grade || 'A',
-              specifications: data.specifications || {},
-              certificates: data.certificates || [],
-              paymentTerms: data.payment_terms || '',
-              mapVisibility: data.map_visibility || true,
-              createdAt: new Date(data.created_at),
-              updatedAt: new Date(data.updated_at)
-            }
-            
-            setListing(transformedListing)
           }
         } catch (error) {
-          console.error('❌ Unexpected error fetching listing:', error)
+          console.error('❌ Error fetching listing:', error)
           toast.error('Failed to load listing details')
         } finally {
           setIsLoading(false)
@@ -166,37 +75,12 @@ export default function ListingDetailPage() {
     fetchListing()
   }, [params.id])
 
-  const handleOfferCreated = (offer: any) => {
-    toast.success('Offer submitted successfully!')
-    setShowOfferModal(false)
-  }
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
-            Loading Listing...
-          </h1>
-          <p className="text-gray-600">
-            Please wait while we fetch the listing details
-          </p>
-        </div>
-      </div>
-    )
-  }
-
   if (!listing) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
-            Listing Not Found
-          </h1>
-          <p className="text-gray-600 mb-6">
-            The listing you're looking for doesn't exist
-          </p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Listing Not Found</h1>
+          <p className="text-gray-600 mb-6">The listing you're looking for doesn't exist</p>
           <Button onClick={() => router.push('/listings')}>
             Back to Listings
           </Button>
@@ -309,7 +193,7 @@ export default function ListingDetailPage() {
                     <span>Verified Premium</span>
                   </div>
                   
-                  {/* Beautiful Location with Red Branding */}
+                  {/* Location Badge */}
                   <div className="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-full shadow-lg border border-red-400">
                     <MapPin className="w-4 h-4 inline mr-2" />
                     <span className="font-bold">{listing.location}</span>
@@ -322,9 +206,8 @@ export default function ListingDetailPage() {
       </div>
 
       {/* Main Content - Mobile First */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-          {/* Main Content - Mobile First */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-content">
             {/* Premium Trust Building Section */}
             <div className="premium-card-elevated p-8">
@@ -338,7 +221,7 @@ export default function ListingDetailPage() {
                       fallbackSrc="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face"
                     />
                     <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 rounded-full border-2 border-white flex items-center justify-center">
-                      <Shield className="w-3 h-3 text-white" />
+                      <CheckCircle className="w-3 h-3 text-white" />
                     </div>
                   </div>
                   <div>
@@ -383,7 +266,7 @@ export default function ListingDetailPage() {
             </div>
 
             {/* Interactive Transport Intelligence Section */}
-            <div className="map-container">
+            <div className="premium-card p-8">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-headline text-accent">Smart Transport Planning</h2>
                 <div className="bg-gradient-to-r from-emerald-500 to-emerald-600 text-white px-4 py-2 rounded-full shadow-lg">
@@ -398,8 +281,8 @@ export default function ListingDetailPage() {
               <div className="bg-gradient-to-br from-slate-50 to-emerald-50 rounded-3xl p-8 mb-6 border-2 border-emerald-200 shadow-xl">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   {/* Farm Location Info */}
-                  <div className="text-center lg:text-left">
-                    <div className="relative inline-block mb-4">
+                  <div>
+                    <div className="relative w-20 h-20 mx-auto lg:mx-0 mb-4">
                       <div className="w-20 h-20 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-full flex items-center justify-center shadow-2xl mx-auto lg:mx-0">
                         <MapPin className="w-10 h-10 text-white" />
                       </div>

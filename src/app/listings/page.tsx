@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useSupabaseStore } from '@/store/useSupabaseStore'
 import { SupabaseDatabaseService } from '@/shared/api/supabase'
+import { mockListings } from '@/shared/utils/mockData'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/Card'
 import Button from '@/shared/ui/Button'
 import Input from '@/shared/ui/Input'
@@ -38,78 +39,26 @@ export default function ListingsPage() {
 
   // Load listings from Supabase on component mount
   useEffect(() => {
+    console.log('🔄 useEffect triggered, loading listings...')
     loadListings()
   }, [])
 
   const loadListings = async () => {
     setIsLoading(true)
     try {
-      console.log('🔄 Loading listings from Supabase...')
-      const supabaseListings = await SupabaseDatabaseService.getListings()
-      console.log('✅ Loaded listings:', supabaseListings)
+      console.log('🔄 Loading listings from mock data...')
+      console.log('Mock listings:', mockListings)
+      console.log('Mock listings length:', mockListings.length)
+      console.log('Mock listings type:', typeof mockListings)
       
-      // Transform Supabase data to match our Listing type
-      const transformedListings: Listing[] = supabaseListings.map((listing: any) => ({
-        id: listing.id,
-        title: listing.title,
-        description: listing.description,
-        sellerId: listing.seller_id,
-        seller: {
-          id: listing.users?.id || listing.seller_id,
-          email: listing.users?.email || '',
-          name: listing.users?.name || 'Unknown Seller',
-          role: 'seller' as const,
-          roles: ['seller'],
-          capabilities: ['sell'],
-          company: listing.users?.company || '',
-          location: listing.users?.location || '',
-          phone: '',
-          avatar: '',
-          isVerified: true,
-          subscriptionStatus: 'active' as const,
-          ficaStatus: 'verified' as const,
-          ficaDocuments: {},
-          rating: 4.5,
-          totalDeals: 10,
-          totalTransactions: 15,
-          reputationScore: 85,
-          businessType: 'individual' as const,
-          createdAt: new Date(),
-          updatedAt: new Date()
-        },
-        product: {
-          id: listing.product_id || 'custom-product',
-          name: listing.products?.name || listing.title,
-          category: listing.products?.category || 'grain',
-          description: listing.products?.description || listing.description,
-          specifications: listing.specifications || {},
-          unit: listing.products?.unit || 'ton',
-          minQuantity: 1,
-          maxQuantity: 10000
-        },
-        price: listing.price,
-        currency: listing.currency || 'ZAR',
-        quantity: listing.quantity,
-        availableQuantity: listing.available_quantity || listing.quantity,
-        location: listing.location,
-        images: listing.images || ['https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400&h=300&fit=crop'],
-        videos: listing.videos || [],
-        isActive: listing.is_active,
-        expiresAt: new Date(listing.expires_at),
-        deliveryOptions: {
-          exFarm: listing.delivery_options?.ex_farm || false,
-          delivered: listing.delivery_options?.delivered || false
-        },
-        qualityGrade: listing.quality_grade || 'A',
-        specifications: listing.specifications || {},
-        certificates: listing.certificates || [],
-        paymentTerms: listing.payment_terms || '',
-        mapVisibility: listing.map_visibility || true,
-        createdAt: new Date(listing.created_at),
-        updatedAt: new Date(listing.updated_at)
-      }))
-      
-      setListings(transformedListings)
+      // Use mock data directly - it's already in the correct format
+      if (mockListings && mockListings.length > 0) {
+        setListings(mockListings)
+        console.log('✅ Set listings:', mockListings.length)
+      } else {
+        console.log('❌ No mock listings available')
+        setListings([])
+      }
     } catch (error) {
       console.error('❌ Error loading listings:', error)
       toast.error('Failed to load listings')
