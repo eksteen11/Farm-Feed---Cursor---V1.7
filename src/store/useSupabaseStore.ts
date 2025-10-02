@@ -154,7 +154,7 @@ export const useSupabaseStore = create<SupabaseAppState>()(
         try {
           const result = await SupabaseAuthService.signIn(email, password)
           
-          if (result.success && result.user) {
+          if (result.user && !result.error) {
             set({ 
               currentUser: result.user, 
               isAuthenticated: true, 
@@ -187,7 +187,7 @@ export const useSupabaseStore = create<SupabaseAppState>()(
           
           console.log('📝 Store: Registration result:', result)
           
-          if (result.success && result.user) {
+          if (result.user && !result.error) {
             // Try to get the full user profile from the database
             const { data: profile, error: profileError } = await supabase
               .from('users')
@@ -307,7 +307,7 @@ export const useSupabaseStore = create<SupabaseAppState>()(
       resendVerificationEmail: async (email: string) => {
         try {
           const result = await SupabaseAuthService.resendVerificationEmail(email)
-          return result.success
+          return !result.error
         } catch (error: any) {
           set({ error: error.message })
           return false
