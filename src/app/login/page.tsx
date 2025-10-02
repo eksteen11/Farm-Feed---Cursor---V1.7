@@ -15,8 +15,8 @@ export default function LoginPage() {
   const { login, isLoading, error, resendVerificationEmail } = useSupabaseStore()
   const [showPassword, setShowPassword] = useState(false)
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: 'eksteen23@gmail.com',
+    password: 'Eksteen11#'
   })
   const [formErrors, setFormErrors] = useState<{
     email?: string
