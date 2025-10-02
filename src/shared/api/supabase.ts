@@ -61,28 +61,60 @@ export class SupabaseAuthService {
   }
 
   static async getCurrentUser() {
-    // Stub implementation - return null for now
-    return null
+    try {
+      const { data: { user }, error } = await supabase.auth.getUser()
+      return user
+    } catch (error) {
+      return null
+    }
   }
 
   static async signIn(email: string, password: string) {
-    // Stub implementation
-    return { user: null, error: null }
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+      return { user: data.user, error }
+    } catch (error) {
+      return { user: null, error }
+    }
   }
 
   static async signOut() {
-    // Stub implementation
-    return { error: null }
+    try {
+      const { error } = await supabase.auth.signOut()
+      return { error }
+    } catch (error) {
+      return { error }
+    }
   }
 
   static async signUp(email: string, password: string, userData?: any) {
-    // Stub implementation
-    return { user: null, error: null }
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: userData
+        }
+      })
+      return { user: data.user, error }
+    } catch (error) {
+      return { user: null, error }
+    }
   }
 
   static async resendVerificationEmail(email: string) {
-    // Stub implementation
-    return { error: null }
+    try {
+      const { error } = await supabase.auth.resend({
+        type: 'signup',
+        email,
+      })
+      return { error }
+    } catch (error) {
+      return { error }
+    }
   }
 }
 
