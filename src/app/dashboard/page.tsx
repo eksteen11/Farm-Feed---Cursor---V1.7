@@ -128,9 +128,9 @@ export default function UnifiedDashboard() {
   }
 
   const userCapabilities = getUserCapabilities(currentUser)
-  const userListings = listings.filter(l => l.sellerId === currentUser.id)
-  const userOffers = offers.filter(o => o.buyerId === currentUser.id)
-  const userDeals = deals.filter(d => d.buyerId === currentUser.id || d.sellerId === currentUser.id)
+  const userListings = (listings || []).filter(l => l.sellerId === currentUser.id)
+  const userOffers = (offers || []).filter(o => o.buyerId === currentUser.id)
+  const userDeals = (deals || []).filter(d => d.buyerId === currentUser.id || d.sellerId === currentUser.id)
 
   const formatDate = (date: Date) => {
     if (!isClient) return 'Loading...'

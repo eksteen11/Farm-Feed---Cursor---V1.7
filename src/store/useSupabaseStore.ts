@@ -340,8 +340,8 @@ export const useSupabaseStore = create<SupabaseAppState>()(
       // Listings
       fetchListings: async (filters?: FilterOptions) => {
         try {
-          const listings = await SupabaseDatabaseService.getListings()
-          set({ listings })
+          const result = await SupabaseDatabaseService.getListings()
+          set({ listings: result.data || [] })
         } catch (error: any) {
           set({ error: error.message })
         }
@@ -417,8 +417,8 @@ export const useSupabaseStore = create<SupabaseAppState>()(
       // Offers
       fetchOffers: async () => {
         try {
-          const offers = await SupabaseDatabaseService.getOffers()
-          set({ offers })
+          const result = await SupabaseDatabaseService.getOffers()
+          set({ offers: result.data || [] })
         } catch (error: any) {
           set({ error: error.message })
         }
@@ -487,8 +487,8 @@ export const useSupabaseStore = create<SupabaseAppState>()(
       // Messages
       fetchMessages: async (offerId?: string) => {
         try {
-          const messages = await SupabaseDatabaseService.getMessages(offerId)
-          set({ messages })
+          const result = await SupabaseDatabaseService.getMessages(offerId)
+          set({ messages: result.data || [] })
         } catch (error: any) {
           set({ error: error.message })
         }
@@ -546,8 +546,8 @@ export const useSupabaseStore = create<SupabaseAppState>()(
       // Notifications
       fetchNotifications: async (userId: string) => {
         try {
-          const notifications = await SupabaseDatabaseService.getNotifications(userId)
-          set({ notifications })
+          const result = await SupabaseDatabaseService.getNotifications(userId)
+          set({ notifications: result.data || [] })
         } catch (error: any) {
           set({ error: error.message })
         }
@@ -643,8 +643,8 @@ export const useSupabaseStore = create<SupabaseAppState>()(
       // Products
       fetchProducts: async () => {
         try {
-          const products = await SupabaseDatabaseService.getProducts()
-          set({ products })
+          const result = await SupabaseDatabaseService.getProducts()
+          set({ products: result.data || [] })
         } catch (error: any) {
           set({ error: error.message })
         }
