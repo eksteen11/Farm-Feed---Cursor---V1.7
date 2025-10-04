@@ -46,22 +46,32 @@ export default function ListingsPage() {
   const loadListings = async () => {
     setIsLoading(true)
     try {
-      console.log('🔄 Loading listings from mock data...')
-      console.log('Mock listings:', mockListings)
-      console.log('Mock listings length:', mockListings.length)
-      console.log('Mock listings type:', typeof mockListings)
+      console.log('🔄 Loading listings from Supabase...')
       
-      // Use mock data directly - it's already in the correct format
-      if (mockListings && mockListings.length > 0) {
-        setListings(mockListings)
-        console.log('✅ Set listings:', mockListings.length)
+      // Load from Supabase
+      const { data, error } = await SupabaseDatabaseService.getListings()
+      
+      if (error) {
+        console.error('❌ Supabase error:', error)
+        toast.error('Failed to load listings from database')
+        setListings([])
+        return
+      }
+      
+      console.log('✅ Supabase listings loaded:', data?.length || 0)
+      console.log('✅ Supabase data:', data)
+      
+      if (data && data.length > 0) {
+        setListings(data)
+        console.log('✅ Set listings from Supabase:', data.length)
       } else {
-        console.log('❌ No mock listings available')
+        console.log('⚠️ No listings found in Supabase')
         setListings([])
       }
     } catch (error) {
       console.error('❌ Error loading listings:', error)
       toast.error('Failed to load listings')
+      setListings([])
     } finally {
       setIsLoading(false)
     }
