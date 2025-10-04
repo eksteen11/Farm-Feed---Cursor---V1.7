@@ -25,8 +25,55 @@ export class SupabaseDatabaseService {
   }
 
   static async getListings() {
-    // Stub implementation
-    return { data: [], error: null }
+    try {
+      console.log('🔍 SupabaseDatabaseService: Fetching listings...')
+      const { data, error } = await supabase
+        .from('listings')
+        .select(`
+          *,
+          users!listings_seller_id_fkey (
+            id,
+            name,
+            email,
+            company,
+            location,
+            phone,
+            is_verified,
+            subscription_status,
+            fica_status,
+            rating,
+            total_deals,
+            total_transactions,
+            reputation_score,
+            business_type,
+            created_at,
+            updated_at
+          ),
+          products!listings_product_id_fkey (
+            id,
+            name,
+            category,
+            subcategory,
+            description,
+            specifications,
+            unit,
+            min_quantity,
+            max_quantity
+          )
+        `)
+        .eq('is_active', true)
+        .order('created_at', { ascending: false })
+      
+      console.log('🔍 SupabaseDatabaseService: Fetched listings:', data?.length || 0)
+      if (error) {
+        console.error('❌ SupabaseDatabaseService: Error fetching listings:', error)
+      }
+      
+      return { data: data || [], error }
+    } catch (error) {
+      console.error('❌ SupabaseDatabaseService: Exception fetching listings:', error)
+      return { data: [], error }
+    }
   }
 
   static async getListingById(id: string) {
@@ -35,8 +82,51 @@ export class SupabaseDatabaseService {
   }
 
   static async getOffers() {
-    // Stub implementation
-    return { data: [], error: null }
+    try {
+      console.log('🔍 SupabaseDatabaseService: Fetching offers...')
+      const { data, error } = await supabase
+        .from('offers')
+        .select(`
+          *,
+          users!offers_buyer_id_fkey (
+            id,
+            name,
+            email,
+            company,
+            location,
+            phone,
+            is_verified,
+            subscription_status,
+            fica_status,
+            rating,
+            total_deals,
+            total_transactions,
+            reputation_score,
+            business_type,
+            created_at,
+            updated_at
+          ),
+          listings!offers_listing_id_fkey (
+            id,
+            title,
+            description,
+            price,
+            quantity,
+            location
+          )
+        `)
+        .order('created_at', { ascending: false })
+      
+      console.log('🔍 SupabaseDatabaseService: Fetched offers:', data?.length || 0)
+      if (error) {
+        console.error('❌ SupabaseDatabaseService: Error fetching offers:', error)
+      }
+      
+      return { data: data || [], error }
+    } catch (error) {
+      console.error('❌ SupabaseDatabaseService: Exception fetching offers:', error)
+      return { data: [], error }
+    }
   }
 
   static async createOffer(offer: any) {
