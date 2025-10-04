@@ -27,46 +27,55 @@ export class SupabaseDatabaseService {
   static async getListings() {
     try {
       console.log('🔍 SupabaseDatabaseService: Fetching listings...')
+      
+      // First try a simple query to see if we can get any data
       const { data, error } = await supabase
         .from('listings')
-        .select(`
-          *,
-          users!listings_seller_id_fkey (
-            id,
-            name,
-            email,
-            company,
-            location,
-            phone,
-            is_verified,
-            subscription_status,
-            fica_status,
-            rating,
-            total_deals,
-            total_transactions,
-            reputation_score,
-            business_type,
-            created_at,
-            updated_at
-          ),
-          products!listings_product_id_fkey (
-            id,
-            name,
-            category,
-            subcategory,
-            description,
-            specifications,
-            unit,
-            min_quantity,
-            max_quantity
-          )
-        `)
-        .eq('is_active', true)
+        .select('*')
         .order('created_at', { ascending: false })
       
-      console.log('🔍 SupabaseDatabaseService: Fetched listings:', data?.length || 0)
+      console.log('🔍 SupabaseDatabaseService: Raw listings data:', data)
+      console.log('🔍 SupabaseDatabaseService: Fetched listings count:', data?.length || 0)
+      
       if (error) {
         console.error('❌ SupabaseDatabaseService: Error fetching listings:', error)
+        return { data: [], error }
+      }
+      
+      // If we get data, try to fetch related data
+      if (data && data.length > 0) {
+        console.log('🔍 SupabaseDatabaseService: Found listings, now fetching related data...')
+        
+        // Get unique seller IDs
+        const sellerIds = [...new Set(data.map(listing => listing.seller_id))]
+        const productIds = [...new Set(data.map(listing => listing.product_id))]
+        
+        console.log('🔍 SupabaseDatabaseService: Seller IDs:', sellerIds)
+        console.log('🔍 SupabaseDatabaseService: Product IDs:', productIds)
+        
+        // Fetch users and products
+        const { data: users } = await supabase
+          .from('users')
+          .select('*')
+          .in('id', sellerIds)
+        
+        const { data: products } = await supabase
+          .from('products')
+          .select('*')
+          .in('id', productIds)
+        
+        console.log('🔍 SupabaseDatabaseService: Fetched users:', users?.length || 0)
+        console.log('🔍 SupabaseDatabaseService: Fetched products:', products?.length || 0)
+        
+        // Combine the data
+        const enrichedData = data.map(listing => ({
+          ...listing,
+          seller: users?.find(user => user.id === listing.seller_id),
+          product: products?.find(product => product.id === listing.product_id)
+        }))
+        
+        console.log('🔍 SupabaseDatabaseService: Enriched listings:', enrichedData.length)
+        return { data: enrichedData, error: null }
       }
       
       return { data: data || [], error }
