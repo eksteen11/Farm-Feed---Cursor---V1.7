@@ -152,7 +152,7 @@ export default function OfferManagement({ offers, listings, currentUser }: Offer
           quantity: selectedOffer.quantity,
           deliveryType: selectedOffer.deliveryType,
           deliveryAddress: selectedOffer.deliveryAddress,
-          status: 'pending' as const,
+          status: 'connected' as const,
           deliveryDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days from now
           paymentStatus: 'pending' as const,
           platformFee: selectedOffer.quantity, // R1 per ton

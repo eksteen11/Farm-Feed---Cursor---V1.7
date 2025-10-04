@@ -226,7 +226,7 @@ export interface Deal {
   quantity: number
   deliveryType: 'ex-farm' | 'delivered'
   deliveryAddress?: string
-  status: 'pending' | 'confirmed' | 'in-transit' | 'delivered' | 'completed' | 'cancelled'
+  status: 'pending' | 'connected' | 'negotiating' | 'transport-quoted' | 'transport-selected' | 'facilitated' | 'completed' | 'cancelled'
   createdAt: Date
   updatedAt: Date
   deliveryDate?: Date
