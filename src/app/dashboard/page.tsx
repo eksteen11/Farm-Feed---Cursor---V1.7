@@ -99,7 +99,7 @@ const DASHBOARD_SECTIONS = [
 ]
 
 export default function UnifiedDashboard() {
-  const { currentUser, listings, offers, deals, transportRequests, transportQuotes, getCurrentUser, initializeData } = useSupabaseStore()
+  const { currentUser, listings, offers, deals, transportRequests, transportQuotes, getCurrentUser, initializeData, fetchListings } = useSupabaseStore()
   const [isClient, setIsClient] = useState(false)
   
   useEffect(() => {
@@ -110,6 +110,8 @@ export default function UnifiedDashboard() {
       const user = await getCurrentUser()
       console.log('🏠 Dashboard: Current user:', user ? user.name : 'No user')
       await initializeData()
+      await fetchListings() // Fetch all listings
+      console.log('🏠 Dashboard: Fetched listings:', listings.length)
     }
     initUser()
   }, [])
