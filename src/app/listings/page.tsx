@@ -47,9 +47,19 @@ export default function ListingsPage() {
     setIsLoading(true)
     try {
       console.log('🔄 Loading listings from Supabase...')
+      console.log('🔄 SupabaseDatabaseService:', SupabaseDatabaseService)
       
-      // Load from Supabase
+      // Test API call first
+      console.log('🔄 Testing API call...')
+      const apiResponse = await fetch('/api/test-supabase')
+      const apiData = await apiResponse.json()
+      console.log('🔄 API test result:', apiData)
+      
+      // Load from Supabase service
+      console.log('🔄 Calling SupabaseDatabaseService.getListings()...')
       const { data, error } = await SupabaseDatabaseService.getListings()
+      
+      console.log('🔄 SupabaseDatabaseService result:', { data: data?.length || 0, error })
       
       if (error) {
         console.error('❌ Supabase error:', error)
