@@ -27,60 +27,84 @@ export class SupabaseDatabaseService {
   static async getListings() {
     try {
       console.log('🔍 SupabaseDatabaseService: Fetching listings...')
+      console.log('🔍 SupabaseDatabaseService: Supabase client:', supabase)
       
-      // First try a simple query to see if we can get any data
+      // Simple query first
       const { data, error } = await supabase
         .from('listings')
         .select('*')
+        .eq('is_active', true)
         .order('created_at', { ascending: false })
       
-      console.log('🔍 SupabaseDatabaseService: Raw listings data:', data)
-      console.log('🔍 SupabaseDatabaseService: Fetched listings count:', data?.length || 0)
+      console.log('🔍 SupabaseDatabaseService: Query result:', { data: data?.length || 0, error })
       
       if (error) {
-        console.error('❌ SupabaseDatabaseService: Error fetching listings:', error)
+        console.error('❌ SupabaseDatabaseService: Error:', error)
         return { data: [], error }
       }
       
-      // If we get data, try to fetch related data
-      if (data && data.length > 0) {
-        console.log('🔍 SupabaseDatabaseService: Found listings, now fetching related data...')
-        
-        // Get unique seller IDs
-        const sellerIds = [...new Set(data.map(listing => listing.seller_id))]
-        const productIds = [...new Set(data.map(listing => listing.product_id))]
-        
-        console.log('🔍 SupabaseDatabaseService: Seller IDs:', sellerIds)
-        console.log('🔍 SupabaseDatabaseService: Product IDs:', productIds)
-        
-        // Fetch users and products
-        const { data: users } = await supabase
-          .from('users')
-          .select('*')
-          .in('id', sellerIds)
-        
-        const { data: products } = await supabase
-          .from('products')
-          .select('*')
-          .in('id', productIds)
-        
-        console.log('🔍 SupabaseDatabaseService: Fetched users:', users?.length || 0)
-        console.log('🔍 SupabaseDatabaseService: Fetched products:', products?.length || 0)
-        
-        // Combine the data
-        const enrichedData = data.map(listing => ({
-          ...listing,
-          seller: users?.find(user => user.id === listing.seller_id),
-          product: products?.find(product => product.id === listing.product_id)
-        }))
-        
-        console.log('🔍 SupabaseDatabaseService: Enriched listings:', enrichedData.length)
-        return { data: enrichedData, error: null }
+      if (!data || data.length === 0) {
+        console.log('⚠️ SupabaseDatabaseService: No listings found')
+        return { data: [], error: null }
       }
       
-      return { data: data || [], error }
+      console.log('✅ SupabaseDatabaseService: Found', data.length, 'listings')
+      
+      // Transform data to match frontend expectations
+      const transformedData = data.map(listing => ({
+        id: listing.id,
+        title: listing.title,
+        description: listing.description,
+        price: listing.price,
+        quantity: listing.quantity,
+        location: listing.location,
+        images: listing.images || [],
+        videos: listing.videos || [],
+        isActive: listing.is_active,
+        qualityGrade: listing.quality_grade,
+        specifications: listing.specifications || {},
+        deliveryOptions: listing.delivery_options || {},
+        paymentTerms: listing.payment_terms,
+        certificates: listing.certificates || [],
+        labResults: listing.lab_results || [],
+        createdAt: new Date(listing.created_at),
+        updatedAt: new Date(listing.updated_at),
+        expiresAt: listing.expires_at ? new Date(listing.expires_at) : null,
+        // Mock seller and product data for now
+        seller: {
+          id: listing.seller_id,
+          name: 'Demo Seller',
+          email: 'seller@demo.com',
+          isVerified: true,
+          location: listing.location,
+          company: 'Demo Farm',
+          phone: '+27123456789',
+          rating: 4.5,
+          totalDeals: 10,
+          totalTransactions: 50,
+          reputationScore: 85,
+          businessType: 'farm',
+          subscriptionStatus: 'premium',
+          ficaStatus: 'verified'
+        },
+        product: {
+          id: listing.product_id,
+          name: listing.title,
+          category: 'grain',
+          subcategory: 'feed',
+          description: listing.description,
+          specifications: listing.specifications || {},
+          unit: 'ton',
+          minQuantity: 1,
+          maxQuantity: listing.quantity
+        }
+      }))
+      
+      console.log('✅ SupabaseDatabaseService: Transformed', transformedData.length, 'listings')
+      return { data: transformedData, error: null }
+      
     } catch (error) {
-      console.error('❌ SupabaseDatabaseService: Exception fetching listings:', error)
+      console.error('❌ SupabaseDatabaseService: Exception:', error)
       return { data: [], error }
     }
   }
