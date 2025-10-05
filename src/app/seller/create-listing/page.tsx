@@ -125,12 +125,12 @@ export default function CreateListingPage() {
       let videoUrls: string[] = []
       
       if (formData.images.length > 0) {
-        imageUrls = await SupabaseStorageService.uploadImages(formData.images, 'listings')
+        imageUrls = await SupabaseStorageService.uploadImages(formData.images, 'farm-feed-media')
         console.log('✅ Images uploaded:', imageUrls)
       }
       
       if (formData.videos.length > 0) {
-        videoUrls = await SupabaseStorageService.uploadVideos(formData.videos, 'listings')
+        videoUrls = await SupabaseStorageService.uploadVideos(formData.videos, 'farm-feed-media')
         console.log('✅ Videos uploaded:', videoUrls)
       }
       
