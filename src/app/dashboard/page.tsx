@@ -102,6 +102,11 @@ export default function UnifiedDashboard() {
   const { currentUser, listings, offers, deals, transportRequests, transportQuotes, getCurrentUser, initializeData, fetchListings } = useSupabaseStore()
   const [isClient, setIsClient] = useState(false)
   
+  // Debug logging
+  console.log('Dashboard - currentUser:', currentUser)
+  console.log('Dashboard - currentUser.name:', currentUser?.name)
+  console.log('Dashboard - currentUser.email:', currentUser?.email)
+  
   useEffect(() => {
     setIsClient(true)
     // Initialize user data when component mounts
@@ -147,7 +152,7 @@ export default function UnifiedDashboard() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-3xl font-bold text-gray-900">Welcome back, {currentUser.name}!</h1>
+                <h1 className="text-3xl font-bold text-gray-900">Welcome back, {currentUser?.name || currentUser?.email?.split('@')[0] || 'User'}!</h1>
                 <p className="text-gray-600 mt-2">
                   Manage your Farm Feed activities from one unified dashboard
                 </p>
@@ -193,7 +198,7 @@ export default function UnifiedDashboard() {
             <div className="flex items-center justify-between">
               <div>
                 <h1 className="text-3xl font-bold text-gray-900">
-                  Welcome back, {currentUser.name}! 👋
+                  Welcome back, {currentUser?.name || currentUser?.email?.split('@')[0] || 'User'}! 👋
                 </h1>
                 <p className="text-gray-600 mt-2">
                   Manage your Farm Feed activities from one place
