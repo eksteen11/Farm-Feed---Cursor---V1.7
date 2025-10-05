@@ -51,17 +51,23 @@ export default function ListingDetailPage() {
       if (params.id) {
         try {
           setIsLoading(true)
-          console.log('🔍 Fetching listing from mock data:', params.id)
+          console.log('🔍 Fetching listing from Supabase:', params.id)
           
-          // Find the listing in mock data
-          const foundListing = mockListings.find(listing => listing.id === params.id)
+          // Fetch from Supabase
+          const { data, error } = await SupabaseDatabaseService.getListingById(params.id)
           
-          if (foundListing) {
-            console.log('✅ Found listing:', foundListing)
-            setListing(foundListing)
-          } else {
-            console.log('❌ Listing not found in mock data')
+          if (error) {
+            console.error('❌ Supabase error:', error)
             toast.error('Failed to load listing details')
+            return
+          }
+          
+          if (data) {
+            console.log('✅ Found listing in Supabase:', data)
+            setListing(data)
+          } else {
+            console.log('❌ Listing not found in Supabase')
+            toast.error('Listing not found')
           }
         } catch (error) {
           console.error('❌ Error fetching listing:', error)

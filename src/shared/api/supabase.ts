@@ -110,8 +110,85 @@ export class SupabaseDatabaseService {
   }
 
   static async getListingById(id: string) {
-    // Stub implementation
-    return { data: null, error: null }
+    try {
+      console.log('🔍 SupabaseDatabaseService: Fetching listing by ID:', id)
+      
+      const { data, error } = await supabase
+        .from('listings')
+        .select('*')
+        .eq('id', id)
+        .eq('is_active', true)
+        .single()
+      
+      console.log('🔍 SupabaseDatabaseService: Query result:', { data: !!data, error })
+      
+      if (error) {
+        console.error('❌ SupabaseDatabaseService: Error:', error)
+        return { data: null, error }
+      }
+      
+      if (!data) {
+        console.log('⚠️ SupabaseDatabaseService: Listing not found')
+        return { data: null, error: null }
+      }
+      
+      // Transform data to match frontend expectations
+      const transformedData = {
+        id: data.id,
+        title: data.title,
+        description: data.description,
+        price: data.price,
+        quantity: data.quantity,
+        location: data.location,
+        images: data.images || [],
+        videos: data.videos || [],
+        isActive: data.is_active,
+        qualityGrade: data.quality_grade,
+        specifications: data.specifications || {},
+        deliveryOptions: data.delivery_options || {},
+        paymentTerms: data.payment_terms,
+        certificates: data.certificates || [],
+        labResults: data.lab_results || [],
+        createdAt: new Date(data.created_at),
+        updatedAt: new Date(data.updated_at),
+        expiresAt: data.expires_at ? new Date(data.expires_at) : null,
+        // Mock seller and product data for now
+        seller: {
+          id: data.seller_id,
+          name: 'Demo Seller',
+          email: 'seller@demo.com',
+          isVerified: true,
+          location: data.location,
+          company: 'Demo Farm',
+          phone: '+27123456789',
+          rating: 4.5,
+          totalDeals: 10,
+          totalTransactions: 50,
+          reputationScore: 85,
+          businessType: 'farm',
+          subscriptionStatus: 'premium',
+          ficaStatus: 'verified'
+        },
+        product: {
+          id: data.product_id,
+          name: data.title,
+          category: 'grain',
+          subcategory: 'feed',
+          description: data.description,
+          specifications: data.specifications || {},
+          unit: 'ton',
+          minQuantity: 1,
+          maxQuantity: data.quantity
+        }
+      }
+      
+      console.log('✅ SupabaseDatabaseService: Transformed listing')
+      return { data: transformedData, error: null }
+      
+    } catch (error) {
+      console.error('❌ SupabaseDatabaseService: Exception:', error)
+      return { data: null, error }
+    }
   }
 
   static async getOffers() {
