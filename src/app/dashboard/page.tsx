@@ -135,9 +135,20 @@ export default function UnifiedDashboard() {
   }
 
   const userCapabilities = getUserCapabilities(currentUser)
-  const userListings = (listings || []).filter(l => l.sellerId === currentUser.id)
-  const userOffers = (offers || []).filter(o => o.buyerId === currentUser.id)
-  const userDeals = (deals || []).filter(d => d.buyerId === currentUser.id || d.sellerId === currentUser.id)
+  
+  // Debug logging
+  console.log('Dashboard - currentUser.id:', currentUser?.id)
+  console.log('Dashboard - listings:', listings?.length || 0)
+  console.log('Dashboard - offers:', offers?.length || 0)
+  console.log('Dashboard - deals:', deals?.length || 0)
+  
+  const userListings = (listings || []).filter(l => l.sellerId === currentUser?.id)
+  const userOffers = (offers || []).filter(o => o.buyerId === currentUser?.id)
+  const userDeals = (deals || []).filter(d => d.buyerId === currentUser?.id || d.sellerId === currentUser?.id)
+  
+  console.log('Dashboard - userListings:', userListings.length)
+  console.log('Dashboard - userOffers:', userOffers.length)
+  console.log('Dashboard - userDeals:', userDeals.length)
 
   const formatDate = (date: Date) => {
     if (!isClient) return 'Loading...'
