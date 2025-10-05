@@ -322,4 +322,64 @@ export class SupabaseStorageService {
   constructor() {
     // Stub implementation
   }
+
+  static async uploadImages(files: File[], bucket: string): Promise<string[]> {
+    try {
+      console.log('📤 SupabaseStorageService: Uploading images...', files.length)
+      const uploadPromises = files.map(async (file, index) => {
+        const fileName = `${Date.now()}-${index}-${file.name}`
+        const { data, error } = await supabase.storage
+          .from(bucket)
+          .upload(fileName, file)
+        
+        if (error) {
+          console.error('❌ Upload error:', error)
+          throw error
+        }
+        
+        const { data: publicUrl } = supabase.storage
+          .from(bucket)
+          .getPublicUrl(fileName)
+        
+        return publicUrl.publicUrl
+      })
+      
+      const urls = await Promise.all(uploadPromises)
+      console.log('✅ SupabaseStorageService: Images uploaded:', urls.length)
+      return urls
+    } catch (error) {
+      console.error('❌ SupabaseStorageService: Upload failed:', error)
+      throw error
+    }
+  }
+
+  static async uploadVideos(files: File[], bucket: string): Promise<string[]> {
+    try {
+      console.log('📤 SupabaseStorageService: Uploading videos...', files.length)
+      const uploadPromises = files.map(async (file, index) => {
+        const fileName = `${Date.now()}-${index}-${file.name}`
+        const { data, error } = await supabase.storage
+          .from(bucket)
+          .upload(fileName, file)
+        
+        if (error) {
+          console.error('❌ Upload error:', error)
+          throw error
+        }
+        
+        const { data: publicUrl } = supabase.storage
+          .from(bucket)
+          .getPublicUrl(fileName)
+        
+        return publicUrl.publicUrl
+      })
+      
+      const urls = await Promise.all(uploadPromises)
+      console.log('✅ SupabaseStorageService: Videos uploaded:', urls.length)
+      return urls
+    } catch (error) {
+      console.error('❌ SupabaseStorageService: Upload failed:', error)
+      throw error
+    }
+  }
 }

@@ -142,9 +142,10 @@ export default function UnifiedDashboard() {
   console.log('Dashboard - offers:', offers?.length || 0)
   console.log('Dashboard - deals:', deals?.length || 0)
   
-  const userListings = (listings || []).filter(l => l.sellerId === currentUser?.id)
-  const userOffers = (offers || []).filter(o => o.buyerId === currentUser?.id)
-  const userDeals = (deals || []).filter(d => d.buyerId === currentUser?.id || d.sellerId === currentUser?.id)
+  // Fix: Use the correct property names from Supabase data
+  const userListings = (listings || []).filter(l => l.seller?.id === currentUser?.id)
+  const userOffers = (offers || []).filter(o => o.buyer?.id === currentUser?.id)
+  const userDeals = (deals || []).filter(d => d.buyer?.id === currentUser?.id || d.seller?.id === currentUser?.id)
   
   console.log('Dashboard - userListings:', userListings.length)
   console.log('Dashboard - userOffers:', userOffers.length)
