@@ -29,10 +29,31 @@ export class SupabaseDatabaseService {
       console.log('🔍 SupabaseDatabaseService: Fetching listings...')
       console.log('🔍 SupabaseDatabaseService: Supabase client:', supabase)
       
-      // Simple query first
+      // Query with user join to get real seller data
       const { data, error } = await supabase
         .from('listings')
-        .select('*')
+        .select(`
+          *,
+          users!listings_seller_id_fkey (
+            id,
+            name,
+            email,
+            role,
+            company,
+            location,
+            phone,
+            is_verified,
+            subscription_status,
+            fica_status,
+            rating,
+            total_deals,
+            total_transactions,
+            reputation_score,
+            business_type,
+            created_at,
+            updated_at
+          )
+        `)
         .eq('is_active', true)
         .order('created_at', { ascending: false })
       
@@ -70,22 +91,37 @@ export class SupabaseDatabaseService {
         createdAt: new Date(listing.created_at),
         updatedAt: new Date(listing.updated_at),
         expiresAt: listing.expires_at ? new Date(listing.expires_at) : null,
-        // Mock seller and product data for now
-        seller: {
+        // Real seller data from database
+        seller: listing.users ? {
+          id: listing.users.id,
+          name: listing.users.name,
+          email: listing.users.email,
+          isVerified: listing.users.is_verified || true,
+          location: listing.users.location || listing.location,
+          company: listing.users.company || 'Farm',
+          phone: listing.users.phone || '+27123456789',
+          rating: listing.users.rating || 4.5,
+          totalDeals: listing.users.total_deals || 0,
+          totalTransactions: listing.users.total_transactions || 0,
+          reputationScore: listing.users.reputation_score || 85,
+          businessType: listing.users.business_type || 'farm',
+          subscriptionStatus: listing.users.subscription_status || 'basic',
+          ficaStatus: listing.users.fica_status || 'pending'
+        } : {
           id: listing.seller_id,
-          name: 'Demo Seller',
-          email: 'seller@demo.com',
-          isVerified: true,
+          name: 'Unknown Seller',
+          email: 'unknown@farm.com',
+          isVerified: false,
           location: listing.location,
-          company: 'Demo Farm',
+          company: 'Farm',
           phone: '+27123456789',
-          rating: 4.5,
-          totalDeals: 10,
-          totalTransactions: 50,
-          reputationScore: 85,
+          rating: 0,
+          totalDeals: 0,
+          totalTransactions: 0,
+          reputationScore: 0,
           businessType: 'farm',
-          subscriptionStatus: 'premium',
-          ficaStatus: 'verified'
+          subscriptionStatus: 'basic',
+          ficaStatus: 'pending'
         },
         product: {
           id: listing.product_id,
@@ -115,7 +151,28 @@ export class SupabaseDatabaseService {
       
       const { data, error } = await supabase
         .from('listings')
-        .select('*')
+        .select(`
+          *,
+          users!listings_seller_id_fkey (
+            id,
+            name,
+            email,
+            role,
+            company,
+            location,
+            phone,
+            is_verified,
+            subscription_status,
+            fica_status,
+            rating,
+            total_deals,
+            total_transactions,
+            reputation_score,
+            business_type,
+            created_at,
+            updated_at
+          )
+        `)
         .eq('id', id)
         .eq('is_active', true)
         .single()
@@ -152,22 +209,37 @@ export class SupabaseDatabaseService {
         createdAt: new Date(data.created_at),
         updatedAt: new Date(data.updated_at),
         expiresAt: data.expires_at ? new Date(data.expires_at) : null,
-        // Mock seller and product data for now
-        seller: {
+        // Real seller data from database
+        seller: data.users ? {
+          id: data.users.id,
+          name: data.users.name,
+          email: data.users.email,
+          isVerified: data.users.is_verified || true,
+          location: data.users.location || data.location,
+          company: data.users.company || 'Farm',
+          phone: data.users.phone || '+27123456789',
+          rating: data.users.rating || 4.5,
+          totalDeals: data.users.total_deals || 0,
+          totalTransactions: data.users.total_transactions || 0,
+          reputationScore: data.users.reputation_score || 85,
+          businessType: data.users.business_type || 'farm',
+          subscriptionStatus: data.users.subscription_status || 'basic',
+          ficaStatus: data.users.fica_status || 'pending'
+        } : {
           id: data.seller_id,
-          name: 'Demo Seller',
-          email: 'seller@demo.com',
-          isVerified: true,
+          name: 'Unknown Seller',
+          email: 'unknown@farm.com',
+          isVerified: false,
           location: data.location,
-          company: 'Demo Farm',
+          company: 'Farm',
           phone: '+27123456789',
-          rating: 4.5,
-          totalDeals: 10,
-          totalTransactions: 50,
-          reputationScore: 85,
+          rating: 0,
+          totalDeals: 0,
+          totalTransactions: 0,
+          reputationScore: 0,
           businessType: 'farm',
-          subscriptionStatus: 'premium',
-          ficaStatus: 'verified'
+          subscriptionStatus: 'basic',
+          ficaStatus: 'pending'
         },
         product: {
           id: data.product_id,
@@ -232,7 +304,19 @@ export class SupabaseDatabaseService {
         console.error('❌ SupabaseDatabaseService: Error fetching offers:', error)
       }
       
-      return { data: data || [], error }
+      // Transform the data to match frontend expectations
+      const transformedData = (data || []).map(offer => ({
+        ...offer,
+        buyerId: offer.buyer_id, // Map buyer_id to buyerId
+        listingId: offer.listing_id, // Map listing_id to listingId
+        buyer: offer.users,
+        listing: offer.listings,
+        createdAt: new Date(offer.created_at),
+        updatedAt: new Date(offer.updated_at),
+        expiresAt: offer.expires_at ? new Date(offer.expires_at) : null
+      }))
+      
+      return { data: transformedData, error }
     } catch (error) {
       console.error('❌ SupabaseDatabaseService: Exception fetching offers:', error)
       return { data: [], error }
@@ -240,8 +324,51 @@ export class SupabaseDatabaseService {
   }
 
   static async createOffer(offer: any) {
-    // Stub implementation
-    return { data: null, error: null }
+    try {
+      console.log('🔍 SupabaseDatabaseService: Creating offer...', offer)
+      
+      // First, get the listing to find the seller_id
+      const { data: listing, error: listingError } = await supabase
+        .from('listings')
+        .select('seller_id')
+        .eq('id', offer.listingId)
+        .single()
+      
+      if (listingError || !listing) {
+        console.error('❌ SupabaseDatabaseService: Error fetching listing:', listingError)
+        return { data: null, error: listingError }
+      }
+      
+      // Now create the offer with seller_id included (for database triggers)
+      const { data, error } = await supabase
+        .from('offers')
+        .insert({
+          listing_id: offer.listingId,
+          buyer_id: offer.buyerId,
+          seller_id: listing.seller_id, // Include seller_id for triggers
+          price: offer.price,
+          quantity: offer.quantity,
+          message: offer.message,
+          delivery_type: offer.deliveryType,
+          delivery_address: offer.deliveryAddress,
+          terms: offer.terms || 'Standard terms apply',
+          status: 'pending',
+          expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days from now
+          is_negotiable: true
+        })
+        .select()
+        .single()
+      
+      console.log('🔍 SupabaseDatabaseService: Created offer:', data?.id || 'No ID')
+      if (error) {
+        console.error('❌ SupabaseDatabaseService: Error creating offer:', error)
+      }
+      
+      return { data, error }
+    } catch (error) {
+      console.error('❌ SupabaseDatabaseService: Exception creating offer:', error)
+      return { data: null, error }
+    }
   }
 
   static async updateOffer(id: string, updates: any) {
@@ -263,8 +390,61 @@ export class SupabaseAuthService {
   static async getCurrentUser() {
     try {
       const { data: { user }, error } = await supabase.auth.getUser()
-      return user
+      
+      if (error || !user) {
+        console.log('❌ No authenticated user found')
+        return null
+      }
+      
+      console.log('🔍 Getting user profile for:', user.email)
+      
+      // Get full user profile from database
+      const { data: profile, error: profileError } = await supabase
+        .from('users')
+        .select('*')
+        .eq('email', user.email)
+        .single()
+      
+      if (profileError) {
+        console.log('❌ Profile lookup error:', profileError.message)
+        return null
+      }
+      
+      if (!profile) {
+        console.log('❌ No profile found for user:', user.email)
+        return null
+      }
+      
+      console.log('✅ Found user profile:', profile.name)
+      
+      // Transform to match frontend User interface
+      const transformedUser = {
+        id: profile.id,
+        email: profile.email,
+        name: profile.name,
+        role: profile.role,
+        roles: [profile.role],
+        capabilities: profile.capabilities && profile.capabilities.length > 0 ? profile.capabilities : (profile.role === 'seller' ? ['sell', 'buy'] : profile.role === 'buyer' ? ['buy'] : profile.role === 'transporter' ? ['transport'] : ['buy']),
+        company: profile.company || '',
+        location: profile.location || '',
+        phone: profile.phone || '',
+        avatar: profile.avatar || '',
+        isVerified: profile.is_verified || false,
+        subscriptionStatus: profile.subscription_status || 'free',
+        ficaStatus: profile.fica_status || 'pending',
+        ficaDocuments: profile.fica_documents || {},
+        rating: profile.rating || 0,
+        totalDeals: profile.total_deals || 0,
+        totalTransactions: profile.total_transactions || 0,
+        reputationScore: profile.reputation_score || 0,
+        businessType: profile.business_type || 'individual',
+        createdAt: new Date(profile.created_at),
+        updatedAt: new Date(profile.updated_at)
+      }
+      
+      return transformedUser
     } catch (error) {
+      console.error('❌ getCurrentUser error:', error)
       return null
     }
   }

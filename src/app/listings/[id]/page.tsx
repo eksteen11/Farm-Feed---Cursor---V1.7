@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { useSupabaseStore } from '@/store/useSupabaseStore'
-import { supabase } from '@/shared/api/supabase'
+import { supabase, SupabaseDatabaseService } from '@/shared/api/supabase'
 import { mockListings } from '@/shared/utils/mockData'
 import { Card, CardContent, CardTitle } from '@/shared/ui/Card'
 import Button from '@/shared/ui/Button'
@@ -45,6 +45,11 @@ export default function ListingDetailPage() {
   const [listing, setListing] = useState<any>(null)
   const [showOfferModal, setShowOfferModal] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+
+  const handleOfferCreated = () => {
+    setShowOfferModal(false)
+    toast.success('Offer created successfully!')
+  }
 
   useEffect(() => {
     const fetchListing = async () => {

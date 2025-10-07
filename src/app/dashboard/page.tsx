@@ -99,7 +99,7 @@ const DASHBOARD_SECTIONS = [
 ]
 
 export default function UnifiedDashboard() {
-  const { currentUser, listings, offers, deals, transportRequests, transportQuotes, getCurrentUser, initializeData, fetchListings } = useSupabaseStore()
+  const { currentUser, listings, offers, deals, transportRequests, transportQuotes, getCurrentUser, initializeData, fetchListings, fetchOffers } = useSupabaseStore()
   const [isClient, setIsClient] = useState(false)
   
   // Debug logging
@@ -112,11 +112,26 @@ export default function UnifiedDashboard() {
     // Initialize user data when component mounts
     const initUser = async () => {
       console.log('🏠 Dashboard: Initializing user data...')
+      
+      // Force refresh current user data
       const user = await getCurrentUser()
       console.log('🏠 Dashboard: Current user:', user ? user.name : 'No user')
-      await initializeData()
-      await fetchListings() // Fetch all listings
-      console.log('🏠 Dashboard: Fetched listings:', listings.length)
+      console.log('🏠 Dashboard: User capabilities:', user?.capabilities)
+      
+      if (user) {
+        await initializeData()
+        await fetchListings() // Fetch all listings
+        await fetchOffers() // Fetch all offers
+        
+        // Force refresh the store state
+        const { offers: refreshedOffers } = useSupabaseStore.getState()
+        console.log('🏠 Dashboard: Fetched listings:', listings.length)
+        console.log('🏠 Dashboard: Fetched offers:', offers.length)
+        console.log('🏠 Dashboard: Refreshed offers:', refreshedOffers.length)
+      } else {
+        console.log('❌ Dashboard: No user found, redirecting to login')
+        window.location.href = '/login'
+      }
     }
     initUser()
   }, [])
@@ -144,11 +159,27 @@ export default function UnifiedDashboard() {
   
   // Fix: Use the correct property names from Supabase data
   const userListings = (listings || []).filter(l => l.seller?.id === currentUser?.id)
-  const userOffers = (offers || []).filter(o => o.buyer?.id === currentUser?.id)
-  const userDeals = (deals || []).filter(d => d.buyer?.id === currentUser?.id || d.seller?.id === currentUser?.id)
+  
+  // For buyers: show offers they made
+  const myOffers = (offers || []).filter(o => o.buyerId === currentUser?.id)
+  // For sellers: show offers they received (need to cross-reference with listings)
+  const receivedOffers = (offers || []).filter(o => {
+    const listing = listings?.find(l => l.id === o.listingId)
+    return listing?.seller?.id === currentUser?.id
+  })
+  
+  const userDeals = (deals || []).filter(d => d.buyerId === currentUser?.id || d.sellerId === currentUser?.id)
+  
+  // Force debug the data
+  console.log('🔍 DEBUG - Current user ID:', currentUser?.id)
+  console.log('🔍 DEBUG - Total offers:', offers?.length || 0)
+  console.log('🔍 DEBUG - My offers:', myOffers.length)
+  console.log('🔍 DEBUG - Received offers:', receivedOffers.length)
+  console.log('🔍 DEBUG - First offer:', offers?.[0])
   
   console.log('Dashboard - userListings:', userListings.length)
-  console.log('Dashboard - userOffers:', userOffers.length)
+  console.log('Dashboard - myOffers:', myOffers.length)
+  console.log('Dashboard - receivedOffers:', receivedOffers.length)
   console.log('Dashboard - userDeals:', userDeals.length)
 
   const formatDate = (date: Date) => {
@@ -192,12 +223,12 @@ export default function UnifiedDashboard() {
 
   const dashboardStats = {
     totalListings: userListings.length,
-    totalOffers: userOffers.length,
+    totalOffers: myOffers.length + receivedOffers.length,
     totalDeals: userDeals.length,
     totalTransportRequests: userTransportRequests.length,
     totalTransportQuotes: userTransportQuotes.length,
     activeListings: userListings.filter(l => l.isActive).length,
-    pendingOffers: userOffers.filter(o => o.status === 'pending').length,
+    pendingOffers: myOffers.filter(o => o.status === 'pending').length + receivedOffers.filter(o => o.status === 'pending').length,
     completedDeals: userDeals.filter(d => d.status === 'completed').length
   }
 
@@ -252,18 +283,20 @@ export default function UnifiedDashboard() {
             </CardContent>
           </Card>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Pending Offers</CardTitle>
-              <Clock className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{dashboardStats.pendingOffers}</div>
-              <p className="text-xs text-muted-foreground">
-                {dashboardStats.totalOffers} offers made
-              </p>
-            </CardContent>
-          </Card>
+          <Link href="/dashboard/offers">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Pending Offers</CardTitle>
+                <Clock className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{dashboardStats.pendingOffers}</div>
+                <p className="text-xs text-muted-foreground">
+                  {dashboardStats.totalOffers} total offers
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -366,7 +399,7 @@ export default function UnifiedDashboard() {
                     <span className="text-sm text-gray-500">R{listing.price}/ton</span>
                   </div>
                 ))}
-                {userOffers.slice(0, 2).map((offer) => (
+                {myOffers.slice(0, 2).map((offer) => (
                   <div key={offer.id} className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
                     <ShoppingCart className="h-5 w-5 text-gray-400" />
                     <div className="flex-1">

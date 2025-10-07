@@ -18,6 +18,7 @@ import {
   Truck,
   BarChart3,
   CreditCard,
+  MessageCircle,
   ShieldCheck,
   CheckCircle,
   FileText,
@@ -155,12 +156,10 @@ const Navigation: React.FC = () => {
                             My Listings
                           </Link>
                         )}
-                        {currentUser.capabilities?.includes('buy') && (
-                          <Link href="/dashboard/offers" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            <ShoppingCart className="w-4 h-4 mr-3" />
-                            My Offers
-                          </Link>
-                        )}
+                        <Link href="/dashboard/offers" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                          <ShoppingCart className="w-4 h-4 mr-3" />
+                          Offers
+                        </Link>
                         {currentUser.capabilities?.includes('transport') && (
                           <Link href="/dashboard/transport" className="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                             <Truck className="w-4 h-4 mr-3" />
