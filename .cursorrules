@@ -1,0 +1,435 @@
+# Farm Feed - Cursor AI Development Rules
+
+## 🎯 PROJECT OVERVIEW
+Farm Feed is a unified South African agricultural trading platform built with Next.js 14, TypeScript, Tailwind CSS, and Supabase. The platform enables users to sell, buy, AND transport from a single account - a unified user system that matches real farming practices.
+
+## 🏗️ ARCHITECTURE & STRUCTURE
+
+### Tech Stack
+- **Framework**: Next.js 14 (App Router)
+- **Language**: TypeScript (strict mode)
+- **Styling**: Tailwind CSS with custom design system
+- **Database**: Supabase (PostgreSQL)
+- **State Management**: Zustand + React Query
+- **UI Components**: Custom components + shadcn/ui patterns
+- **Icons**: Lucide React
+- **Notifications**: React Hot Toast
+- **Forms**: React Hook Form + Zod validation
+
+### Project Structure (Feature-Sliced Design)
+```
+src/
+├── app/              # Next.js app router (pages & routes)
+├── entities/         # Business entities (User, Listing, Offer)
+├── features/         # Feature modules (deals, fica, offers, transport, etc.)
+├── shared/           # Shared utilities, UI components, API clients
+│   ├── api/         # API client utilities
+│   ├── config/      # Environment config
+│   ├── ui/          # Reusable UI components
+│   └── utils/       # Helper functions
+├── store/           # Zustand stores
+└── types/           # TypeScript type definitions
+```
+
+### Path Aliases (Use these consistently)
+- `@/*` - src directory
+- `@/shared/*` - shared utilities and components  
+- `@/entities/*` - business entities
+- `@/features/*` - feature modules
+
+## 🎨 DESIGN SYSTEM RULES
+
+### Color Palette (STRICT - Two-Color System)
+**Primary Colors:**
+- Forest Green: `#3D693D` (primary-500) - Main brand, CTAs, success states
+- Harvest Red: `#DB4A39` (secondary-500) - Alerts, urgency, secondary actions
+
+**Neutral Palette:**
+- White: `#FFFFFF` - Backgrounds, cards
+- Charcoal: `#1F2937` - Primary text, headings
+- Gray Scale: 50, 100, 200, 300, 400, 500, 600, 700, 800 - Hierarchy
+
+**DO NOT:**
+- Add new brand colors without brand guide approval
+- Use primary green for body text or headings
+- Apply gradients to buttons or form inputs
+- Mix other color systems
+
+### Typography
+- **Headlines**: Poppins (400-800 weights)
+- **Body Text**: Inter (300-700 weights)
+- **Hierarchy**: .text-display, .text-headline, .text-title, .text-body, .text-caption
+- **Always import fonts**: Already configured in globals.css
+
+### Component Patterns
+**Buttons (3 variants only):**
+- `.btn-primary` - Main actions (Forest Green background)
+- `.btn-secondary` - Alternative actions (White with border)
+- `.btn-ghost` - Subtle actions (Transparent)
+
+**Cards:**
+- `.card` - Standard white card with shadow
+- `.card-premium` - Enhanced shadow and hover effect
+- `.premium-card-elevated` - Full premium treatment
+
+**Forms:**
+- `.input-field` - Consistent input styling
+- Always use Zod validation
+- Always use React Hook Form
+
+### Spacing & Layout
+- Use Tailwind spacing scale (4, 8, 12, 16, 24, 32, 48, 64)
+- `.space-section` (48px/12) - Between major sections
+- `.space-content` (32px/8) - Between content groups
+- `.space-elements` (24px/6) - Between related elements
+
+## 💾 DATABASE & API RULES
+
+### Supabase Connection
+- **Always use**: Environment variables from `@/shared/config/env.ts`
+- **Client**: Use `@supabase/ssr` for server components
+- **Client**: Use `@supabase/supabase-js` for client components
+- **Never**: Hardcode URLs or API keys
+
+### API Routes Pattern
+```typescript
+// app/api/[feature]/[action]/route.ts
+import { NextRequest, NextResponse } from 'next/server'
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json()
+    // Validate with Zod
+    // Process request
+    return NextResponse.json({ success: true, data: result })
+  } catch (error) {
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 })
+  }
+}
+```
+
+### Type Safety
+- **Always**: Import types from `@/types`
+- **Always**: Use TypeScript strict mode
+- **Never**: Use `any` type (use `unknown` if needed)
+- **Always**: Validate API responses with Zod
+
+## 🚀 FEATURES & BUSINESS LOGIC
+
+### Unified User System (CRITICAL)
+- Every user can: SELL + BUY + TRANSPORT from one account
+- User has `capabilities: UserCapability[]` array
+- Check capabilities: `canUserPerformAction(user, 'sell')`
+- Dashboard shows sections based on user capabilities
+
+### Subscription Model
+- **Free**: 1 listing, 3 offers/month, 1 transport request/month
+- **Basic** (R10/month): Unlimited everything, chat access
+- **Premium** (R25/month): + Advanced analytics, priority support, documents
+- **Enterprise** (R50/month): + Route optimization, backload matching
+
+### Revenue Model
+- Platform fee: R1/ton on product transactions
+- Transport fee: R300 split (R150 buyer, R150 seller)
+- Backload booking: R50 fee
+
+### Core Workflows
+1. **Product Trading**: Listing → Offer → Counter-Offer → Deal → Contract → Payment
+2. **Transport**: Request → Quote → Accept → Pickup → Delivery → Confirmation
+3. **Backload**: Empty truck route → Booking → Transport → Completion
+
+## 🔒 SECURITY & VALIDATION
+
+### Authentication
+- Use Supabase Auth for all authentication
+- Protect routes with middleware or server-side checks
+- Store user session in Zustand store
+
+### FICA Verification
+- Required for: Creating listings, making offers, transport quotes
+- Status: 'pending' | 'verified' | 'rejected'
+- Documents: ID, bank statement, entity registration, tax clearance
+
+### Row Level Security (RLS)
+- All Supabase tables must have RLS policies
+- Users can only access their own data
+- Admin role has full access
+
+## 📝 CODE STYLE & BEST PRACTICES
+
+### Component Structure
+```typescript
+'use client' // Only if needed
+
+import { useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
+import { Button } from '@/shared/ui/Button'
+import type { User } from '@/types'
+
+interface ComponentProps {
+  user: User
+  onAction: () => void
+}
+
+export function Component({ user, onAction }: ComponentProps) {
+  // 1. State
+  const [isLoading, setIsLoading] = useState(false)
+  
+  // 2. Queries/Mutations
+  const { data } = useQuery({ queryKey: ['key'], queryFn: fetchData })
+  
+  // 3. Handlers
+  const handleClick = () => {
+    onAction()
+  }
+  
+  // 4. Render
+  return (
+    <div className="space-elements">
+      {/* JSX */}
+    </div>
+  )
+}
+```
+
+### Naming Conventions
+- **Components**: PascalCase (`UserProfile.tsx`)
+- **Functions**: camelCase (`getUserData`)
+- **Constants**: UPPER_SNAKE_CASE (`API_BASE_URL`)
+- **Types/Interfaces**: PascalCase (`User`, `ListingProps`)
+- **Files**: kebab-case for utilities (`format-currency.ts`)
+
+### Import Order
+1. React/Next.js imports
+2. Third-party libraries
+3. Internal components (@/shared, @/features)
+4. Types
+5. Relative imports
+
+### Error Handling
+```typescript
+try {
+  // Operation
+} catch (error) {
+  console.error('Descriptive error message:', error)
+  toast.error('User-friendly error message')
+  // Handle gracefully
+}
+```
+
+## 🧪 TESTING & QUALITY
+
+### Before Committing
+- [ ] Run `npm run typecheck` - No TypeScript errors
+- [ ] Run `npm run lint` - No ESLint errors
+- [ ] Test in browser - No console errors
+- [ ] Test responsive design - Mobile, tablet, desktop
+- [ ] Check accessibility - Keyboard navigation, screen readers
+
+### Code Quality Rules
+- **Max file length**: 300 lines (split if longer)
+- **Max function length**: 50 lines (extract if longer)
+- **Component complexity**: Extract logic to custom hooks if complex
+- **DRY principle**: Don't repeat yourself - extract reusable logic
+
+## 🎯 FEATURE-SPECIFIC RULES
+
+### Listings
+- Must have: title, description, price, quantity, location, images
+- Optional: videos, certificates, lab results, specifications
+- Quality grades: A, B, C, D
+- Delivery options: ex-farm, delivered, own transport
+
+### Offers
+- Buyer makes offer with: price, quantity, delivery type
+- Seller can: accept, reject, counter-offer
+- Status: pending → accepted/rejected/counter-offered
+- Expires after 7 days if not responded
+
+### Deals
+- Created automatically when offer accepted
+- Generates: Contract (PDF), Invoice (PDF)
+- Sends: Email notifications to all parties
+- Payment status: pending → paid → completed
+
+### Transport
+- Auto-generates transport request for delivered orders
+- Transporters submit quotes with: price, duration, vehicle type
+- Backload listings: Empty truck routes with available capacity
+- Route optimization for Enterprise users
+
+### Messaging
+- Listing-specific message threads
+- Email notifications for new messages
+- Real-time updates (future: WebSocket)
+
+## 🚫 DO NOT (CRITICAL)
+
+### Code
+- ❌ Don't use `any` type
+- ❌ Don't hardcode environment variables
+- ❌ Don't bypass TypeScript strict mode
+- ❌ Don't create inline styles (use Tailwind)
+- ❌ Don't skip error handling
+- ❌ Don't commit console.logs
+- ❌ Don't use deprecated APIs
+
+### Design
+- ❌ Don't add new colors without brand approval
+- ❌ Don't use different fonts than Inter/Poppins
+- ❌ Don't create custom shadows (use design system)
+- ❌ Don't break spacing scale
+- ❌ Don't apply gradients to buttons/inputs
+
+### Architecture
+- ❌ Don't mix server/client components incorrectly
+- ❌ Don't put business logic in components
+- ❌ Don't create circular dependencies
+- ❌ Don't bypass path aliases
+- ❌ Don't create duplicate utilities
+
+## ✅ DO (BEST PRACTICES)
+
+### Code
+- ✅ Use TypeScript strict mode always
+- ✅ Validate all inputs with Zod
+- ✅ Use path aliases (@/shared, @/features)
+- ✅ Extract complex logic to utilities
+- ✅ Use React Query for data fetching
+- ✅ Handle loading and error states
+- ✅ Add meaningful comments for complex logic
+
+### Design
+- ✅ Use design system classes (.btn-primary, .card, etc.)
+- ✅ Follow two-color brand system (Forest Green + Harvest Red)
+- ✅ Maintain consistent spacing
+- ✅ Test responsive design (mobile-first)
+- ✅ Ensure accessibility (WCAG 2.1 AA)
+
+### Architecture
+- ✅ Follow feature-sliced design structure
+- ✅ Keep components small and focused
+- ✅ Use custom hooks for reusable logic
+- ✅ Implement proper error boundaries
+- ✅ Use server components by default
+- ✅ Add 'use client' only when needed
+
+## 📦 DEPENDENCIES
+
+### Core (Don't Remove)
+- next@14.0.4
+- react@18.2.0
+- typescript@5.3.3
+- @supabase/supabase-js@2.58.0
+- tailwindcss@3.3.6
+- zustand@4.4.7
+- @tanstack/react-query@5.90.2
+
+### UI/UX
+- lucide-react (icons)
+- react-hot-toast (notifications)
+- framer-motion (animations)
+- react-hook-form + zod (forms)
+
+### Before Adding New Dependencies
+1. Check if functionality exists in current stack
+2. Consider bundle size impact
+3. Check maintenance status
+4. Document why it's needed
+
+## 🔄 GIT WORKFLOW
+
+### Commit Messages
+```
+feat: Add backload listing creation
+fix: Resolve offer notification bug  
+refactor: Extract transport calculation logic
+style: Update button hover states
+docs: Add API documentation
+```
+
+### Branch Strategy
+- `master` - Production
+- `develop` - Development
+- `feature/*` - New features
+- `fix/*` - Bug fixes
+
+## 🚀 DEPLOYMENT
+
+### Environment Variables Required
+```bash
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY= (optional)
+```
+
+### Build Checklist
+- [ ] All TypeScript errors resolved
+- [ ] All ESLint warnings addressed
+- [ ] Environment variables configured
+- [ ] Database migrations applied
+- [ ] RLS policies enabled
+- [ ] Error tracking configured
+
+## 📚 DOCUMENTATION
+
+### Always Document
+- New API routes (purpose, request/response)
+- Complex business logic (why, not just what)
+- Database schema changes
+- Environment variable changes
+- Breaking changes
+
+### Code Comments
+```typescript
+// ❌ Bad: Increment counter
+count++
+
+// ✅ Good: Track active user sessions for analytics dashboard
+activeUserSessions++
+
+// ✅ Good: Calculate platform fee (R1/ton as per pricing model)
+const platformFee = quantity * 1
+```
+
+## 🎯 PRIORITY FEATURE ROADMAP
+
+### ✅ Phase 1: COMPLETE
+- Unified user system
+- Enhanced listings (images, videos, certificates)
+- Offer system
+- Deal management
+- Transport integration
+- Document generation
+
+### 🔄 Phase 2: IN PROGRESS  
+- Payment integration (Paystack)
+- Real-time messaging (WebSocket)
+- Advanced analytics
+
+### ❌ Phase 3: PLANNED
+- Digital signatures
+- Rating/review system
+- Mobile app (React Native)
+- AI price predictions
+
+---
+
+## 🤖 CURSOR AI INSTRUCTIONS
+
+When working on this project:
+1. Always check types in `src/types/index.ts`
+2. Follow the design system in `design-system.json`
+3. Use brand colors from `BRAND_GUIDE.md`
+4. Reference workflows in `COMPREHENSIVE_WORKFLOW_MATRIX.md`
+5. Check blueprint in `BLUEPRINT.md` for system architecture
+6. Never create files outside the established structure
+7. Always validate against TypeScript strict mode
+8. Maintain backward compatibility with unified user system
+9. Test changes across buyer, seller, transporter roles
+10. Ensure mobile responsiveness for all components
+
+**Remember**: Farm Feed uses a UNIFIED USER SYSTEM where every user can sell, buy, AND transport from ONE account. This is not a role-based system - it's a capability-based system. Always check user capabilities, not roles.
+
+

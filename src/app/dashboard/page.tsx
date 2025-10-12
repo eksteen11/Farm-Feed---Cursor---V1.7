@@ -102,34 +102,18 @@ export default function UnifiedDashboard() {
   const { currentUser, listings, offers, deals, transportRequests, transportQuotes, getCurrentUser, initializeData, fetchListings, fetchOffers } = useSupabaseStore()
   const [isClient, setIsClient] = useState(false)
   
-  // Debug logging
-  console.log('Dashboard - currentUser:', currentUser)
-  console.log('Dashboard - currentUser.name:', currentUser?.name)
-  console.log('Dashboard - currentUser.email:', currentUser?.email)
-  
   useEffect(() => {
     setIsClient(true)
     // Initialize user data when component mounts
     const initUser = async () => {
-      console.log('🏠 Dashboard: Initializing user data...')
-      
       // Force refresh current user data
       const user = await getCurrentUser()
-      console.log('🏠 Dashboard: Current user:', user ? user.name : 'No user')
-      console.log('🏠 Dashboard: User capabilities:', user?.capabilities)
       
       if (user) {
         await initializeData()
         await fetchListings() // Fetch all listings
         await fetchOffers() // Fetch all offers
-        
-        // Force refresh the store state
-        const { offers: refreshedOffers } = useSupabaseStore.getState()
-        console.log('🏠 Dashboard: Fetched listings:', listings.length)
-        console.log('🏠 Dashboard: Fetched offers:', offers.length)
-        console.log('🏠 Dashboard: Refreshed offers:', refreshedOffers.length)
       } else {
-        console.log('❌ Dashboard: No user found, redirecting to login')
         window.location.href = '/login'
       }
     }
@@ -151,12 +135,6 @@ export default function UnifiedDashboard() {
 
   const userCapabilities = getUserCapabilities(currentUser)
   
-  // Debug logging
-  console.log('Dashboard - currentUser.id:', currentUser?.id)
-  console.log('Dashboard - listings:', listings?.length || 0)
-  console.log('Dashboard - offers:', offers?.length || 0)
-  console.log('Dashboard - deals:', deals?.length || 0)
-  
   // Fix: Use the correct property names from Supabase data
   const userListings = (listings || []).filter(l => l.seller?.id === currentUser?.id)
   
@@ -171,16 +149,6 @@ export default function UnifiedDashboard() {
   const userDeals = (deals || []).filter(d => d.buyerId === currentUser?.id || d.sellerId === currentUser?.id)
   
   // Force debug the data
-  console.log('🔍 DEBUG - Current user ID:', currentUser?.id)
-  console.log('🔍 DEBUG - Total offers:', offers?.length || 0)
-  console.log('🔍 DEBUG - My offers:', myOffers.length)
-  console.log('🔍 DEBUG - Received offers:', receivedOffers.length)
-  console.log('🔍 DEBUG - First offer:', offers?.[0])
-  
-  console.log('Dashboard - userListings:', userListings.length)
-  console.log('Dashboard - myOffers:', myOffers.length)
-  console.log('Dashboard - receivedOffers:', receivedOffers.length)
-  console.log('Dashboard - userDeals:', userDeals.length)
 
   const formatDate = (date: Date) => {
     if (!isClient) return 'Loading...'

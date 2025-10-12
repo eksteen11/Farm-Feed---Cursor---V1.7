@@ -181,11 +181,7 @@ export const useSupabaseStore = create<SupabaseAppState>()(
         set({ isLoading: true, error: null })
         
         try {
-          console.log('📝 Store: Attempting registration with:', { email: userData.email, name: userData.name })
-          
           const result = await SupabaseAuthService.signUp(userData.email!, password, userData)
-          
-          console.log('📝 Store: Registration result:', result)
           
           if (result.user && !result.error) {
             // Try to get the full user profile from the database
@@ -196,8 +192,7 @@ export const useSupabaseStore = create<SupabaseAppState>()(
               .single()
             
             if (profileError) {
-              console.error('❌ Store: Error fetching user profile:', profileError)
-              console.log('⚠️ Store: Using auth user data instead')
+              console.error('Store: Error fetching user profile:', profileError)
               
               // If we can't get the profile, use the auth user data
               const authUser = {
@@ -229,7 +224,6 @@ export const useSupabaseStore = create<SupabaseAppState>()(
                 isAuthenticated: true, 
                 isLoading: false 
               })
-              console.log('✅ Store: Registration successful with auth user data')
               return true
             }
             
@@ -238,10 +232,9 @@ export const useSupabaseStore = create<SupabaseAppState>()(
               isAuthenticated: true, 
               isLoading: false 
             })
-            console.log('✅ Store: Registration successful, user logged in')
             return true
           } else {
-            console.error('❌ Store: Registration failed:', result.error)
+            console.error('Store: Registration failed:', result.error)
             set({ 
               error: result.error || 'Registration failed', 
               isLoading: false 
@@ -249,7 +242,7 @@ export const useSupabaseStore = create<SupabaseAppState>()(
             return false
           }
         } catch (error: any) {
-          console.error('❌ Store: Registration error:', error)
+          console.error('Store: Registration error:', error)
           set({ 
             error: error.message || 'Registration failed', 
             isLoading: false 
@@ -260,7 +253,6 @@ export const useSupabaseStore = create<SupabaseAppState>()(
 
       logout: async () => {
         try {
-          console.log('🚪 Logging out user...')
           await SupabaseAuthService.signOut()
           
           // Clear all data and reset state
@@ -283,10 +275,8 @@ export const useSupabaseStore = create<SupabaseAppState>()(
             users: [],
             error: null
           })
-          
-          console.log('✅ User logged out successfully')
         } catch (error: any) {
-          console.error('❌ Logout error:', error)
+          console.error('Logout error:', error)
           set({ error: error.message })
         }
       },
@@ -676,8 +666,6 @@ export const useSupabaseStore = create<SupabaseAppState>()(
           const { data: { session } } = await supabase.auth.getSession()
           
           if (session?.user) {
-            console.log('🔄 Found existing session for user:', session.user.email)
-            
             // Get the user profile from our database
             const { data: profile, error } = await supabase
               .from('users')
@@ -687,7 +675,7 @@ export const useSupabaseStore = create<SupabaseAppState>()(
             
             if (error && error.code !== 'PGRST116') {
               // PGRST116 means no rows found, which is okay for new users
-              console.error('❌ Error fetching user profile:', error)
+              console.error('Error fetching user profile:', error)
               // Don't clear the session immediately - the user might be newly registered
               // Just use the auth user data for now
               const authUser = {
@@ -719,7 +707,6 @@ export const useSupabaseStore = create<SupabaseAppState>()(
                 isAuthenticated: true, 
                 isLoading: false 
               })
-              console.log('✅ Session restored with auth user data for:', session.user.email)
               return
             }
             
@@ -729,7 +716,6 @@ export const useSupabaseStore = create<SupabaseAppState>()(
                 isAuthenticated: true, 
                 isLoading: false 
               })
-              console.log('✅ Session restored for:', profile.name)
             } else {
               // No profile found but session exists - use auth user data
               const authUser = {
@@ -761,10 +747,8 @@ export const useSupabaseStore = create<SupabaseAppState>()(
                 isAuthenticated: true, 
                 isLoading: false 
               })
-              console.log('✅ Session restored with auth user data for:', session.user.email)
             }
           } else {
-            console.log('ℹ️ No existing session found')
             set({ 
               currentUser: null, 
               isAuthenticated: false, 
@@ -772,7 +756,7 @@ export const useSupabaseStore = create<SupabaseAppState>()(
             })
           }
         } catch (error: any) {
-          console.error('❌ Session initialization error:', error)
+          console.error('Session initialization error:', error)
           set({ 
             currentUser: null, 
             isAuthenticated: false, 

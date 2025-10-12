@@ -1,16 +1,30 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/shared/api/supabase'
+import { createClient } from '@supabase/supabase-js'
+
+// Create admin client for bypassing RLS
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  }
+)
 
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const offerId = params.id
+    // Strip any prefix from the ID (e.g., "received-" or "made-")
+    const offerId = params.id.replace(/^(received-|made-)/, '')
     const body = await request.json()
     const { reason } = body
     
-    console.log('🔍 Rejecting offer:', offerId)
+    console.log('🔍 Rejecting offer:', offerId, '(original:', params.id, ')')
     
     // Get the offer details first
     const { data: offer, error: offerError } = await supabase
@@ -47,7 +61,7 @@ export async function POST(
     }
     
     // Update offer status to rejected
-    const { error: updateError } = await supabase
+    const { error: updateError } = await supabaseAdmin
       .from('offers')
       .update({ 
         status: 'rejected',

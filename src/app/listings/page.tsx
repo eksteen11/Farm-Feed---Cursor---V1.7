@@ -39,58 +39,34 @@ export default function ListingsPage() {
 
   // Load listings from Supabase on component mount
   useEffect(() => {
-    console.log('🔄 useEffect triggered, loading listings...')
     loadListings()
   }, [])
 
   const loadListings = async () => {
     setIsLoading(true)
     try {
-      console.log('🔄 Loading listings from Supabase...')
-      console.log('🔄 SupabaseDatabaseService:', SupabaseDatabaseService)
-      
-      // Test API call first
-      console.log('🔄 Testing API call...')
-      const apiResponse = await fetch('/api/test-supabase')
-      const apiData = await apiResponse.json()
-      console.log('🔄 API test result:', apiData)
-      
-      // Load from Supabase service
-      console.log('🔄 Calling SupabaseDatabaseService.getListings()...')
       const { data, error } = await SupabaseDatabaseService.getListings()
       
-      console.log('🔄 SupabaseDatabaseService result:', { data: data?.length || 0, error })
-      
       if (error) {
-        console.error('❌ Supabase error:', error)
+        console.error('Error loading listings:', error)
         toast.error('Failed to load listings from database')
         setListings([])
         return
       }
       
-      console.log('✅ Supabase listings loaded:', data?.length || 0)
-      console.log('✅ Supabase data:', data)
-      
       if (data && data.length > 0) {
         setListings(data)
-        console.log('✅ Set listings from Supabase:', data.length)
       } else {
-        console.log('⚠️ No listings found in Supabase')
         setListings([])
       }
     } catch (error) {
-      console.error('❌ Error loading listings:', error)
+      console.error('Error loading listings:', error)
       toast.error('Failed to load listings')
       setListings([])
     } finally {
       setIsLoading(false)
     }
   }
-
-  // Debug logging
-  console.log('Listings page - listings:', listings)
-  console.log('Listings page - isLoading:', isLoading)
-  console.log('Listings page - listings length:', listings?.length)
 
   const handleFilterChange = (key: keyof FilterOptions, value: any) => {
     const newFilters = { ...localFilters, [key]: value }

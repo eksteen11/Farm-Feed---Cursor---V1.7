@@ -18,7 +18,6 @@ export default function AuthCallbackPage() {
   useEffect(() => {
     const handleAuthCallback = async () => {
       try {
-        console.log('🔄 Handling auth callback...')
         
         // Get the URL hash and search params
         const hashParams = new URLSearchParams(window.location.hash.substring(1))
@@ -53,7 +52,6 @@ export default function AuthCallbackPage() {
         }
 
         if (data.session?.user) {
-          console.log('✅ Email verification successful for:', data.session.user.email)
           
           // Initialize the session in our store
           await initializeSession()
@@ -66,7 +64,6 @@ export default function AuthCallbackPage() {
             router.push('/dashboard')
           }, 2000)
         } else {
-          console.log('⚠️ No session found')
           setStatus('error')
           setMessage('No active session found. Please try logging in again.')
         }

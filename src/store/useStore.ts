@@ -193,9 +193,7 @@ export const useStore = create<AppState>((set, get) => {
     
     // Initialize data on client side
     initializeData: () => {
-      console.log('initializeData called, window available:', typeof window !== 'undefined')
       if (typeof window !== 'undefined') {
-        console.log('Setting mock data...')
         set({
           listings: mockListings,
           offers: mockOffers,
@@ -207,7 +205,6 @@ export const useStore = create<AppState>((set, get) => {
           dashboardMetrics: mockDashboardMetrics,
           marketDepth: mockMarketDepth,
         })
-        console.log('Mock data set successfully')
       }
     },
     
@@ -350,13 +347,10 @@ export const useStore = create<AppState>((set, get) => {
   
   // Listings actions
   fetchListings: (filters = {}) => {
-    console.log('fetchListings called with filters:', filters)
-    console.log('mockListings length:', mockListings.length)
     set({ isLoading: true, error: null })
     
     try {
       let filteredListings = [...mockListings]
-      console.log('filteredListings length:', filteredListings.length)
       
       // Apply filters
       if (filters.category) {
@@ -420,9 +414,7 @@ export const useStore = create<AppState>((set, get) => {
         })
       }
       
-      console.log('Setting listings in store:', filteredListings.length)
       set({ listings: filteredListings, isLoading: false })
-      console.log('Listings set successfully')
     } catch (error) {
       console.error('Error in fetchListings:', error)
       set({ 

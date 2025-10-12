@@ -31,7 +31,6 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
           })
         },
         (error) => {
-          console.log('Geolocation error:', error)
           // Default to South Africa center if geolocation fails
           setUserLocation({ lat: -30.5595, lng: 22.9375 })
         }

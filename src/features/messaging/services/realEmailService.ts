@@ -24,7 +24,6 @@ export class RealEmailService {
 
   async sendEmail(data: EmailData): Promise<boolean> {
     try {
-      console.log('📧 Sending email to:', data.to)
       
       const result = await resend.emails.send({
         from: 'Farm Feed <noreply@farmfeed.co.za>',
@@ -34,7 +33,6 @@ export class RealEmailService {
         text: data.text
       })
 
-      console.log('✅ Email sent successfully:', result.data?.id)
       return true
     } catch (error) {
       console.error('❌ Failed to send email:', error)

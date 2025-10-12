@@ -322,7 +322,6 @@ export class EmailService {
   async sendNotification(notification: EmailNotification): Promise<boolean> {
     try {
       // In a real implementation, this would call your email service API
-      console.log('📧 Sending email notification:', {
         to: notification.to,
         subject: notification.subject,
         type: notification.type,
@@ -332,8 +331,6 @@ export class EmailService {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000))
 
-      // Log for development
-      console.log('✅ Email sent successfully')
       return true
     } catch (error) {
       console.error('❌ Failed to send email:', error)

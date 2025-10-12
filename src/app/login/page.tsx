@@ -58,16 +58,12 @@ export default function LoginPage() {
     }
 
     try {
-      console.log('🔐 Attempting login...')
       const success = await login(formData.email, formData.password)
-      console.log('🔐 Login result:', success)
       
       if (success) {
-        console.log('✅ Login successful, redirecting to dashboard...')
         toast.success('Welcome back!')
         router.push('/dashboard')
       } else {
-        console.log('❌ Login failed')
         // Check if it's an email verification issue
         if (error?.includes('email_not_confirmed') || error?.includes('Email not confirmed')) {
           setFormErrors({ 

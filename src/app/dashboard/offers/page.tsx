@@ -50,7 +50,8 @@ export default function OffersPage() {
       }
     }
     loadData()
-  }, [fetchOffers, fetchListings])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   if (!currentUser) {
     return (
@@ -65,24 +66,18 @@ export default function OffersPage() {
     )
   }
 
-  // Debug logging
-  console.log('🔍 OFFERS PAGE DEBUG:')
-  console.log('🔍 Current user ID:', currentUser.id)
-  console.log('🔍 Total offers from store:', offers.length)
-  console.log('🔍 Total listings from store:', listings.length)
+  // Clean console - removed excessive debug logging
 
   // Create unified offers data
   const unifiedOffers = []
 
   // Add offers made by the user (as buyer)
   const madeOffersRaw = offers.filter(offer => {
-    console.log('🔍 Checking offer buyerId:', offer.buyerId, 'vs current user:', currentUser.id)
-    return offer.buyerId === currentUser.id
+    return offer.buyerId === currentUser.id || offer.buyer_id === currentUser.id
   })
-  console.log('🔍 Made offers count:', madeOffersRaw.length)
   
   madeOffersRaw.forEach(offer => {
-    const listing = listings.find(l => l.id === offer.listingId)
+    const listing = listings.find(l => l.id === offer.listingId || l.id === offer.listing_id)
     unifiedOffers.push({
       id: `made-${offer.id}`,
       type: 'made',
@@ -97,14 +92,9 @@ export default function OffersPage() {
 
   // Add offers received by the user (as seller)
   const receivedOffersRaw = offers.filter(offer => {
-    const listing = listings.find(l => l.id === offer.listingId)
-    const isReceived = listing?.seller?.id === currentUser.id
-    if (isReceived) {
-      console.log('🔍 Found received offer:', offer.id, 'from listing:', listing?.title)
-    }
-    return isReceived
+    const listing = listings.find(l => l.id === offer.listingId || l.id === offer.listing_id)
+    return listing?.seller?.id === currentUser.id || listing?.sellerId === currentUser.id
   })
-  console.log('🔍 Received offers count:', receivedOffersRaw.length)
   
   receivedOffersRaw.forEach(offer => {
     const listing = listings.find(l => l.id === offer.listingId)
@@ -123,16 +113,18 @@ export default function OffersPage() {
   // Sort by creation date (newest first)
   unifiedOffers.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 
-  // Apply search filter
-  const filteredOffers = unifiedOffers.filter(unifiedOffer => {
-    const searchLower = searchTerm.toLowerCase()
-    return (
-      unifiedOffer.listing?.title?.toLowerCase().includes(searchLower) ||
-      unifiedOffer.otherParty?.name?.toLowerCase().includes(searchLower) ||
-      unifiedOffer.status.toLowerCase().includes(searchLower) ||
-      unifiedOffer.type.toLowerCase().includes(searchLower)
-    )
-  })
+  // Apply search filter - but if no search term, show all offers
+  const filteredOffers = searchTerm.trim() === '' 
+    ? unifiedOffers 
+    : unifiedOffers.filter(unifiedOffer => {
+        const searchLower = searchTerm.toLowerCase()
+        return (
+          unifiedOffer.listing?.title?.toLowerCase().includes(searchLower) ||
+          unifiedOffer.otherParty?.name?.toLowerCase().includes(searchLower) ||
+          unifiedOffer.status.toLowerCase().includes(searchLower) ||
+          unifiedOffer.type.toLowerCase().includes(searchLower)
+        )
+      })
 
   const madeOffers = filteredOffers.filter(o => o.type === 'made')
   const receivedOffers = filteredOffers.filter(o => o.type === 'received')
@@ -210,8 +202,10 @@ export default function OffersPage() {
       
       if (result.success) {
         toast.success(`Offer ${action.toLowerCase()}ed successfully!`)
-        // Refresh the data
-        await Promise.all([fetchOffers(), fetchListings()])
+        // Refresh the page to get updated data
+        setTimeout(() => {
+          window.location.reload()
+        }, 1000) // Small delay so user sees the success message
       } else {
         toast.error(result.error || 'Action failed')
       }
@@ -375,8 +369,8 @@ export default function OffersPage() {
               </Card>
             ) : (
               <div className="space-y-4">
-                {madeOffers.map((unifiedOffer) => (
-                  <Card key={unifiedOffer.id} className="hover:shadow-lg transition-shadow">
+                {madeOffers.map((unifiedOffer, index) => (
+                  <Card key={`made-${unifiedOffer.id}-${index}`} className="hover:shadow-lg transition-shadow">
                     <CardContent className="p-6">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
@@ -503,8 +497,8 @@ export default function OffersPage() {
               </Card>
             ) : (
               <div className="space-y-4">
-                {receivedOffers.map((unifiedOffer) => (
-                  <Card key={unifiedOffer.id} className="hover:shadow-lg transition-shadow">
+                {receivedOffers.map((unifiedOffer, index) => (
+                  <Card key={`received-${unifiedOffer.id}-${index}`} className="hover:shadow-lg transition-shadow">
                     <CardContent className="p-6">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">

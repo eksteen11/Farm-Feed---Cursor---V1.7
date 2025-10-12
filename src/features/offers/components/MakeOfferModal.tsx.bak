@@ -77,20 +77,8 @@ export default function MakeOfferModal({
     e.preventDefault()
     
     if (!validateForm()) return
-    
     if (!currentUser) {
       toast.error('You must be logged in to make an offer')
-      return
-    }
-
-    // Validate listing data
-    if (!listing?.id) {
-      toast.error('Invalid listing - please refresh and try again')
-      return
-    }
-
-    if (!listing?.sellerId && !listing?.seller?.id) {
-      toast.error('Listing seller information is missing')
       return
     }
     
@@ -102,7 +90,7 @@ export default function MakeOfferModal({
       const offerData = {
         listing_id: listing.id,
         buyer_id: currentUser.id,
-        seller_id: listing.sellerId || listing.seller?.id,
+        seller_id: listing.sellerId,
         price: formData.price,
         quantity: formData.quantity,
         delivery_type: formData.deliveryType,
@@ -116,9 +104,7 @@ export default function MakeOfferModal({
       
       
       // Create the offer in Supabase
-      console.log('🚀 Creating offer with data:', offerData)
       const newOffer = await SupabaseDatabaseService.createOffer(offerData)
-      console.log('✅ Offer created successfully:', newOffer)
       
       // Send email notification to seller
       try {

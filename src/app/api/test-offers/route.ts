@@ -9,7 +9,7 @@ export async function GET() {
     
     if (error) {
       console.error('❌ Error fetching offers:', error)
-      return NextResponse.json({ success: false, error: error.message })
+      return NextResponse.json({ success: false, error: String(error) })
     }
     
     console.log('✅ Offers fetched:', offers?.length || 0)

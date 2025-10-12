@@ -49,7 +49,8 @@ export default function DealsPage() {
       }
     }
     loadData()
-  }, [fetchOffers])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   if (!currentUser) {
     return (
@@ -242,8 +243,8 @@ export default function DealsPage() {
               </CardContent>
             </Card>
           ) : (
-            allDeals.map((deal) => (
-              <Card key={deal.id} className="hover:shadow-lg transition-shadow">
+            allDeals.map((deal, index) => (
+              <Card key={`${deal.id}-${index}`} className="hover:shadow-lg transition-shadow">
                 <CardContent className="p-6">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">

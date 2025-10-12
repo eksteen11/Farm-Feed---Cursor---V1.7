@@ -83,7 +83,6 @@ export default function SellerOfferDashboard({ currentUser }: SellerOfferDashboa
   const loadOffers = async () => {
     try {
       setIsLoading(true)
-      console.log('📋 Loading offers for seller:', currentUser.id)
       
       // Get offers where current user is the seller
       const { data, error } = await supabase
@@ -97,7 +96,6 @@ export default function SellerOfferDashboard({ currentUser }: SellerOfferDashboa
         throw error
       }
 
-      console.log('✅ Loaded offers:', data)
       setOffers(data || [])
     } catch (error) {
       console.error('❌ Error loading offers:', error)
@@ -139,7 +137,6 @@ export default function SellerOfferDashboard({ currentUser }: SellerOfferDashboa
     if (!selectedOffer) return
 
     try {
-      console.log('🔄 Submitting offer response:', responseType)
 
       let newStatus: string = responseType
       let updateData: any = {
@@ -171,7 +168,6 @@ export default function SellerOfferDashboard({ currentUser }: SellerOfferDashboa
         throw error
       }
 
-      console.log('✅ Offer updated successfully:', updatedOffer)
 
       // Send email notification to buyer
       try {

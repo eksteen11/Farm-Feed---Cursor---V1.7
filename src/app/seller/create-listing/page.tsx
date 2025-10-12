@@ -86,10 +86,6 @@ export default function CreateListingPage() {
       newErrors.deliveryOption = 'Delivery option is required'
     }
 
-    // Debug: Log the errors to help identify the issue
-    console.log('Validation errors:', newErrors)
-    console.log('Form data:', formData)
-
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
   }
@@ -97,41 +93,29 @@ export default function CreateListingPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     
-    console.log('🚀 Starting form submission...')
-    console.log('👤 Current user:', currentUser)
-    console.log('🔐 Is authenticated:', isAuthenticated)
-    
     if (!validateForm()) {
       toast.error('Please fix the errors in the form')
       return
     }
 
     if (!currentUser) {
-      console.error('❌ No current user found!')
       toast.error('You must be logged in to create a listing')
       return
     }
-    
-    console.log('✅ User is authenticated:', currentUser.name, currentUser.email)
 
     setIsLoading(true)
 
     try {
-      console.log('🚀 Creating listing with Supabase...')
-      
       // Upload images and videos to Supabase Storage
-      console.log('📤 Uploading images and videos...')
       let imageUrls: string[] = []
       let videoUrls: string[] = []
       
       if (formData.images.length > 0) {
         imageUrls = await SupabaseStorageService.uploadImages(formData.images, 'farm-feed-media')
-        console.log('✅ Images uploaded:', imageUrls)
       }
       
       if (formData.videos.length > 0) {
         videoUrls = await SupabaseStorageService.uploadVideos(formData.videos, 'farm-feed-media')
-        console.log('✅ Videos uploaded:', videoUrls)
       }
       
       // Use the generic product for all listings
@@ -172,8 +156,6 @@ export default function CreateListingPage() {
         updated_at: new Date().toISOString()
       }
 
-      console.log('📝 Listing data:', listingData)
-
       // Call Supabase directly to create the listing
       const { data: newListing, error: createError } = await supabase
         .from('listings')
@@ -185,15 +167,11 @@ export default function CreateListingPage() {
         throw createError
       }
       
-      console.log('✅ Listing created successfully:', newListing)
       toast.success('Listing created successfully!')
       router.push('/listings')
       
     } catch (error) {
-      console.error('❌ Error creating listing:', error)
-      console.error('❌ Error details:', JSON.stringify(error, null, 2))
-      console.error('❌ Current user:', currentUser)
-      console.error('❌ Is authenticated:', isAuthenticated)
+      console.error('Error creating listing:', error)
       
       // Show more specific error message
       if (error instanceof Error && error.message) {

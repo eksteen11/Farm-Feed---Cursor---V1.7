@@ -16,7 +16,6 @@ export default function ListingsPage() {
     setIsClient(true)
     // Initialize user data and fetch listings when component mounts
     const initData = async () => {
-      console.log('📦 Listings: Initializing data...')
       await getCurrentUser()
       await fetchListings()
     }

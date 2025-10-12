@@ -1,13 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabase } from '@/shared/api/supabase'
+import { createClient } from '@supabase/supabase-js'
+
+// Create admin client for bypassing RLS
+const supabaseAdmin = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!,
+  {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
+  }
+)
 
 export async function POST(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const offerId = params.id
-    console.log('🔍 Accepting offer:', offerId)
+    // Strip any prefix from the ID (e.g., "received-" or "made-")
+    const offerId = params.id.replace(/^(received-|made-)/, '')
+    console.log('🔍 Accepting offer:', offerId, '(original:', params.id, ')')
     
     // Get the offer details first
     const { data: offer, error: offerError } = await supabase
@@ -66,7 +80,7 @@ export async function POST(
     const platformFee = offer.quantity * 1 // R1 per ton
     const totalAmount = (offer.price * offer.quantity) + platformFee
     
-    const { data: deal, error: dealError } = await supabase
+    const { data: deal, error: dealError } = await supabaseAdmin
       .from('deals')
       .insert({
         offer_id: offerId,
@@ -104,7 +118,7 @@ export async function POST(
       console.log('✅ Deal created successfully:', deal.id)
       
       // Update offer with deal_id
-      await supabase
+      await supabaseAdmin
         .from('offers')
         .update({ deal_id: deal.id })
         .eq('id', offerId)

@@ -134,7 +134,6 @@ export default function CreateBackloadListingPage() {
       }
 
       // In a real app, this would be saved to the database
-      console.log('Backload listing created:', backloadListing)
       
       toast.success('Backload listing created successfully!')
       router.push('/transport')

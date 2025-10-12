@@ -1,7 +1,14 @@
 import { createClient } from '@supabase/supabase-js'
 
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+
+if (!url || !anon) {
+  console.error('❌ Missing Supabase environment variables:')
+  console.error('NEXT_PUBLIC_SUPABASE_URL:', url ? '✅ Set' : '❌ Missing')
+  console.error('NEXT_PUBLIC_SUPABASE_ANON_KEY:', anon ? '✅ Set' : '❌ Missing')
+  throw new Error('Supabase environment variables are required')
+}
 
 export const supabase = createClient(url, anon)
 
@@ -26,9 +33,6 @@ export class SupabaseDatabaseService {
 
   static async getListings() {
     try {
-      console.log('🔍 SupabaseDatabaseService: Fetching listings...')
-      console.log('🔍 SupabaseDatabaseService: Supabase client:', supabase)
-      
       // Query with user join to get real seller data
       const { data, error } = await supabase
         .from('listings')
@@ -57,19 +61,14 @@ export class SupabaseDatabaseService {
         .eq('is_active', true)
         .order('created_at', { ascending: false })
       
-      console.log('🔍 SupabaseDatabaseService: Query result:', { data: data?.length || 0, error })
-      
       if (error) {
-        console.error('❌ SupabaseDatabaseService: Error:', error)
+        console.error('Error fetching listings:', error)
         return { data: [], error }
       }
       
       if (!data || data.length === 0) {
-        console.log('⚠️ SupabaseDatabaseService: No listings found')
         return { data: [], error: null }
       }
-      
-      console.log('✅ SupabaseDatabaseService: Found', data.length, 'listings')
       
       // Transform data to match frontend expectations
       const transformedData = data.map(listing => ({
@@ -136,19 +135,16 @@ export class SupabaseDatabaseService {
         }
       }))
       
-      console.log('✅ SupabaseDatabaseService: Transformed', transformedData.length, 'listings')
       return { data: transformedData, error: null }
       
     } catch (error) {
-      console.error('❌ SupabaseDatabaseService: Exception:', error)
+      console.error('Error in getListings:', error)
       return { data: [], error }
     }
   }
 
   static async getListingById(id: string) {
     try {
-      console.log('🔍 SupabaseDatabaseService: Fetching listing by ID:', id)
-      
       const { data, error } = await supabase
         .from('listings')
         .select(`
@@ -177,15 +173,12 @@ export class SupabaseDatabaseService {
         .eq('is_active', true)
         .single()
       
-      console.log('🔍 SupabaseDatabaseService: Query result:', { data: !!data, error })
-      
       if (error) {
-        console.error('❌ SupabaseDatabaseService: Error:', error)
+        console.error('Error fetching listing by ID:', error)
         return { data: null, error }
       }
       
       if (!data) {
-        console.log('⚠️ SupabaseDatabaseService: Listing not found')
         return { data: null, error: null }
       }
       
@@ -254,18 +247,16 @@ export class SupabaseDatabaseService {
         }
       }
       
-      console.log('✅ SupabaseDatabaseService: Transformed listing')
       return { data: transformedData, error: null }
       
     } catch (error) {
-      console.error('❌ SupabaseDatabaseService: Exception:', error)
+      console.error('Error in getListingById:', error)
       return { data: null, error }
     }
   }
 
   static async getOffers() {
     try {
-      console.log('🔍 SupabaseDatabaseService: Fetching offers...')
       const { data, error } = await supabase
         .from('offers')
         .select(`
@@ -299,9 +290,8 @@ export class SupabaseDatabaseService {
         `)
         .order('created_at', { ascending: false })
       
-      console.log('🔍 SupabaseDatabaseService: Fetched offers:', data?.length || 0)
       if (error) {
-        console.error('❌ SupabaseDatabaseService: Error fetching offers:', error)
+        console.error('Error fetching offers:', error)
       }
       
       // Transform the data to match frontend expectations
@@ -318,56 +308,45 @@ export class SupabaseDatabaseService {
       
       return { data: transformedData, error }
     } catch (error) {
-      console.error('❌ SupabaseDatabaseService: Exception fetching offers:', error)
+      console.error('Error fetching offers:', error)
       return { data: [], error }
     }
   }
 
   static async createOffer(offer: any) {
     try {
-      console.log('🔍 SupabaseDatabaseService: Creating offer...', offer)
-      
-      // First, get the listing to find the seller_id
-      const { data: listing, error: listingError } = await supabase
-        .from('listings')
-        .select('seller_id')
-        .eq('id', offer.listingId)
-        .single()
-      
-      if (listingError || !listing) {
-        console.error('❌ SupabaseDatabaseService: Error fetching listing:', listingError)
-        return { data: null, error: listingError }
-      }
-      
-      // Now create the offer with seller_id included (for database triggers)
+      console.log('🔍 createOffer called with:', offer)
+      // Use snake_case to match incoming data from MakeOfferModal
       const { data, error } = await supabase
         .from('offers')
         .insert({
-          listing_id: offer.listingId,
-          buyer_id: offer.buyerId,
-          seller_id: listing.seller_id, // Include seller_id for triggers
+          listing_id: offer.listing_id,
+          buyer_id: offer.buyer_id,
+          seller_id: offer.seller_id,
           price: offer.price,
           quantity: offer.quantity,
           message: offer.message,
-          delivery_type: offer.deliveryType,
-          delivery_address: offer.deliveryAddress,
+          delivery_type: offer.delivery_type,
+          delivery_address: offer.delivery_address,
           terms: offer.terms || 'Standard terms apply',
-          status: 'pending',
-          expires_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(), // 7 days from now
-          is_negotiable: true
+          status: offer.status || 'pending',
+          expires_at: offer.expires_at,
+          is_negotiable: offer.is_negotiable !== false
         })
         .select()
         .single()
       
-      console.log('🔍 SupabaseDatabaseService: Created offer:', data?.id || 'No ID')
       if (error) {
-        console.error('❌ SupabaseDatabaseService: Error creating offer:', error)
+        console.error('❌ Error creating offer:', error)
+        console.error('❌ Error details:', JSON.stringify(error, null, 2))
+        throw error
       }
       
-      return { data, error }
+      console.log('✅ Offer created successfully in database:', data)
+      return data
     } catch (error) {
-      console.error('❌ SupabaseDatabaseService: Exception creating offer:', error)
-      return { data: null, error }
+      console.error('Error in createOffer:', error)
+      throw error
     }
   }
 
@@ -392,11 +371,8 @@ export class SupabaseAuthService {
       const { data: { user }, error } = await supabase.auth.getUser()
       
       if (error || !user) {
-        console.log('❌ No authenticated user found')
         return null
       }
-      
-      console.log('🔍 Getting user profile for:', user.email)
       
       // Get full user profile from database
       const { data: profile, error: profileError } = await supabase
@@ -406,16 +382,13 @@ export class SupabaseAuthService {
         .single()
       
       if (profileError) {
-        console.log('❌ Profile lookup error:', profileError.message)
+        console.error('Profile lookup error:', profileError.message)
         return null
       }
       
       if (!profile) {
-        console.log('❌ No profile found for user:', user.email)
         return null
       }
-      
-      console.log('✅ Found user profile:', profile.name)
       
       // Transform to match frontend User interface
       const transformedUser = {
@@ -505,7 +478,6 @@ export class SupabaseStorageService {
 
   static async uploadImages(files: File[], bucket: string): Promise<string[]> {
     try {
-      console.log('📤 SupabaseStorageService: Uploading images...', files.length)
       const uploadPromises = files.map(async (file, index) => {
         const fileName = `${Date.now()}-${index}-${file.name}`
         const { data, error } = await supabase.storage
@@ -513,7 +485,7 @@ export class SupabaseStorageService {
           .upload(fileName, file)
         
         if (error) {
-          console.error('❌ Upload error:', error)
+          console.error('Image upload error:', error)
           throw error
         }
         
@@ -525,17 +497,15 @@ export class SupabaseStorageService {
       })
       
       const urls = await Promise.all(uploadPromises)
-      console.log('✅ SupabaseStorageService: Images uploaded:', urls.length)
       return urls
     } catch (error) {
-      console.error('❌ SupabaseStorageService: Upload failed:', error)
+      console.error('Image upload failed:', error)
       throw error
     }
   }
 
   static async uploadVideos(files: File[], bucket: string): Promise<string[]> {
     try {
-      console.log('📤 SupabaseStorageService: Uploading videos...', files.length)
       const uploadPromises = files.map(async (file, index) => {
         const fileName = `${Date.now()}-${index}-${file.name}`
         const { data, error } = await supabase.storage
@@ -543,7 +513,7 @@ export class SupabaseStorageService {
           .upload(fileName, file)
         
         if (error) {
-          console.error('❌ Upload error:', error)
+          console.error('Video upload error:', error)
           throw error
         }
         
@@ -555,10 +525,9 @@ export class SupabaseStorageService {
       })
       
       const urls = await Promise.all(uploadPromises)
-      console.log('✅ SupabaseStorageService: Videos uploaded:', urls.length)
       return urls
     } catch (error) {
-      console.error('❌ SupabaseStorageService: Upload failed:', error)
+      console.error('Video upload failed:', error)
       throw error
     }
   }
