@@ -118,8 +118,8 @@ export const mockTransportQuotes = [];
 export const mockBackloadListings = [];
 export const mockDashboardMetrics = [];
 export const mockMarketDepth = [];
-export const mockChatMessages = [];
-export const mockInvoices = [];
+export const mockChatMessages: { receiverId: string; senderId: string; [key: string]: unknown }[] = [];
+export const mockInvoices: { sellerId: string; [key: string]: unknown }[] = [];
 export const mockSubscriptions = [];
 
 // Export mock functions for backward compatibility

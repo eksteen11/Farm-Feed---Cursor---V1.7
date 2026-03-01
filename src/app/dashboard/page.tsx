@@ -6,8 +6,9 @@ import { useSupabaseStore } from "@/store/useSupabaseStore"
 import Button from "@/shared/ui/Button"
 import { Users, ShoppingCart, Package, Truck, PlusCircle, MessageCircle, TrendingUp, FileText, CheckCircle, Settings } from "lucide-react"
 import { Card, CardHeader, CardTitle, CardContent } from "@/shared/ui/Card"
+import type { UserCapability } from "@/types"
 
-const allCapabilities = [
+const allCapabilities: { key: UserCapability; name: string; icon: typeof ShoppingCart; color: string; description: string }[] = [
   { key: "buy", name: "Buyer", icon: ShoppingCart, color: "text-blue-700", description: "Browse and make offers on listings." },
   { key: "sell", name: "Seller", icon: Package, color: "text-green-700", description: "Create new product listings and receive offers." },
   { key: "transport", name: "Transporter", icon: Truck, color: "text-yellow-600", description: "Quote on delivery jobs and manage logistics." },
@@ -33,7 +34,7 @@ export default function UnifiedDashboard() {
 
   const { name = "Trader", capabilities = [] } = currentUser
 
-  function handleToggleCap(cap: string) {
+  function handleToggleCap(cap: UserCapability) {
     // TODO: Persist to backend/store in real usage
     if (capabilities.includes(cap)) return
     // fake update for demo
@@ -53,7 +54,7 @@ export default function UnifiedDashboard() {
               <Users className="w-5 h-5 text-green-600" />
               <span className="text-sm font-semibold text-green-700">600+ Farmers</span>
             </div>
-            <Button href="/settings" variant="ghost" className="text-gray-600"><Settings className="w-5 h-5" /></Button>
+            <Link href="/settings"><Button variant="ghost" className="text-gray-600"><Settings className="w-5 h-5" /></Button></Link>
           </div>
         </div>
       </div>
@@ -74,13 +75,13 @@ export default function UnifiedDashboard() {
                 <div className="text-gray-800 mb-4">{cap.description}</div>
                 <div className="flex flex-row gap-4 mb-2">
                   {cap.key === "buy" && (
-                    <Button as="a" href="/listings" className="w-full">Browse Listings</Button>
+                    <Link href="/listings"><Button className="w-full">Browse Listings</Button></Link>
                   )}
                   {cap.key === "sell" && (
-                    <Button as="a" href="/seller/create-listing" className="w-full">Create Listing</Button>
+                    <Link href="/seller/create-listing"><Button className="w-full">Create Listing</Button></Link>
                   )}
                   {cap.key === "transport" && (
-                    <Button as="a" href="/dashboard/transport" className="w-full">See Transport Jobs</Button>
+                    <Link href="/dashboard/transport"><Button className="w-full">See Transport Jobs</Button></Link>
                   )}
                 </div>
                 {/* Contextual nudge */}

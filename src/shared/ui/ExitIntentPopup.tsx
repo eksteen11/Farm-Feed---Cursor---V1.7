@@ -86,7 +86,7 @@ export default function ExitIntentPopup() {
                 </motion.div>
 
                 <h3 className="text-3xl font-black text-gray-900 mb-3">
-                  Wait! Don't Miss Out
+                  Wait! Don&apos;t Miss Out
                 </h3>
                 <p className="text-gray-600 mb-6">
                   Get <span className="font-black text-[#3D693D]">R500 off</span> your first transaction when you sign up today
@@ -108,7 +108,7 @@ export default function ExitIntentPopup() {
                     onClick={() => setIsVisible(false)}
                     className="text-gray-500 hover:text-gray-700 text-sm font-medium"
                   >
-                    No thanks, I'll pass
+                    No thanks, I&apos;ll pass
                   </button>
                 </div>
               </div>

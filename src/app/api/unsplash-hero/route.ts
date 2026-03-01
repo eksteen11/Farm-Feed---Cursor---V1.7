@@ -19,7 +19,8 @@ export async function GET() {
   }
 
   try {
-    const query = QUERIES[Math.floor(Date.now() / 86400000) % QUERIES.length]
+    const idx = Math.floor(Date.now() / 86400000) % QUERIES.length
+    const query: string = QUERIES[idx] ?? QUERIES[0] ?? "wheat field golden hour"
     const res = await fetch(
       `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&client_id=${accessKey}&orientation=landscape&per_page=12`,
       { next: { revalidate: 3600 } }
