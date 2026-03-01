@@ -1,0 +1,171 @@
+"use client"
+
+import React, { useEffect, useState, useRef } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import Link from "next/link"
+import { TrendingUp, MapPin, Leaf, ChevronDown } from "lucide-react"
+
+const FALLBACK_HERO = "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&h=1080&fit=crop&q=90"
+
+const PULSE_ACTIVITIES = [
+  { id: 1, message: "John from Western Cape just sold 50 tons of maize", location: "Cape Town, WC", icon: Leaf, color: "text-green-700" },
+  { id: 2, message: "Sarah from Gauteng matched a transport request", location: "Johannesburg, GP", icon: MapPin, color: "text-red-700" },
+  { id: 3, message: "Peter from Limpopo listed 120 tons of soya beans", location: "Polokwane, LP", icon: TrendingUp, color: "text-yellow-700" },
+]
+
+export default function NewHeroSection() {
+  const [heroImage, setHeroImage] = useState<{ url: string; alt: string } | null>(null)
+  const [pulseIdx, setPulseIdx] = useState(0)
+  const [liveAmount, setLiveAmount] = useState(2946000)
+  const intervalRef = useRef<NodeJS.Timeout>()
+
+  useEffect(() => {
+    fetch("/api/unsplash-hero")
+      .then((res) => res.json())
+      .then((data) => setHeroImage({ url: data?.url || FALLBACK_HERO, alt: data?.alt || "Grain harvest" }))
+      .catch(() => setHeroImage({ url: FALLBACK_HERO, alt: "Grain harvest" }))
+  }, [])
+
+  useEffect(() => {
+    intervalRef.current = setInterval(() => {
+      setPulseIdx((i) => (i + 1) % PULSE_ACTIVITIES.length)
+      setLiveAmount((a) => a + Math.floor(Math.random() * 7000 + 2000))
+    }, 3500)
+    return () => clearInterval(intervalRef.current!)
+  }, [])
+
+  const [animateStat, setAnimateStat] = useState(0)
+  useEffect(() => {
+    let raf: number
+    const target = liveAmount
+    let curr = 0
+    function tick() {
+      curr += Math.max(1, Math.floor(target / 35))
+      if (curr >= target) {
+        setAnimateStat(target)
+        return
+      }
+      setAnimateStat(curr)
+      raf = requestAnimationFrame(tick)
+    }
+    tick()
+    return () => cancelAnimationFrame(raf)
+  }, [liveAmount])
+
+  const pulse = PULSE_ACTIVITIES[pulseIdx]
+  const bgUrl = heroImage?.url || FALLBACK_HERO
+
+  return (
+    <section className="relative h-screen max-h-[100dvh] min-h-[560px] flex flex-col justify-end overflow-hidden bg-[#2d4d2d]" aria-label="Hero section">
+      {/* Full-bleed image - wow moment */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src={bgUrl}
+          alt={heroImage?.alt || ""}
+          className="hero-image-zoom absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
+          fetchPriority="high"
+        />
+        {/* Gradient only at bottom so image stays vivid and card is readable */}
+        {/* Gradient: strong at bottom for card readability, more image visible above */}
+        <div
+          className="absolute inset-0 z-0 pointer-events-none"
+          style={{
+            background: "linear-gradient(to top, rgba(29,49,29,0.98) 0%, rgba(29,49,29,0.5) 30%, rgba(0,0,0,0.15) 60%, transparent 85%)",
+          }}
+        />
+      </div>
+
+      {/* One compact action card - bottom third, above-the-fold */}
+      <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 pb-12 pt-6 md:pb-16 md:pt-8">
+        <div className="rounded-2xl bg-[#1e3d1e]/95 backdrop-blur-md border border-white/10 shadow-2xl p-6 sm:p-8">
+          {/* Live pulse - one line */}
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35 }}
+            className="flex items-center justify-between gap-3 mb-5 rounded-lg bg-white/10 px-3 py-2"
+            aria-live="polite"
+          >
+            <AnimatePresence mode="wait">
+              <motion.div key={pulse.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-2 min-w-0 truncate">
+                <pulse.icon className={`w-4 h-4 flex-shrink-0 ${pulse.color}`} aria-hidden />
+                <span className="text-sm font-medium text-white truncate">{pulse.message}</span>
+              </motion.div>
+            </AnimatePresence>
+            <span className="text-xs font-bold text-white/90 whitespace-nowrap">R{animateStat.toLocaleString()} / 24h</span>
+          </motion.div>
+
+          {/* Headline - short, massive */}
+          <motion.h1
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4 }}
+            className="text-white font-black leading-tight tracking-tight text-3xl sm:text-4xl md:text-5xl"
+          >
+            SA Grain. You Trade, We Connect.
+          </motion.h1>
+
+          {/* Tagline - one line, inspiring */}
+          <motion.p
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.08, duration: 0.35 }}
+            className="mt-2 text-white/90 text-base sm:text-lg font-medium"
+          >
+            Verified, contracted, paid. You keep the profit.
+          </motion.p>
+
+          {/* Primary CTA - directly under tagline, unmissable */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.14, duration: 0.35 }}
+            className="mt-5 flex flex-wrap items-center gap-3"
+          >
+            <Link href="/listings" className="hero-cta-primary inline-block">
+              <span className="inline-flex items-center justify-center px-8 py-4 text-base font-black rounded-xl bg-white text-[#3D693D] shadow-lg ring-2 ring-white/40 hover:bg-gray-50 transition-all duration-300">
+                See live listings
+              </span>
+            </Link>
+            <span className="text-white/50 text-sm hidden sm:inline">or</span>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { href: "/register?intent=seller", label: "List grain" },
+                { href: "/listings", label: "Browse stock" },
+                { href: "/transport/available", label: "See loads" },
+              ].map((item, i) => (
+                <motion.div key={item.label} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 + i * 0.05, duration: 0.3 }}>
+                  <Link
+                    href={item.href}
+                    className="inline-flex items-center justify-center px-5 py-3 text-sm font-bold rounded-xl border-2 border-white/60 text-white bg-transparent hover:bg-white/10 transition-all duration-300"
+                  >
+                    {item.label}
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          <p className="mt-5 text-white/80 text-sm font-medium">
+            500+ traders · R50M+ traded · 4.8/5 · 97% match
+          </p>
+          <p className="mt-1 text-white/40 text-xs">
+            Transporter? <Link href="/register?intent=transporter" className="underline text-white/60 hover:no-underline">Register to quote</Link>
+          </p>
+        </div>
+      </div>
+
+      {/* Scroll cue */}
+      <motion.a
+        href="#live-listings"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.6 }}
+        className="scroll-cue absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-0.5 text-white/40 hover:text-white/60 text-xs"
+        aria-label="Scroll to content"
+      >
+        <ChevronDown className="w-5 h-5" aria-hidden />
+      </motion.a>
+    </section>
+  )
+}
