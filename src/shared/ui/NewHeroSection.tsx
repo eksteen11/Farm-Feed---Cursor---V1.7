@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import { TrendingUp, MapPin, Leaf, ChevronDown } from "lucide-react"
 
-const FALLBACK_HERO = "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&h=1080&fit=crop&q=90"
+const FALLBACK_HERO = "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1920&h=1080&fit=crop&q=90"
 
 const PULSE_ACTIVITIES = [
   { id: 1, message: "John from Western Cape just sold 50 tons of maize", location: "Cape Town, WC", icon: Leaf, color: "text-green-700" },

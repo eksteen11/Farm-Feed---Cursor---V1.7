@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server"
 
-/* Curated: golden wheat at sunset — one strong hero moment */
-const FALLBACK_URL = "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1920&h=1080&fit=crop&q=90"
-const FALLBACK_ALT = "Golden wheat harvest at sunset"
+/* Curated: green grass / fresh field — same hero on prod when UNSPLASH_ACCESS_KEY is not set */
+const FALLBACK_URL = "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1920&h=1080&fit=crop&q=90"
+const FALLBACK_ALT = "Green grass field"
 
 const QUERIES = [
   "wheat field golden hour sunset",
