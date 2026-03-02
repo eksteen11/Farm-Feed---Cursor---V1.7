@@ -61,7 +61,7 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/blog" className="text-gray-300 hover:text-white transition-colors">
+                <Link href="/support" className="text-gray-300 hover:text-white transition-colors">
                   Blog & News
                 </Link>
               </li>
@@ -73,12 +73,12 @@ const Footer: React.FC = () => {
             <h3 className="text-lg font-semibold mb-4">Services</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/buyer-dashboard" className="text-gray-300 hover:text-white transition-colors">
+                <Link href="/buyer/dashboard" className="text-gray-300 hover:text-white transition-colors">
                   Buyer Dashboard
                 </Link>
               </li>
               <li>
-                <Link href="/seller-dashboard" className="text-gray-300 hover:text-white transition-colors">
+                <Link href="/seller/dashboard" className="text-gray-300 hover:text-white transition-colors">
                   Seller Dashboard
                 </Link>
               </li>
@@ -88,7 +88,7 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/verification" className="text-gray-300 hover:text-white transition-colors">
+                <Link href="/fica" className="text-gray-300 hover:text-white transition-colors">
                   Verification Process
                 </Link>
               </li>
@@ -122,13 +122,13 @@ const Footer: React.FC = () => {
               © 2024 Farm Feed. All rights reserved.
             </div>
             <div className="flex items-center space-x-6 text-sm">
-              <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">
+              <Link href="/support" className="text-gray-400 hover:text-white transition-colors">
                 Privacy Policy
               </Link>
-              <Link href="/terms" className="text-gray-400 hover:text-white transition-colors">
+              <Link href="/support" className="text-gray-400 hover:text-white transition-colors">
                 Terms of Service
               </Link>
-              <Link href="/cookies" className="text-gray-400 hover:text-white transition-colors">
+              <Link href="/support" className="text-gray-400 hover:text-white transition-colors">
                 Cookie Policy
               </Link>
             </div>
