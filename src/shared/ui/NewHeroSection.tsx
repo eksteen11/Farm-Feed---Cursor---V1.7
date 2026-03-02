@@ -53,6 +53,7 @@ export default function NewHeroSection() {
   }, [liveAmount])
 
   const pulse = PULSE_ACTIVITIES[pulseIdx]
+  const PulseIcon = pulse.icon
   const bgUrl = heroImage?.url || FALLBACK_HERO
 
   /* Wow 2: Magnetic CTA - cursor-reactive primary button */
@@ -121,7 +122,7 @@ export default function NewHeroSection() {
           >
             <AnimatePresence mode="wait">
               <motion.div key={pulse.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex items-center gap-2 min-w-0 truncate">
-                <pulse.icon className={`w-4 h-4 flex-shrink-0 ${pulse.color}`} aria-hidden />
+                <PulseIcon className={`w-4 h-4 flex-shrink-0 ${pulse.color}`} aria-hidden />
                 <span className="text-sm font-medium text-white truncate">{pulse.message}</span>
               </motion.div>
             </AnimatePresence>
