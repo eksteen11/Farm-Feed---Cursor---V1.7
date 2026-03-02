@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import { TrendingUp, MapPin, Leaf, ChevronDown } from "lucide-react"
@@ -55,25 +55,58 @@ export default function NewHeroSection() {
   const pulse = PULSE_ACTIVITIES[pulseIdx]
   const bgUrl = heroImage?.url || FALLBACK_HERO
 
+  /* Wow 2: Magnetic CTA - cursor-reactive primary button */
+  const ctaRef = useRef<HTMLDivElement>(null)
+  const [magnetic, setMagnetic] = useState({ x: 0, y: 0 })
+  const [reduceMotion, setReduceMotion] = useState(true)
+  useEffect(() => {
+    setReduceMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+  }, [])
+  const handleMouseMove = useCallback(
+    (e: MouseEvent) => {
+      if (reduceMotion || !ctaRef.current) return
+      const rect = ctaRef.current.getBoundingClientRect()
+      const cx = rect.left + rect.width / 2
+      const cy = rect.top + rect.height / 2
+      const dx = e.clientX - cx
+      const dy = e.clientY - cy
+      const dist = Math.hypot(dx, dy)
+      const maxDist = 140
+      const strength = 0.22
+      if (dist < maxDist) {
+        const f = (1 - dist / maxDist) * strength
+        setMagnetic({ x: Math.max(-10, Math.min(10, dx * f)), y: Math.max(-10, Math.min(10, dy * f)) })
+      } else {
+        setMagnetic((prev) => ({ x: prev.x * 0.85, y: prev.y * 0.85 }))
+      }
+    },
+    [reduceMotion]
+  )
+  useEffect(() => {
+    window.addEventListener("mousemove", handleMouseMove)
+    return () => window.removeEventListener("mousemove", handleMouseMove)
+  }, [handleMouseMove])
+
   return (
     <section className="relative h-screen max-h-[100dvh] min-h-[560px] flex flex-col justify-end overflow-hidden bg-[#2d4d2d]" aria-label="Hero section">
-      {/* Full-bleed image - wow moment */}
-      <div className="absolute inset-0 z-0">
+      {/* Wow 1: Full-bleed image with parallax float */}
+      <div className="hero-image-float absolute inset-0 z-0 overflow-hidden">
         <img
           src={bgUrl}
           alt={heroImage?.alt || ""}
           className="hero-image-zoom absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
           fetchPriority="high"
         />
-        {/* Gradient only at bottom so image stays vivid and card is readable */}
-        {/* Gradient: strong at bottom for card readability, more image visible above */}
-        <div
-          className="absolute inset-0 z-0 pointer-events-none"
-          style={{
-            background: "linear-gradient(to top, rgba(29,49,29,0.98) 0%, rgba(29,49,29,0.5) 30%, rgba(0,0,0,0.15) 60%, transparent 85%)",
-          }}
-        />
       </div>
+      {/* Gradient for card readability */}
+      <div
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{
+          background: "linear-gradient(to top, rgba(29,49,29,0.98) 0%, rgba(29,49,29,0.5) 30%, rgba(0,0,0,0.15) 60%, transparent 85%)",
+        }}
+      />
+      {/* Wow 3: Ambient glow behind card */}
+      <div className="hero-ambient-glow" aria-hidden />
 
       {/* One compact action card - bottom third, above-the-fold */}
       <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 pb-12 pt-6 md:pb-16 md:pt-8">
@@ -115,18 +148,24 @@ export default function NewHeroSection() {
             Verified, contracted, paid. You keep the profit.
           </motion.p>
 
-          {/* Primary CTA - directly under tagline, unmissable */}
+          {/* Primary CTA - magnetic + unmissable */}
           <motion.div
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.14, duration: 0.35 }}
             className="mt-5 flex flex-wrap items-center gap-3"
           >
-            <Link href="/listings" className="hero-cta-primary inline-block">
-              <span className="inline-flex items-center justify-center px-8 py-4 text-base font-black rounded-xl bg-white text-[#3D693D] shadow-lg ring-2 ring-white/40 hover:bg-gray-50 transition-all duration-300">
-                See live listings
-              </span>
-            </Link>
+            <div ref={ctaRef} className="hero-cta-primary inline-block">
+              <Link href="/listings" className="block">
+                <motion.span
+                  className="inline-flex items-center justify-center px-8 py-4 text-base font-black rounded-xl bg-white text-[#3D693D] shadow-lg ring-2 ring-white/40 hover:bg-gray-50 transition-colors duration-300"
+                  animate={{ x: magnetic.x, y: magnetic.y }}
+                  transition={{ type: "spring", stiffness: 150, damping: 15 }}
+                >
+                  See live listings
+                </motion.span>
+              </Link>
+            </div>
             <span className="text-white/50 text-sm hidden sm:inline">or</span>
             <div className="flex flex-wrap gap-2">
               {[

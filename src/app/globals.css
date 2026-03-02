@@ -81,15 +81,47 @@
   50% { transform: translateY(6px); }
 }
 
-/* Hero image subtle zoom - wow factor (reduced-motion safe) */
+/* Hero image subtle zoom (reduced-motion safe) */
 @media (prefers-reduced-motion: no-preference) {
   .hero-image-zoom {
     animation: hero-image-zoom 12s ease-out forwards;
+  }
+  .hero-image-float {
+    animation: hero-image-float 22s ease-in-out infinite;
   }
 }
 @keyframes hero-image-zoom {
   from { transform: scale(1); }
   to { transform: scale(1.04); }
+}
+@keyframes hero-image-float {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  25% { transform: translateY(-1.5%) translateX(0.6%); }
+  50% { transform: translateY(0.6%) translateX(-1%); }
+  75% { transform: translateY(-1%) translateX(0.4%); }
+}
+
+/* Hero ambient glow behind card (2026 wow) */
+.hero-ambient-glow {
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 140%;
+  height: 70%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse 80% 60% at 50% 90%, rgba(61, 105, 61, 0.35) 0%, rgba(218, 165, 32, 0.08) 40%, transparent 70%);
+  filter: blur(40px);
+  z-index: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-ambient-glow {
+    animation: hero-glow-shift 10s ease-in-out infinite;
+  }
+}
+@keyframes hero-glow-shift {
+  0%, 100% { opacity: 1; transform: translateX(-50%) scale(1); }
+  50% { opacity: 0.85; transform: translateX(-50%) scale(1.08); }
 }
 
 @layer components {
