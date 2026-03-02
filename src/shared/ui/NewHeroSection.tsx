@@ -159,7 +159,7 @@ export default function NewHeroSection() {
             <div ref={ctaRef} className="hero-cta-primary inline-block">
               <Link href="/listings" className="block">
                 <motion.span
-                  className="inline-flex items-center justify-center px-8 py-4 text-base font-black rounded-xl bg-white text-[#3D693D] shadow-lg ring-2 ring-white/40 hover:bg-gray-50 transition-colors duration-300"
+                  className="inline-flex items-center justify-center px-8 py-4 text-base font-black rounded-xl bg-red-600 text-white shadow-lg ring-2 ring-red-400/50 hover:bg-red-700 transition-colors duration-300"
                   animate={{ x: magnetic.x, y: magnetic.y }}
                   transition={{ type: "spring", stiffness: 150, damping: 15 }}
                 >
@@ -177,7 +177,7 @@ export default function NewHeroSection() {
                 <motion.div key={item.label} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 + i * 0.05, duration: 0.3 }}>
                   <Link
                     href={item.href}
-                    className="inline-flex items-center justify-center px-5 py-3 text-sm font-bold rounded-xl border-2 border-white/60 text-white bg-transparent hover:bg-white/10 transition-all duration-300"
+                    className="inline-flex items-center justify-center px-5 py-3 text-sm font-bold rounded-xl border-2 border-red-400/80 text-white bg-transparent hover:bg-red-500/20 hover:border-red-300 transition-all duration-300"
                   >
                     {item.label}
                   </Link>
@@ -190,7 +190,7 @@ export default function NewHeroSection() {
             500+ traders · R50M+ traded · 4.8/5 · 97% match
           </p>
           <p className="mt-1 text-white/40 text-xs">
-            Transporter? <Link href="/register?intent=transporter" className="underline text-white/60 hover:no-underline">Register to quote</Link>
+            Transporter? <Link href="/register?intent=transporter" className="underline text-red-300 hover:text-red-200 hover:no-underline">Register to quote</Link>
           </p>
         </div>
       </div>
