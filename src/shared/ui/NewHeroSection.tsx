@@ -19,12 +19,29 @@ export default function NewHeroSection() {
   const [liveAmount, setLiveAmount] = useState(2946000)
   const intervalRef = useRef<NodeJS.Timeout>()
 
-  useEffect(() => {
+  const fetchHeroImage = useCallback(() => {
     fetch("/api/unsplash-hero")
       .then((res) => res.json())
       .then((data) => setHeroImage({ url: data?.url || FALLBACK_HERO, alt: data?.alt || "Grain harvest" }))
       .catch(() => setHeroImage({ url: FALLBACK_HERO, alt: "Grain harvest" }))
   }, [])
+
+  useEffect(() => {
+    fetchHeroImage()
+  }, [fetchHeroImage])
+
+  const heroImageIntervalRef = useRef<NodeJS.Timeout>()
+  const [reduceMotion, setReduceMotion] = useState(true)
+  useEffect(() => {
+    setReduceMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches)
+  }, [])
+  useEffect(() => {
+    if (reduceMotion) return
+    heroImageIntervalRef.current = setInterval(fetchHeroImage, 5000)
+    return () => {
+      if (heroImageIntervalRef.current) clearInterval(heroImageIntervalRef.current)
+    }
+  }, [fetchHeroImage, reduceMotion])
 
   useEffect(() => {
     intervalRef.current = setInterval(() => {
@@ -59,10 +76,6 @@ export default function NewHeroSection() {
   /* Wow 2: Magnetic CTA - cursor-reactive primary button */
   const ctaRef = useRef<HTMLDivElement>(null)
   const [magnetic, setMagnetic] = useState({ x: 0, y: 0 })
-  const [reduceMotion, setReduceMotion] = useState(true)
-  useEffect(() => {
-    setReduceMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches)
-  }, [])
   const handleMouseMove = useCallback(
     (e: MouseEvent) => {
       if (reduceMotion || !ctaRef.current) return
@@ -92,12 +105,19 @@ export default function NewHeroSection() {
     <section className="relative h-screen max-h-[100dvh] min-h-[560px] flex flex-col justify-end overflow-hidden bg-[#2d4d2d]" aria-label="Hero section">
       {/* Wow 1: Full-bleed image with parallax float */}
       <div className="hero-image-float absolute inset-0 z-0 overflow-hidden">
-        <img
-          src={bgUrl}
-          alt={heroImage?.alt || ""}
-          className="hero-image-zoom absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
-          fetchPriority="high"
-        />
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={bgUrl}
+            src={bgUrl}
+            alt={heroImage?.alt || ""}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}
+            className="hero-image-zoom absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
+            fetchPriority="high"
+          />
+        </AnimatePresence>
       </div>
       {/* Gradient for card readability */}
       <div
