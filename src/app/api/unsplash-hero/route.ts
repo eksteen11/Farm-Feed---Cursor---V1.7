@@ -12,10 +12,16 @@ const QUERIES = [
   "agriculture wheat field",
 ]
 
+/* No cache: so every 5s client request gets a fresh image on Vercel */
+export const dynamic = "force-dynamic"
+export const revalidate = 0
+
 export async function GET() {
   const accessKey = process.env.UNSPLASH_ACCESS_KEY
   if (!accessKey) {
-    return NextResponse.json({ url: FALLBACK_URL, alt: FALLBACK_ALT })
+    const res = NextResponse.json({ url: FALLBACK_URL, alt: FALLBACK_ALT })
+    res.headers.set("Cache-Control", "no-store, max-age=0")
+    return res
   }
 
   try {
@@ -23,7 +29,7 @@ export async function GET() {
     const query: string = QUERIES[idx] ?? QUERIES[0] ?? "wheat field golden hour"
     const res = await fetch(
       `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&client_id=${accessKey}&orientation=landscape&per_page=12`,
-      { next: { revalidate: 3600 } }
+      { cache: "no-store" }
     )
     if (!res.ok) throw new Error("Unsplash API error")
     const data = await res.json()
@@ -32,8 +38,12 @@ export async function GET() {
     const pick = results[Math.floor(Math.random() * Math.min(results.length, 5))]
     const url = pick?.urls?.regular || pick?.urls?.full || FALLBACK_URL
     const alt = pick?.alt_description || pick?.description || FALLBACK_ALT
-    return NextResponse.json({ url, alt: alt.slice(0, 120) })
+    const response = NextResponse.json({ url, alt: alt.slice(0, 120) })
+    response.headers.set("Cache-Control", "no-store, max-age=0")
+    return response
   } catch {
-    return NextResponse.json({ url: FALLBACK_URL, alt: FALLBACK_ALT })
+    const fallbackRes = NextResponse.json({ url: FALLBACK_URL, alt: FALLBACK_ALT })
+    fallbackRes.headers.set("Cache-Control", "no-store, max-age=0")
+    return fallbackRes
   }
 }
