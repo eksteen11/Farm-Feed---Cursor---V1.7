@@ -124,6 +124,17 @@
   50% { opacity: 0.85; transform: translateX(-50%) scale(1.08); }
 }
 
+/* Live Marketplace Pulse – activity list bottom fade overlay */
+.live-activity-fade-mask {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  background: linear-gradient(to top, rgb(249 250 251), transparent);
+  pointer-events: none;
+}
+
 @layer components {
   /* BILLION-DOLLAR DESIGN SYSTEM - WORLD-CLASS TYPOGRAPHY */
   
